@@ -1,17 +1,32 @@
 'use client';
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Switch } from '@headlessui/react'
+import { useTheme } from 'next-themes';
 
 export default function Switcher() {
   const [enabled, setEnabled] = useState(false)
+  const { resolvedTheme, setTheme } = useTheme();
+
+  useEffect(() => {
+    if (resolvedTheme === 'dark') {
+      setEnabled(true)
+    } else {
+      setEnabled(false)
+    }
+    }, [])
+
+    const handleChange = () => {
+      setEnabled(!enabled)
+      setTheme(resolvedTheme === 'dark' ? 'light' : 'dark');
+    }
 
   return (
     <div>
       <Switch
         checked={enabled}
-        onChange={setEnabled}
-        className={`${enabled ? 'bg-teal-900' : 'bg-teal-700'}
+        onChange={handleChange}
+        className={`${enabled ? 'bg-teal-900 dark:bg-red-300' : 'bg-red-100'}
           relative inline-flex h-[25px] w-[45px] shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2  focus-visible:ring-white focus-visible:ring-opacity-75`}
       >
         <span className="sr-only">Use setting</span>

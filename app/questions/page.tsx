@@ -10,7 +10,7 @@ export default function Questions() {
   useEffect(() => {
     const getQuestions = async () => {
       const res = await fetch(
-        "http://127.0.0.1:8090/api/collections/questions/records?page=1&perPage=30",
+        `${process.env.PB_API}/collections/questions/records?page=1&perPage=30`,
         { cache: "no-store" }
       );
       const data = await res.json();

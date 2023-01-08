@@ -1,5 +1,6 @@
 import "./globals.css";
 import NavBar from "../components/navbar";
+import { Providers } from "./providers";
 
 export default function RootLayout({
   children,
@@ -7,10 +8,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html>
+    <html suppressHydrationWarning>
       <body>
-        <NavBar />
-        {children}
+        <Providers>
+          <NavBar />
+          {children}
+        </Providers>
         </body>
     </html>
   );

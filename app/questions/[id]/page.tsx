@@ -4,6 +4,7 @@ import { RadioGroup } from "@headlessui/react";
 import { useEffect, useState } from "react";
 import { QuestionData } from "../../../types";
 
+
 export default function QuestionPage({ params }: any) {
   const [questionData, setQuestion] = useState<QuestionData>();
   const [checked, setChecked] = useState<string>("");
@@ -11,7 +12,7 @@ export default function QuestionPage({ params }: any) {
   useEffect(() => {
     const getQuestion = async () => {
       const res = await fetch(
-        `http://127.0.0.1:8090/api/collections/questions/records/${params.id}`,
+        `${process.env.PB_API}/collections/questions/records/${params.id}`,
         {
           next: { revalidate: 10 },
         }
@@ -32,21 +33,21 @@ export default function QuestionPage({ params }: any) {
           <div className="pt-3">
           <RadioGroup.Option value="a1">
             {({ checked }) => (
-              <span className={checked ? "bg-blue-200" : ""}>
+              <span className={checked ? "bg-blue-200 dark:bg-red-300" : ""}>
                 {questionData?.choices.a1}
               </span>
             )}
           </RadioGroup.Option>
           <RadioGroup.Option value="a2">
             {({ checked }) => (
-              <span className={checked ? "bg-blue-200" : ""}>
+              <span className={checked ? "bg-blue-200 dark:bg-red-300" : ""}>
                 {questionData?.choices.a2}
               </span>
             )}
           </RadioGroup.Option>
           <RadioGroup.Option value="a3">
             {({ checked }) => (
-              <span className={checked ? "bg-blue-200" : ""}>
+              <span className={checked ? "bg-blue-200 dark:bg-red-300" : ""}>
                 {questionData?.choices.a3}
               </span>
             )}
