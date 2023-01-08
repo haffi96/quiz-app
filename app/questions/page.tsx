@@ -1,29 +1,11 @@
 "use client";
 
-import { pb_client } from "../../pocket";
 import { useState, useEffect } from "react";
-import "../globals.css";
 import Question from "../../components/question";
-
-pb_client.autoCancellation(false);
-
-interface Choices {
-  a1: string;
-  a2: string;
-  a3: string;
-}
-
-interface Question {
-  id: string;
-  title: string;
-  body: string;
-  choices: Choices;
-  created: string;
-  updated: string;
-}
+import { QuestionData } from "../../types";
 
 export default function Questions() {
-  const [questions, setQuestions] = useState<Question[]>();
+  const [questions, setQuestions] = useState<QuestionData[]>();
 
   useEffect(() => {
     const getQuestions = async () => {
@@ -32,7 +14,7 @@ export default function Questions() {
         { cache: "no-store" }
       );
       const data = await res.json();
-      setQuestions(data?.items as Question[]);
+      setQuestions(data?.items as QuestionData[]);
     };
     getQuestions();
   }, []);

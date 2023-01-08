@@ -5,12 +5,13 @@ export default function Question({ question }: any) {
   
     return (
       <>
-      <div>
+      <div className="py-2">
         <Link href={`/questions/${id}`}>
           <div className="bg-red-300 text-center px-5">
             <p>{title}</p>
           </div>
         </Link>
+
       </div>
       </>
     );

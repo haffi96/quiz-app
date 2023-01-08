@@ -1,23 +1,11 @@
 "use client";
+
 import { RadioGroup } from "@headlessui/react";
 import { useEffect, useState } from "react";
-import "../../globals.css";
-
-interface Choices {
-  a1: string;
-  a2: string;
-  a3: string;
-}
-
-interface Question {
-  id: string;
-  title: string;
-  body: string;
-  choices: Choices;
-}
+import { QuestionData } from "../../../types";
 
 export default function QuestionPage({ params }: any) {
-  const [questionData, setQuestion] = useState<Question>();
+  const [questionData, setQuestion] = useState<QuestionData>();
   const [checked, setChecked] = useState<string>("");
 
   useEffect(() => {
