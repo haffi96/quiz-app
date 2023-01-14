@@ -1,0 +1,25 @@
+' install java from their website
+' brew install graphviz 
+' install plantUML vscode extension 
+' run Preview diagram in PlantUML command in vscode
+
+@startuml Quiz Container Diagram
+title Quiz Container Diagram
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+Person(user, "User", "Uses the app to study")
+Person(admin, "Admin", "Creates Questions")
+
+System_Boundary(quizSystem, "Quiz System"){
+  Container(website, "Quiz Website", "React", "")
+  Container(mobileApp, "Quiz Mobile App", "React", "")
+  ContainerDb(pocketbase, "PocketBase", "SQL", "")
+}
+
+Rel(user, website, "Uses", "HTTPS")
+Rel(user, mobileApp, "Uses", "HTTPS")
+Rel(website, pocketbase, "Reads/ Writes")
+Rel(mobileApp, pocketbase, "Reads/ Writes")
+
+SHOW_LEGEND()
+@enduml
