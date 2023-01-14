@@ -32,6 +32,3 @@ From project root:
 ```sh
 ./pocketbase serve
 ```
-
-
-
