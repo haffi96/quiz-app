@@ -14,12 +14,12 @@ export default function Switcher() {
     } else {
       setEnabled(false)
     }
-    }, [])
+  }, [resolvedTheme])
 
-    const handleChange = () => {
-      setEnabled(!enabled)
-      setTheme(resolvedTheme === 'dark' ? 'light' : 'dark');
-    }
+  const handleChange = () => {
+    setEnabled(!enabled)
+    setTheme(resolvedTheme === 'dark' ? 'light' : 'dark');
+  }
 
   return (
     <div>

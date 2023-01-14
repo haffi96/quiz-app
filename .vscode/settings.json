@@ -11,6 +11,7 @@
     "typescript"
   ],
   "window.commandCenter": true,
+  "eslint.format.enable": true,
   "editor.formatOnSave": true,
   "typescript.tsdk": "node_modules/typescript/lib",
   "typescript.enablePromptUseWorkspaceTsdk": true,
