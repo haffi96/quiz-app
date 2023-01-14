@@ -11,7 +11,9 @@ export default function Questions() {
     const getQuestions = async () => {
       const res = await fetch(
         `${process.env.PB_API}/collections/questions/records?page=1&perPage=30`,
-        { cache: "no-store" }
+        {
+          next: { revalidate: 10 },
+        }
       );
       const data = await res.json();
       setQuestions(data?.items as QuestionData[]);

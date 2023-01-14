@@ -26,7 +26,7 @@ export default function Switcher() {
       <Switch
         checked={enabled}
         onChange={handleChange}
-        className={`${enabled ? 'bg-teal-900 dark:bg-red-300' : 'bg-red-100'}
+        className={`${enabled ? 'dark:bg-red-300' : 'bg-blue-300 dark:bg-red-100'}
           relative inline-flex h-[25px] w-[45px] shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2  focus-visible:ring-white focus-visible:ring-opacity-75`}
       >
         <span className="sr-only">Use setting</span>
