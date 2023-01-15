@@ -40,8 +40,8 @@ export default function QuestionPage({ params }: QuestionPageParams) {
     // TODO: go to next question
   }
 
-  if (!questionData?.choices) {
-    return <>missing question data or choices</>
+  if (!questionData) {
+    return <>Error: Missing question data</>
   }
 
   return (

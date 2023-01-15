@@ -1,27 +1,61 @@
 "use client"
 
-import { getQuestion } from "../../../../helpers/databaseHelper"
-import { use, useState } from "react"
+import { editQuestion, getQuestion } from "../../../../helpers/databaseHelper"
+import type { FormEvent } from "react";
+import { useEffect, useState } from "react"
 
 interface EditIdParams {
     params: { id: string }
 }
 
+// TODO; handle form submit -- maybe disable default
+
 export default function Page({ params }: EditIdParams) {
     const { id } = params
-    const question = use(getQuestion(id))
-    console.log({ question })
+    const [title, setTitle] = useState<string | undefined>('')
+    const [body, setBody] = useState<string | undefined>('')
+    const [a1, setA1] = useState<string | undefined>('')
+    const [a2, setA2] = useState<string | undefined>('')
+    const [a3, setA3] = useState<string | undefined>('')
 
-    const [title, setTitle] = useState(question.title)
+    useEffect(() => {
+        const getQuestionAndSetFields = async () => {
+            const question = await getQuestion(params.id)
+            setTitle(question.title);
+            setBody(question.body);
+            setA1(question.a1);
+            setA2(question.a2);
+            setA3(question.a3);
+        };
+
+        getQuestionAndSetFields();
+    }, [params.id]);
+
+    const handleSubmit = (event: FormEvent) => {
+        event.preventDefault();
+        editQuestion(id, { title, body, a1, a2, a3 });
+        alert('Saved');
+    }
 
     return (
-        <div>
-            <form className="m-auto text-center flex flex-col w-3/5" action="/send-data-here" method="post">
-                <label htmlFor="first">First name:</label>
-                <input type="text" id="first" name="first" />
-                <label htmlFor="last">Last name:</label>
-                <input type="text" id="last" name="last" />
-                <button type="submit">Submit</button>
+        <div className="w-3/5 m-auto text-center">
+            <form className="flex flex-col">
+                <label htmlFor="title" className="">Title</label>
+                <input type="text" id="title" name="title" value={title} className="p-2 mb-4 rounded" onChange={(e) => setTitle(e.target.value)} />
+
+                <label htmlFor="body" className="">Question</label>
+                <input type="text" id="body" name="body" value={body} className="p-2 mb-4 ounded" onChange={(e) => setBody(e.target.value)} />
+
+                <label htmlFor="a1" className="">Answer 1</label>
+                <input type="text" id="a1" name="a1" value={a1} className="p-2 mb-4 rounded" onChange={(e) => setA1(e.target.value)} />
+
+                <label htmlFor="a2" className="">Answer 2</label>
+                <input type="text" id="a2" name="a2" value={a2} className="p-2 mb-4 rounded" onChange={(e) => setA2(e.target.value)} />
+
+                <label htmlFor="a3" className="">Answer 3</label>
+                <input type="text" id="a3" name="a3" value={a3} className="p-2 mb-4 rounded" onChange={(e) => setA3(e.target.value)} />
+
+                <button onClick={handleSubmit} className="border p-2 rounded bg-cyan-500 hover:bg-cyan-600 mt-2">Save Changes</button>
             </form>
         </div >
     )

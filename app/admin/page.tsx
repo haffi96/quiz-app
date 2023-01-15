@@ -2,7 +2,9 @@ import Link from "next/link";
 import { getQuestions } from "../../helpers/databaseHelper"
 import "./style.css";
 
-export default async function Page() {
+// TODO: add new questions
+
+export default async function AdminPage() {
     const questions = await getQuestions();
 
     const questionRows = questions.map((question) => (
