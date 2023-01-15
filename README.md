@@ -3,10 +3,12 @@ Live Site: https://quiz-app-mocha-eight.vercel.app/
 
 ## Env Vars
 Create a .env.local file at root of project and add
+```sh
 PB_API=pocketbase-connection-url/api
 PB_URL=pocketbase-connection-url
 PB_EMAIL=admin@email.com
 PB_PASSWORD=password
+```
 
 ## Scripts
 ### Get auto generated pocketbase types
