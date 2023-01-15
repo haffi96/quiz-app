@@ -17,7 +17,7 @@ export default async function Head({ params }: { params: { id: string } }) {
   return (
     <>
       <title>{question.title}</title>
-      <link rel="icon" href="/favicon.ico" />
+      <link rel="icon" href="/quiz.svg" />
     </>
   );
 }
