@@ -21,6 +21,6 @@ export async function editQuestion(id: string, bodyParms: QuestionsRecord) {
     return await pb.collection(Collections.Questions).update<QuestionsRecord>(id, bodyParms);
 }
 
-export async function getAnswer(questionID: string) {
+export async function getAnswerForQuestion(questionID: string) {
     return await pb.collection(Collections.Answers).getFirstListItem<AnswersResponse>(`question_id="${questionID}"`);
 }
