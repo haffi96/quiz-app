@@ -1,45 +1,69 @@
 "use client"
 
-import { editQuestion, getQuestion } from "../../../../helpers/databaseHelper"
+import { editQuestion, getQuestion, createQuestion } from "../../../../helpers/databaseHelper"
 import type { FormEvent } from "react";
 import { useEffect, useState } from "react"
+import { NEW_QUESTION_ID } from "../../../../constants";
+import Link from "next/link";
 
 interface EditIdParams {
     params: { id: string }
 }
-
-// TODO; handle form submit -- maybe disable default
-
 export default function Page({ params }: EditIdParams) {
-    const { id } = params
     const [title, setTitle] = useState<string | undefined>('')
     const [body, setBody] = useState<string | undefined>('')
     const [a1, setA1] = useState<string | undefined>('')
     const [a2, setA2] = useState<string | undefined>('')
     const [a3, setA3] = useState<string | undefined>('')
 
-    useEffect(() => {
-        const getQuestionAndSetFields = async () => {
-            const question = await getQuestion(params.id)
-            setTitle(question.title);
-            setBody(question.body);
-            setA1(question.a1);
-            setA2(question.a2);
-            setA3(question.a3);
-        };
+    const { id } = params
+    const isNewQuestion = id === NEW_QUESTION_ID
 
-        getQuestionAndSetFields();
-    }, [params.id]);
+    useEffect(() => {
+        if (!isNewQuestion) {
+            const getQuestionAndSetFields = async () => {
+                const question = await getQuestion(id)
+                setTitle(question.title);
+                setBody(question.body);
+                setA1(question.a1);
+                setA2(question.a2);
+                setA3(question.a3);
+            };
+
+            getQuestionAndSetFields();
+        }
+    }, [id, isNewQuestion]);
+
+    const clearAllFields = () => {
+        setTitle('');
+        setBody('');
+        setA1('');
+        setA2('');
+        setA3('');
+    }
 
     const handleSubmit = (event: FormEvent) => {
+        const finalQuestion = { title, body, a1, a2, a3 }
         event.preventDefault();
-        editQuestion(id, { title, body, a1, a2, a3 });
-        alert('Saved');
+
+        if (isNewQuestion) {
+            createQuestion(finalQuestion)
+            clearAllFields();
+            alert('Created new question')
+        } else {
+            editQuestion(id, finalQuestion);
+            alert('saved question')
+        }
     }
 
     return (
         <div className="w-3/5 m-auto text-center">
-            <form className="flex flex-col">
+            <Link href="/admin">
+                <div className="text-xl text-violet-600 bg-orange-400 p-2 rounded font-bold">
+                    Back To All Questions
+                </div>
+            </Link>
+            <form className="flex flex-col mt-4">
                 <label htmlFor="title" className="">Title</label>
                 <input type="text" id="title" name="title" value={title} className="p-2 mb-4 rounded" onChange={(e) => setTitle(e.target.value)} />
 

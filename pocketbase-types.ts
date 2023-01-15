@@ -2,8 +2,6 @@
 * This file was @generated using pocketbase-typegen
 */
 
-// TODO: What is the difference between type and interface? Why 'type'?
-
 export enum Collections {
 	Answers = "answers",
 	Questions = "questions",

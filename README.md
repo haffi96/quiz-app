@@ -1,4 +1,5 @@
 # Quiz App
+Live Site: https://quiz-app-mocha-eight.vercel.app/
 
 ## Env Vars
 Create a .env.local file at root of project and add
@@ -35,7 +36,6 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 Pocketbase admin: https://pocketbase-url/_/
 
 Login with admin creds
-
 
 Check status via flyctl, from ./deploy (where fly.toml is):
 https://github.com/pocketbase/pocketbase/discussions/537
