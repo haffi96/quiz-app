@@ -1,6 +1,6 @@
 "use client"
 
-import { editQuestion, getQuestion, createQuestion } from "../../../../helpers/databaseHelper"
+import { editQuestion, getQuestion, createQuestion, deleteQuestion } from "../../../../helpers/pocketbaseHelper"
 import type { FormEvent } from "react";
 import { useEffect, useState } from "react"
 import { NEW_QUESTION_ID } from "../../../../constants";
@@ -52,8 +52,14 @@ export default function Page({ params }: EditIdParams) {
             alert('Created new question')
         } else {
             editQuestion(id, finalQuestion);
-            alert('saved question')
+            alert('Saved question')
         }
+    }
+
+    const handleDelete = () => {
+        deleteQuestion(id);
+        alert('Deleted Question')
+        clearAllFields
     }
 
     return (
@@ -80,6 +86,7 @@ export default function Page({ params }: EditIdParams) {
                 <input type="text" id="a3" name="a3" value={a3} className="p-2 mb-4 rounded" onChange={(e) => setA3(e.target.value)} />
 
                 <button onClick={handleSubmit} className="border p-2 rounded bg-cyan-500 hover:bg-cyan-600 mt-2">Save Changes</button>
+                <button onClick={handleDelete} className="border p-2 rounded bg-red-500 hover:bg-red-600 mt-2">Delete Questions</button>
             </form>
         </div >
     )

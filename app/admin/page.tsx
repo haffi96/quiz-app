@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { NEW_QUESTION_ID } from "../../constants";
-import { getQuestions } from "../../helpers/databaseHelper"
+import { getQuestions } from "../../helpers/pocketbaseHelper"
 import "./style.css";
 
 export default async function AdminPage() {
@@ -20,8 +20,8 @@ export default async function AdminPage() {
 
     return (
         <div className="text-center">
-            <table className="table-auto m-auto">
-                <thead>
+            <table className="table-auto m-auto border border-collapse">
+                <thead className="border">
                     <tr>
                         <th>Title</th>
                         <th>Body</th>

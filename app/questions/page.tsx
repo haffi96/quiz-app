@@ -1,5 +1,5 @@
 import Question from "../../components/question";
-import { getQuestions } from "../../helpers/databaseHelper";
+import { getQuestions } from "../../helpers/pocketbaseHelper";
 
 export default async function Questions() {
   const questions = await getQuestions();

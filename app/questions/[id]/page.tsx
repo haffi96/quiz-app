@@ -4,7 +4,7 @@ import { RadioGroup } from "@headlessui/react";
 import type { SetStateAction } from "react";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { getAnswer, getQuestion } from "../../../helpers/databaseHelper";
+import { getAnswer, getQuestion } from "../../../helpers/pocketbaseHelper";
 import type { QuestionsResponse } from "../../../pocketbase-types";
 
 const CHECKED_STYLE = "dark:text-black flex rounded-full pl-3 p-5 bg-blue-400";
