@@ -15,7 +15,7 @@ export default function Question({ question }: QuestionProps) {
     <>
       <div className="py-2 flex w-1/2 justify-center">
         <Link href={`/questions/${id}`} className="flex w-full justify-center">
-          <motion.button whileHover={{ scale: 1.05, transition: { duration: 0.3 } }} className="flex w-full p-5 bg-blue-200 hover:bg-blue-500 dark:bg-red-300 dark:hover:bg-red-500 rounded-full">
+          <motion.button whileHover={{ scale: 1.05, transition: { duration: 0.3 } }} className="dark:text-black flex w-full p-5 bg-blue-200 hover:bg-blue-500 rounded-full">
             <p>{title}</p>
           </motion.button>
         </Link>

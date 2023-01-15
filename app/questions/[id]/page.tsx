@@ -4,11 +4,11 @@ import { RadioGroup } from "@headlessui/react";
 import type { SetStateAction } from "react";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { getQuestion } from "../../../helpers/databaseHelper";
+import { getAnswer, getQuestion } from "../../../helpers/databaseHelper";
 import type { QuestionsResponse } from "../../../pocketbase-types";
 
-const CHECKED_STYLE = "flex rounded-full pl-3 p-5 bg-blue-400 dark:bg-red-500";
-const UNCHECKED_STYLE = "flex rounded-full pl-3 p-5 bg-blue-200 dark:bg-red-300";
+const CHECKED_STYLE = "dark:text-black flex rounded-full pl-3 p-5 bg-blue-400";
+const UNCHECKED_STYLE = "dark:text-black flex rounded-full pl-3 p-5 bg-blue-200";
 
 interface QuestionPageParams {
   params: {
@@ -30,11 +30,7 @@ export default function QuestionPage({ params }: QuestionPageParams) {
   }, [params.id]);
 
   const handleCheck = (value: SetStateAction<string>) => {
-    if (correct != undefined) {
-      null
-    } else {
-      setCheckedAnswer(value)
-    }
+    correct != undefined ? null : setCheckedAnswer(value)
   }
 
 
@@ -42,12 +38,12 @@ export default function QuestionPage({ params }: QuestionPageParams) {
     if (checkedAnswer === "") {
       alert("select something")
     } else {
-      const res = await fetch(
-        `${process.env.PB_API}/collections/answers/records?perPage=30&filter=(question_id='${questionID}')`,
-      );
-      const data = await res.json();
-      const answer = data.items[0].choice
-      setCorrect(checkedAnswer === answer)
+      if (correct != undefined) {
+        null
+      } else {
+        const answer = await getAnswer(questionID)
+        setCorrect(checkedAnswer === answer.choice)
+      }
     }
   }
 
@@ -64,7 +60,7 @@ export default function QuestionPage({ params }: QuestionPageParams) {
           default: { duration: 0.5, delay: 0.1, ease: [0, 0.71, 0.2, 1.01] },
           scale: { type: "spring", damping: 10, stiffness: 100, restDelta: 0.001 }
         }}
-        className="bg-green-300 p-2 w-2/3 rounded-xl">
+        className="bg-green-300 p-2 w-2/3 rounded-xl dark:text-black">
         Correct answer!
       </motion.div>
     } else {
@@ -75,7 +71,7 @@ export default function QuestionPage({ params }: QuestionPageParams) {
           default: { duration: 0.5, delay: 0.1, ease: [0, 0.71, 0.2, 1.01] },
           scale: { type: "spring", damping: 10, stiffness: 100, restDelta: 0.001 }
         }}
-        className="bg-red-400 p-2 w-2/3 rounded-xl">
+        className="bg-red-400 p-2 w-2/3 rounded-xl dark:text-black">
         Incorrect!
       </motion.div>
     }
@@ -84,7 +80,7 @@ export default function QuestionPage({ params }: QuestionPageParams) {
   const NavButton = (props: { text: string, routeToPath: string }) => {
     return <motion.button onClick={() => {
       console.log(props.routeToPath);
-    }} whileHover={{ scale: 1.05, transition: { duration: 0.3 } }} className="bg-transparent hover:bg-blue-500 dark:hover:bg-red-500 text-blue-700 dark:text-red-700 font-semibold hover:text-white dark:hover:text-white py-2 px-4 border border-blue-500 dark:border-red-500 hover:border-transparent rounded">
+    }} whileHover={{ scale: 1.05, transition: { duration: 0.3 } }} className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white dark:hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
       {props.text}
     </motion.button>
   }
@@ -95,9 +91,9 @@ export default function QuestionPage({ params }: QuestionPageParams) {
     }
 
     if (correct) {
-      return <NavButton text="next" routeToPath="/questions/next" />
+      return <NavButton text="Next" routeToPath="/questions/next" />
     } else {
-      return <NavButton text="prev" routeToPath="/questions/prev" />
+      return null
     }
   }
 
@@ -142,7 +138,8 @@ export default function QuestionPage({ params }: QuestionPageParams) {
           </motion.div>
         </RadioGroup>
         <div className="p-10">
-          <motion.button onClick={() => { onSubmit(questionData?.id) }} whileHover={{ scale: 1.05, transition: { duration: 0.3 } }} className="bg-transparent hover:bg-blue-500 dark:hover:bg-red-500 text-blue-700 dark:text-red-700 font-semibold hover:text-white dark:hover:text-white py-2 px-4 border border-blue-500 dark:border-red-500 hover:border-transparent rounded">
+          <NavButton text="Prev" routeToPath="/questions/prev" />
+          <motion.button onClick={() => { onSubmit(questionData.id) }} whileHover={{ scale: 1.05, transition: { duration: 0.3 } }} className="bg-transparent hover:bg-blue-500 text-blue-700  font-semibold hover:text-white dark:hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
             Submit
           </motion.button>
           <NavButtons />
