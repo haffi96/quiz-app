@@ -85,8 +85,8 @@ export default function Page({ params }: EditIdParams) {
                 <label htmlFor="a3" className="">Answer 3</label>
                 <input type="text" id="a3" name="a3" value={a3} className="p-2 mb-4 rounded" onChange={(e) => setA3(e.target.value)} />
 
-                <button onClick={handleSubmit} className="border p-2 rounded bg-cyan-500 hover:bg-cyan-600 mt-2">Save Changes</button>
-                <button onClick={handleDelete} className="border p-2 rounded bg-red-500 hover:bg-red-600 mt-2">Delete Questions</button>
+                <button onClick={handleSubmit} className="border p-2 rounded bg-blue-500 hover:bg-blue-600 mt-2">Save Changes</button>
+                <button onClick={handleDelete} className="border p-2 rounded bg-red-500 hover:bg-red-600 mt-2">Delete Question</button>
             </form>
         </div >
     )
