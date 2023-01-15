@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { getQuestions } from "../../helpers/databaseHelper"
 import "./style.css";
 
@@ -11,7 +12,7 @@ export default async function Page() {
             <td>{question.choices.a1}</td>
             <td>{question.choices.a2}</td>
             <td>{question.choices.a3}</td>
-            <td><a href={`admin/edit/${question.id}`}>Edit</a></td>
+            <td><Link href={`admin/edit/${question.id}`}>Edit</Link></td>
         </tr>
     ))
 
