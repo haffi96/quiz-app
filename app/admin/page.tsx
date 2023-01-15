@@ -7,8 +7,8 @@ export default async function AdminPage() {
     const questions = await getQuestions(); // doesn't update without refreshing page :/
 
     const questionRows = questions.map((question) => (
-        <tr key={question.id}>
-            <td>{question.title}</td>
+        <tr className="border" key={question.id}>
+            <td >{question.title}</td>
             <td>{question.body}</td>
             <td>{question.a1}</td>
             <td>{question.a2}</td>
@@ -21,7 +21,7 @@ export default async function AdminPage() {
     return (
         <div className="text-center">
             <table className="table-auto m-auto border border-collapse">
-                <thead className="border">
+                <thead className="border-4">
                     <tr>
                         <th>Title</th>
                         <th>Body</th>

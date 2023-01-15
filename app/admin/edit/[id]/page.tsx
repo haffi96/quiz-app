@@ -64,12 +64,12 @@ export default function Page({ params }: EditIdParams) {
 
     return (
         <div className="w-3/5 m-auto text-center">
-            <Link href="/admin">
-                <div className="text-xl text-violet-600 bg-orange-400 p-2 rounded font-bold">
-                    Back To All Questions
-                </div>
-            </Link>
             <form className="flex flex-col mt-4">
+                <Link href="/admin">
+                    <button className="border p-2 rounded bg-violet-500 hover:bg-violet-600 mt-2 w-full">
+                        Back To All Questions
+                    </button>
+                </Link>
                 <label htmlFor="title" className="">Title</label>
                 <input type="text" id="title" name="title" value={title} className="p-2 mb-4 rounded" onChange={(e) => setTitle(e.target.value)} />
 
