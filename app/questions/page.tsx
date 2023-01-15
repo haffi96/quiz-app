@@ -1,5 +1,5 @@
 import Question from "../../components/question";
-import { getQuestions } from "../../getQuestions";
+import { getQuestions } from "../../helpers/databaseHelper";
 
 export default async function Questions() {
   const questions = await getQuestions();

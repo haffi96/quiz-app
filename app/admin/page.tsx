@@ -1,4 +1,4 @@
-import { getQuestions } from "../../getQuestions"
+import { getQuestions } from "../../helpers/databaseHelper"
 import "./style.css";
 
 export default async function Page() {
