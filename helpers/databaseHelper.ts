@@ -1,23 +1,13 @@
-import type { QuestionData } from "../types";
+import PocketBase from 'pocketbase';
+import type { QuestionsResponse } from "../pocketbase-types";
 
-const URL_PREFIX = `${process.env.PB_API}/collections/questions/records`
+const pb = new PocketBase(process.env.PB_URL);
+pb.autoCancellation(false);
 
-export async function getQuestions(): Promise<QuestionData[]> {
-    const res = await fetch(
-        `${URL_PREFIX}?page=1&perPage=30`,
-        {
-            next: { revalidate: 10 },
-        }
-    );
-
-    const data = await res.json();
-    const questions = data.items;
-
-    return questions;
+export async function getQuestion(id:string) {
+    return await pb.collection('questions').getOne<QuestionsResponse>(id);
 }
 
-export async function getQuestion(id: string): Promise<QuestionData> {
-    const res = await fetch(`${URL_PREFIX}/${id}`);
-    
-    return await res.json();
+export async function getQuestions() {
+    return await pb.collection('questions').getFullList<QuestionsResponse>();
 }

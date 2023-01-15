@@ -2,9 +2,9 @@
 
 import { RadioGroup } from "@headlessui/react";
 import { useEffect, useState } from "react";
-import type { QuestionData } from "../../../types";
 import { motion } from "framer-motion";
 import { getQuestion } from "../../../helpers/databaseHelper";
+import type { QuestionsResponse } from "../../../pocketbase-types";
 
 const CHECKED_STYLE = "pl-3 p-5 bg-blue-400 dark:bg-red-500 rounded-full flex";
 const UNCHECKED_STYLE = "pl-3 p-5 bg-blue-200 dark:bg-red-300 rounded-full flex";
@@ -16,7 +16,7 @@ interface QuestionPageParams {
 }
 
 export default function QuestionPage({ params }: QuestionPageParams) {
-  const [questionData, setQuestion] = useState<QuestionData>();
+  const [questionData, setQuestion] = useState<QuestionsResponse>();
   const [checkedAnswer, setCheckedAnswer] = useState<string>("");
   const [correct, setCorrect] = useState<boolean>();
 
@@ -40,6 +40,10 @@ export default function QuestionPage({ params }: QuestionPageParams) {
     // TODO: go to next question
   }
 
+  if (!questionData?.choices) {
+    return <>missing question data or choices</>
+  }
+
   return (
     <div>
       <div className="flex flex-col items-center">
@@ -51,7 +55,7 @@ export default function QuestionPage({ params }: QuestionPageParams) {
             <RadioGroup.Option value="a1">
               {({ checked }) => (
                 <span className={checked ? CHECKED_STYLE : UNCHECKED_STYLE}>
-                  {questionData?.choices.a1}
+                  {questionData.a1}
                 </span>
               )}
             </RadioGroup.Option>
@@ -60,7 +64,7 @@ export default function QuestionPage({ params }: QuestionPageParams) {
             <RadioGroup.Option value="a2">
               {({ checked }) => (
                 <span className={checked ? CHECKED_STYLE : UNCHECKED_STYLE}>
-                  {questionData?.choices.a2}
+                  {questionData.a2}
                 </span>
               )}
             </RadioGroup.Option>
@@ -69,7 +73,7 @@ export default function QuestionPage({ params }: QuestionPageParams) {
             <RadioGroup.Option value="a3">
               {({ checked }) => (
                 <span className={checked ? CHECKED_STYLE : UNCHECKED_STYLE}>
-                  {questionData?.choices.a3}
+                  {questionData.a3}
                 </span>
               )}
             </RadioGroup.Option>

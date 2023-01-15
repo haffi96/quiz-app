@@ -3,9 +3,9 @@
 ## Env Vars
 Create a .env.local file at root of project and add
 PB_API=pocketbase-connection-url/api
-URL=pocketbase-connection-url
-EMAIL=admin@email.com
-PASSWORD=password
+PB_URL=pocketbase-connection-url
+PB_EMAIL=admin@email.com
+PB_PASSWORD=password
 
 ## Scripts
 ### Get auto generated pocketbase types

@@ -40,6 +40,9 @@ export type QuestionsRecord<Tchoices = unknown> = {
 	title?: string
 	body?: string
 	choices?: null | Tchoices
+	a1?: string
+	a2?: string
+	a3?: string
 }
 
 export type UsersRecord = {

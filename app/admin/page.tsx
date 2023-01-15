@@ -9,9 +9,9 @@ export default async function Page() {
         <tr key={question.id}>
             <td>{question.title}</td>
             <td>{question.body}</td>
-            <td>{question.choices.a1}</td>
-            <td>{question.choices.a2}</td>
-            <td>{question.choices.a3}</td>
+            <td>{question.a1}</td>
+            <td>{question.a2}</td>
+            <td>{question.a3}</td>
             <td><Link href={`admin/edit/${question.id}`}>Edit</Link></td>
         </tr>
     ))

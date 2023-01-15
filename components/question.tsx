@@ -1,11 +1,11 @@
 'use client';
 
 import Link from "next/link";
-import type { QuestionData } from "../types";
 import { motion } from "framer-motion";
+import type { QuestionsResponse } from "../pocketbase-types";
 
 interface QuestionProps {
-  question: QuestionData
+  question: QuestionsResponse
 }
 
 export default function Question({ question }: QuestionProps) {
