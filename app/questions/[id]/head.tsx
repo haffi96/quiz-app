@@ -1,4 +1,4 @@
-import { QuestionData } from "../../../types";
+import type { QuestionData } from "../../../types";
 
 export const getQuestion = async (id: string): Promise<QuestionData> => {
   const res = await fetch(

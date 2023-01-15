@@ -2,7 +2,7 @@
 
 import { RadioGroup } from "@headlessui/react";
 import { useEffect, useState } from "react";
-import { QuestionData } from "../../../types";
+import type { QuestionData } from "../../../types";
 
 const CHECKED_STYLE = "pl-3 p-5 bg-blue-400 dark:bg-red-500 rounded-full flex";
 const UNCHECKED_STYLE = "pl-3 p-5 bg-blue-200 dark:bg-red-300 rounded-full flex w-11/12";
