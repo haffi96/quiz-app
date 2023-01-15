@@ -36,10 +36,9 @@ export type AnswersRecord = {
 	question_id: RecordIdString
 }
 
-export type QuestionsRecord<Tchoices = unknown> = {
+export type QuestionsRecord = {
 	title?: string
 	body?: string
-	choices?: null | Tchoices
 	a1?: string
 	a2?: string
 	a3?: string
@@ -52,7 +51,7 @@ export type UsersRecord = {
 
 // Response types include system fields and match responses from the PocketBase API
 export type AnswersResponse = AnswersRecord & BaseSystemFields
-export type QuestionsResponse<Tchoices = unknown> = QuestionsRecord<Tchoices> & BaseSystemFields
+export type QuestionsResponse = QuestionsRecord & BaseSystemFields
 export type UsersResponse = UsersRecord & AuthSystemFields
 
 export type CollectionRecords = {
