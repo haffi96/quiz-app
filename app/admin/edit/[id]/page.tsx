@@ -1,6 +1,6 @@
 "use client"
 
-import { editQuestion, getQuestion, createQuestion, deleteQuestion, getQuestions } from "../../../../helpers/pocketbaseHelper"
+import { updateQuestionById, getQuestionById, createQuestion, deleteQuestionById, getQuestions, getAnswerByQuestionId, updateAnswerByAnswerId } from "../../../../helpers/pocketbaseHelper"
 import type { FormEvent } from "react";
 import { useEffect, useState } from "react"
 import { NEW_QUESTION_ID } from "../../../../constants";
@@ -8,16 +8,21 @@ import Link from "next/link";
 import type { QuestionsResponse } from "../../../../pocketbase-types";
 import { QuestionSidebarListItem } from "../../../../components/questionSidebar/QuestionSidebarListItem";
 
+// TODO: add validation to every field
+
 interface EditIdParams {
     params: { id: string }
 }
 export default function Page({ params }: EditIdParams) {
     const [allQuestions, setAllQuestions] = useState<QuestionsResponse[]>([])
-    const [title, setTitle] = useState<string | undefined>('')
-    const [body, setBody] = useState<string | undefined>('')
-    const [a1, setA1] = useState<string | undefined>('')
-    const [a2, setA2] = useState<string | undefined>('')
-    const [a3, setA3] = useState<string | undefined>('')
+    const [title, setTitle] = useState<string>('')
+    const [body, setBody] = useState<string>('')
+    const [a1, setA1] = useState<string>('')
+    const [a2, setA2] = useState<string>('')
+    const [a3, setA3] = useState<string>('')
+    const [a4, setA4] = useState<string>('')
+    const [correctAnswer, setCorrectAnswer] = useState<string>('')
+    const [answerId, setAnswerId] = useState<string>('')
 
     const { id } = params
     const isNewQuestion = id === NEW_QUESTION_ID
@@ -28,19 +33,31 @@ export default function Page({ params }: EditIdParams) {
             setAllQuestions(result)
         }
 
+        getAndSetAllQuestions();
+
         const getQuestionAndSetFields = async () => {
-            const question = await getQuestion(id)
+            const question = await getQuestionById(id)
             setTitle(question.title);
             setBody(question.body);
             setA1(question.a1);
             setA2(question.a2);
             setA3(question.a3);
+            setA4(question.a4);
         };
 
-        getAndSetAllQuestions();
+        const getAndSetAnswers = async () => {
+            try {
+                const answer = await getAnswerByQuestionId(id);
+                setAnswerId(answer.id);
+                setCorrectAnswer(answer.choice);
+            } catch {
+                console.error('Did not set answer')
+            }
+        }
 
         if (!isNewQuestion) {
             getQuestionAndSetFields();
+            getAndSetAnswers();
         }
     }, [id, isNewQuestion]);
 
@@ -52,22 +69,23 @@ export default function Page({ params }: EditIdParams) {
         setA3('');
     }
 
-    const handleSubmit = (event: FormEvent) => {
-        const finalQuestion = { title, body, a1, a2, a3 }
+    const handleSubmit = async (event: FormEvent) => {
+        const finalQuestion = { title, body, a1, a2, a3, a4 }
         event.preventDefault();
 
         if (isNewQuestion) {
-            createQuestion(finalQuestion)
+            await createQuestion(finalQuestion)
             clearAllFields();
             alert('Created new question')
         } else {
-            editQuestion(id, finalQuestion);
+            updateQuestionById(id, finalQuestion);
+            updateAnswerByAnswerId(answerId, { choice: correctAnswer, question_id: id });
             alert('Saved question')
         }
     }
 
     const handleDelete = () => {
-        deleteQuestion(id);
+        deleteQuestionById(id);
         alert('Deleted Question')
         clearAllFields
     }
@@ -110,6 +128,17 @@ export default function Page({ params }: EditIdParams) {
 
                     <label htmlFor="a3" className="">Answer 3</label>
                     <input type="text" id="a3" name="a3" value={a3} className="p-2 mb-4 rounded" onChange={(e) => setA3(e.target.value)} />
+
+                    <label htmlFor="a4" className="">Answer 4</label>
+                    <input type="text" id="a4" name="a4" value={a4} className="p-2 mb-4 rounded" onChange={(e) => setA4(e.target.value)} />
+
+                    <label htmlFor="answer" className="">Correct Answer</label>
+                    <select id="answer" name="answer" value={correctAnswer} onChange={(e) => setCorrectAnswer(e.target.value)} className="p-2 mb-4 rounded">
+                        <option value="a1">Answer 1</option>
+                        <option value="a2">Answer 2</option>
+                        <option value="a3">Answer 3</option>
+                        <option value="a4">Answer 4</option>
+                    </select>
 
                     {/* TODO: add correct answer here */}
 

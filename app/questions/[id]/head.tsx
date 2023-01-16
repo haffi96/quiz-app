@@ -1,7 +1,7 @@
-import { getQuestion } from "../../../helpers/pocketbaseHelper";
+import { getQuestionById } from "../../../helpers/pocketbaseHelper";
 
 export default async function Head({ params }: { params: { id: string } }) {
-  const question = await getQuestion(params.id);
+  const question = await getQuestionById(params.id);
 
   return (
     <>

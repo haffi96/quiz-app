@@ -37,16 +37,22 @@ export type AnswersRecord = {
 }
 
 export type QuestionsRecord = {
-	title?: string
-	body?: string
-	a1?: string
-	a2?: string
-	a3?: string
+	title: string
+	body: string
+	a1: string
+	a2: string
+	a3: string
+	a4: string
 }
 
+export enum UsersPermissionsOptions {
+	"user" = "user",
+	"admin" = "admin",
+}
 export type UsersRecord = {
-	name?: string
+	name: string
 	avatar?: string
+	permissions: UsersPermissionsOptions
 }
 
 // Response types include system fields and match responses from the PocketBase API

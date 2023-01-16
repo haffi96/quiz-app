@@ -4,7 +4,7 @@ import { RadioGroup } from "@headlessui/react";
 import type { SetStateAction } from "react";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { getAnswer, getQuestion } from "../../../helpers/pocketbaseHelper";
+import { getAnswerByQuestionId, getQuestionById } from "../../../helpers/pocketbaseHelper";
 import type { QuestionsResponse } from "../../../pocketbase-types";
 
 const CHECKED_STYLE = "dark:text-black flex rounded-full pl-3 p-5 bg-blue-400";
@@ -23,7 +23,7 @@ export default function QuestionPage({ params }: QuestionPageParams) {
 
   useEffect(() => {
     const getAndSetQuestion = async () => {
-      const question = await getQuestion(params.id)
+      const question = await getQuestionById(params.id)
       setQuestion(question);
     };
     getAndSetQuestion();
@@ -41,7 +41,7 @@ export default function QuestionPage({ params }: QuestionPageParams) {
       if (correct != undefined) {
         null
       } else {
-        const answer = await getAnswer(questionID)
+        const answer = await getAnswerByQuestionId(questionID)
         setCorrect(checkedAnswer === answer.choice)
       }
     }

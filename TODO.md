@@ -21,7 +21,8 @@
 
 
 ## Admin UX:
-- [ ] add answers to admin screen
+- [x] edit existing answers for existing questions
+- [ ] add answers to new questions admin screen
 - [ ] View users progress/scores
 
 ## Non-admin UX:
@@ -30,5 +31,3 @@
 - [ ] let users subscribe to question sets
 - [ ] if doing questions set, show progress bar or % complete
 - [ ] let users record history of answering questions
-
-##### delete this page when done
