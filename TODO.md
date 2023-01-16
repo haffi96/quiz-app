@@ -22,7 +22,7 @@
 
 ## Admin UX:
 - [x] edit existing answers for existing questions
-- [ ] add answers to new questions admin screen
+- [x] add answers to new questions admin screen
 - [ ] View users progress/scores
 
 ## Non-admin UX:
