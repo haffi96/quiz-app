@@ -14,11 +14,11 @@ export async function getQuestions() {
 }
 
 export async function createQuestion(bodyParms: QuestionsRecord) {
-    return await pb.collection(Collections.Questions).create<QuestionsRecord>(bodyParms);
+    return await pb.collection(Collections.Questions).create(bodyParms);
 }
 
 export async function updateQuestionById(id: string, bodyParms: QuestionsRecord) {
-    return await pb.collection(Collections.Questions).update<QuestionsRecord>(id, bodyParms);
+    return await pb.collection(Collections.Questions).update(id, bodyParms);
 }
 
 export async function deleteQuestionById(id: string) {
@@ -35,15 +35,10 @@ export async function getAnswerByQuestionId(questionId: string) {
 }
 
 export async function updateAnswerByAnswerId(answerId: string, bodyParms: AnswersRecord) {
-    return await pb.collection(Collections.Answers).update<AnswersRecord>(answerId, bodyParms);
+    return await pb.collection(Collections.Answers).update(answerId, bodyParms);
 }
 
 export async function createAnswer(bodyParms: AnswersRecord) {
-    try {
-        return await pb.collection(Collections.Answers).create<AnswersRecord>(bodyParms);
-    }
-    catch {
-        console.error('Failed to create answer')
-    }
+    return await pb.collection(Collections.Answers).create(bodyParms);
 }
 

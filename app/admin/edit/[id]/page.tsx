@@ -1,6 +1,6 @@
 "use client"
 
-import { updateQuestionById, getQuestionById, createQuestion, deleteQuestionById, getQuestions, getAnswerByQuestionId, updateAnswerByAnswerId } from "../../../../helpers/pocketbaseHelper"
+import { updateQuestionById, getQuestionById, createQuestion, deleteQuestionById, getQuestions, getAnswerByQuestionId, updateAnswerByAnswerId, createAnswer } from "../../../../helpers/pocketbaseHelper"
 import type { FormEvent } from "react";
 import { useEffect, useState } from "react"
 import { NEW_QUESTION_ID } from "../../../../constants";
@@ -50,8 +50,10 @@ export default function Page({ params }: EditIdParams) {
                 const answer = await getAnswerByQuestionId(id);
                 setAnswerId(answer.id);
                 setCorrectAnswer(answer.choice);
-            } catch {
-                console.error('Did not set answer')
+            } catch { // the question didn't alreay have an answer
+                const answer = await createAnswer({ question_id: id, choice: "a1" })
+                setAnswerId(answer.id);
+                setCorrectAnswer(answer.choice);
             }
         }
 
@@ -73,21 +75,36 @@ export default function Page({ params }: EditIdParams) {
         const finalQuestion = { title, body, a1, a2, a3, a4 }
         event.preventDefault();
 
-        if (isNewQuestion) {
-            await createQuestion(finalQuestion)
-            clearAllFields();
-            alert('Created new question')
-        } else {
-            updateQuestionById(id, finalQuestion);
-            updateAnswerByAnswerId(answerId, { choice: correctAnswer, question_id: id });
-            alert('Saved question')
+        if (!answerId) {
+            await createAnswer({ question_id: id, choice: correctAnswer })
+        }
+
+        try {
+            if (isNewQuestion) {
+                const question = await createQuestion(finalQuestion)
+                await createAnswer({ question_id: question.id, choice: correctAnswer })
+                clearAllFields();
+                alert('Created new question and answer')
+            } else {
+                updateQuestionById(id, finalQuestion);
+                if (answerId) {
+                    updateAnswerByAnswerId(answerId, { choice: correctAnswer, question_id: id });
+                }
+                else {
+                    await createAnswer({ question_id: id, choice: correctAnswer })
+                }
+                alert('Saved question and answer')
+            }
+        }
+        catch {
+            console.error('Failed to save question/ answer')
         }
     }
 
     const handleDelete = () => {
         deleteQuestionById(id);
         alert('Deleted Question')
-        clearAllFields
+        clearAllFields();
     }
 
     return (
