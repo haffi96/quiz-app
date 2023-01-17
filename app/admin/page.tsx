@@ -4,7 +4,7 @@ import { getQuestions } from "../../helpers/pocketbaseHelper"
 import "./style.css";
 
 export default async function AdminPage() {
-    const questions = await getQuestions(); // doesn't update without refreshing page :/
+    const questions = await getQuestions();
 
     const questionRows = questions.map((question) => (
         <tr className="border" key={question.id}>

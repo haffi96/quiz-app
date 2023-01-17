@@ -6,9 +6,7 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { getAnswerByQuestionId, getQuestionById } from "../../../helpers/pocketbaseHelper";
 import type { QuestionsResponse } from "../../../pocketbase-types";
-
-const CHECKED_STYLE = "dark:text-black flex rounded-full pl-3 p-5 bg-blue-400";
-const UNCHECKED_STYLE = "dark:text-black flex rounded-full pl-3 p-5 bg-blue-200";
+import { RadioGroupOptionWithMotion } from "../../../components/RadioGroupOptionWithMotion";
 
 interface QuestionPageParams {
   params: {
@@ -16,9 +14,11 @@ interface QuestionPageParams {
   }
 }
 
+export type CheckedAnswer = 'a1' | 'a2' | 'a3' | 'a4' | '';
+
 export default function QuestionPage({ params }: QuestionPageParams) {
   const [questionData, setQuestion] = useState<QuestionsResponse>();
-  const [checkedAnswer, setCheckedAnswer] = useState<string>("");
+  const [checkedAnswer, setCheckedAnswer] = useState<CheckedAnswer>("");
   const [correct, setCorrect] = useState<boolean | undefined>(undefined);
 
   useEffect(() => {
@@ -29,7 +29,7 @@ export default function QuestionPage({ params }: QuestionPageParams) {
     getAndSetQuestion();
   }, [params.id]);
 
-  const handleCheck = (value: SetStateAction<string>) => {
+  const handleCheck = (value: SetStateAction<CheckedAnswer>) => {
     correct != undefined ? null : setCheckedAnswer(value)
   }
 
@@ -97,7 +97,7 @@ export default function QuestionPage({ params }: QuestionPageParams) {
     }
   }
 
-  if (!questionData) {
+  if (!questionData) { // TODO: replace this with loading screen
     return <>Error: Missing question data</>
   }
 
@@ -107,35 +107,12 @@ export default function QuestionPage({ params }: QuestionPageParams) {
         <p className="font-bold">{questionData?.title}</p>
         <p className="py-5">{questionData?.body}</p>
         <MsgComponent />
-        <RadioGroup value={checkedAnswer} onChange={(value: SetStateAction<string>) => handleCheck(value)} className="pt-3 flex flex-col w-2/3 space-y-3">
+        <RadioGroup value={checkedAnswer} onChange={(value: SetStateAction<CheckedAnswer>) => handleCheck(value)} className="pt-3 flex flex-col w-2/3 space-y-3">
           <RadioGroup.Label>Pick an answer:</RadioGroup.Label>
-          <motion.div whileHover={{ scale: 1.05 }} animate={{ x: checkedAnswer === "a1" ? 5 : 0 }} transition={{ ease: "easeInOut", duration: 0.3 }}>
-            <RadioGroup.Option value="a1">
-              {({ checked }) => (
-                <span className={checked ? CHECKED_STYLE : UNCHECKED_STYLE}>
-                  {questionData.a1}
-                </span>
-              )}
-            </RadioGroup.Option>
-          </motion.div>
-          <motion.div whileHover={{ scale: 1.05 }} animate={{ x: checkedAnswer === "a2" ? 5 : 0 }} transition={{ ease: "easeInOut", duration: 0.3 }}>
-            <RadioGroup.Option value="a2">
-              {({ checked }) => (
-                <span className={checked ? CHECKED_STYLE : UNCHECKED_STYLE}>
-                  {questionData.a2}
-                </span>
-              )}
-            </RadioGroup.Option>
-          </motion.div>
-          <motion.div whileHover={{ scale: 1.05 }} animate={{ x: checkedAnswer === "a3" ? 5 : 0 }} transition={{ ease: "easeInOut", duration: 0.3 }}>
-            <RadioGroup.Option value="a3">
-              {({ checked }) => (
-                <span className={checked ? CHECKED_STYLE : UNCHECKED_STYLE}>
-                  {questionData.a3}
-                </span>
-              )}
-            </RadioGroup.Option>
-          </motion.div>
+          <RadioGroupOptionWithMotion checkedAnswer={checkedAnswer} answerText={questionData.a1} thisAnswerChoice="a1" />
+          <RadioGroupOptionWithMotion checkedAnswer={checkedAnswer} answerText={questionData.a2} thisAnswerChoice="a2" />
+          <RadioGroupOptionWithMotion checkedAnswer={checkedAnswer} answerText={questionData.a3} thisAnswerChoice="a3" />
+          <RadioGroupOptionWithMotion checkedAnswer={checkedAnswer} answerText={questionData.a4} thisAnswerChoice="a4" />
         </RadioGroup>
         <div className="p-10">
           <NavButton text="Prev" routeToPath="/questions/prev" />
@@ -148,3 +125,4 @@ export default function QuestionPage({ params }: QuestionPageParams) {
     </div >
   );
 }
+
