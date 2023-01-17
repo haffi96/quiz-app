@@ -13,6 +13,7 @@ export default async function AdminPage() {
             <td>{question.a1}</td>
             <td>{question.a2}</td>
             <td>{question.a3}</td>
+            <td>{question.a4}</td>
             <td><Link href={`admin/edit/${question.id}`}>Edit</Link></td>
             <td className="text-red-600">Delete (TODO)</td>
         </tr>
@@ -28,6 +29,7 @@ export default async function AdminPage() {
                         <th>Option 1</th>
                         <th>Option 2</th>
                         <th>Option 3</th>
+                        <th>Option 4</th>
                         <th>Edit</th>
                         <th>Delete</th>
                     </tr>
