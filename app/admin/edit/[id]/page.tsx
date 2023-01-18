@@ -1,13 +1,11 @@
 "use client"
 
-import { updateQuestionById, getQuestionById, createQuestion, deleteQuestionById, getQuestions, getAnswerByQuestionId, updateAnswerByAnswerId, createAnswer, deleteAnswerByQuestionId } from "../../../../helpers/pocketbaseHelper"
+import { updateQuestionById, getQuestionById, createQuestion, deleteQuestionById, getAnswerByQuestionId, updateAnswerByAnswerId, createAnswer, deleteAnswerByQuestionId } from "../../../../helpers/pocketbaseHelper"
 import type { FormEvent } from "react";
 import { useEffect, useState } from "react"
 import { NEW_QUESTION_ID } from "../../../../constants";
 import Link from "next/link";
-import type { QuestionsResponse } from "../../../../pocketbase-types";
 import { AnswersCorrectAnswerChoiceOptions } from "../../../../pocketbase-types";
-import { QuestionSidebarListItem } from "../../../../components/questionSidebar/QuestionSidebarListItem";
 
 // TODO: add validation to every field
 
@@ -15,7 +13,6 @@ interface EditIdParams {
     params: { id: string }
 }
 export default function Page({ params }: EditIdParams) {
-    const [allQuestions, setAllQuestions] = useState<QuestionsResponse[]>([])
     const [title, setTitle] = useState<string>('')
     const [body, setBody] = useState<string>('')
     const [a1, setA1] = useState<string>('')
@@ -29,13 +26,6 @@ export default function Page({ params }: EditIdParams) {
     const isNewQuestion = id === NEW_QUESTION_ID
 
     useEffect(() => {
-        const getAndSetAllQuestions = async () => {
-            const result = await getQuestions();
-            setAllQuestions(result)
-        }
-
-        getAndSetAllQuestions();
-
         const getQuestionAndSetFields = async () => {
             const question = await getQuestionById(id)
             setTitle(question.title);
@@ -111,21 +101,6 @@ export default function Page({ params }: EditIdParams) {
 
     return (
         <>
-            <aside className="w-64 fixed" aria-label="Sidebar">
-                <div className="px-3 py-4 overflow-y-auto rounded bg-gray-50 dark:bg-gray-800">
-                    <ul className="space-y-2">
-                        <Link href="/admin" className="flex items-center pl-2.5 mb-5">
-                            <span className="self-center text-xl font-semibold whitespace-nowrap dark:text-white">Questions</span>
-                        </Link>
-                        <QuestionSidebarListItem text="# Create New Question #" id={NEW_QUESTION_ID} key={NEW_QUESTION_ID} index={-1} />
-                        {
-                            allQuestions.map((question, index) => (
-                                <QuestionSidebarListItem text={question.title ?? 'Missing title'} id={question.id} key={question.id} index={index} />
-                            ))
-                        }
-                    </ul>
-                </div>
-            </aside>
             <div className="w-3/5 m-auto text-center">
                 <form className="flex flex-col mt-4">
                     <Link href="/admin">
@@ -158,8 +133,6 @@ export default function Page({ params }: EditIdParams) {
                         <option value="a3">Answer 3</option>
                         <option value="a4">Answer 4</option>
                     </select>
-
-                    {/* TODO: add correct answer here */}
 
                     <button onClick={handleSubmit} className="border p-2 rounded bg-blue-500 hover:bg-blue-600 mt-2">Save Changes</button>
                     <button onClick={handleDelete} className="border p-2 rounded bg-red-500 hover:bg-red-600 mt-2">Delete Question</button>
