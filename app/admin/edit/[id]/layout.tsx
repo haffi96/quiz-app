@@ -1,7 +1,8 @@
 import QuestionSidebar from "../../../../components/questionSidebar/QuestionSidebar";
+import { Routes } from "../../../../constants";
 import { getQuestions } from "../../../../helpers/pocketbaseHelper"
 
-export default async function SidebarLayout({
+export default async function AdminSidebarLayout({
     children
 }: {
     children: React.ReactNode
@@ -9,7 +10,7 @@ export default async function SidebarLayout({
     const allQuestions = await getQuestions();
     return (
         <section>
-            <QuestionSidebar allQuestions={allQuestions} />
+            <QuestionSidebar allQuestions={allQuestions} route={Routes.ADMIN_EDIT} />
             {children}
         </section>
     )
