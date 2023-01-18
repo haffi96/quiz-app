@@ -15,9 +15,15 @@ interface QuestionPageParams {
   }
 }
 
+// plaveholders so that while the data is being fetched it looks a little better
+// but debatable
+const QUESTION_TITLE_PLACEHOLDER = 'Question'
+const QUESTION_BODY_PLACEHOLDER = 'Question Description'
+
 
 export default function QuestionPage({ params }: QuestionPageParams) {
   const [questionData, setQuestion] = useState<QuestionsResponse>();
+  const [isLoaded, setIsLoaded] = useState<boolean>();
   const [checkedAnswer, setCheckedAnswer] = useState<AnswersCorrectAnswerChoiceOptions | undefined>();
   const [correct, setCorrect] = useState<boolean | undefined>(undefined);
 
@@ -25,6 +31,7 @@ export default function QuestionPage({ params }: QuestionPageParams) {
     const getAndSetQuestion = async () => {
       const question = await getQuestionById(params.id)
       setQuestion(question);
+      setIsLoaded(true);
     };
     getAndSetQuestion();
   }, [params.id]);
@@ -97,26 +104,26 @@ export default function QuestionPage({ params }: QuestionPageParams) {
     }
   }
 
-  if (!questionData) { // TODO: replace this with loading screen
+  if (isLoaded && !questionData) {
     return <>Error: Missing question data</>
   }
 
   return (
     <div>
       <div className="flex flex-col items-center">
-        <p className="font-bold">{questionData?.title}</p>
-        <p className="py-5">{questionData?.body}</p>
+        <p className="font-bold">{questionData?.title ?? QUESTION_TITLE_PLACEHOLDER}</p>
+        <p className="py-5">{questionData?.body ?? QUESTION_BODY_PLACEHOLDER}</p>
         <MsgComponent />
         <RadioGroup value={checkedAnswer} onChange={(value: SetStateAction<AnswersCorrectAnswerChoiceOptions | undefined>) => handleCheck(value)} className="pt-3 flex flex-col w-2/3 space-y-3">
           <RadioGroup.Label>Pick an answer:</RadioGroup.Label>
-          <RadioGroupOptionWithMotion checkedAnswer={checkedAnswer} answerText={questionData.a1} thisAnswerChoice={AnswersCorrectAnswerChoiceOptions.a1} />
-          <RadioGroupOptionWithMotion checkedAnswer={checkedAnswer} answerText={questionData.a2} thisAnswerChoice={AnswersCorrectAnswerChoiceOptions.a2} />
-          <RadioGroupOptionWithMotion checkedAnswer={checkedAnswer} answerText={questionData.a3} thisAnswerChoice={AnswersCorrectAnswerChoiceOptions.a3} />
-          <RadioGroupOptionWithMotion checkedAnswer={checkedAnswer} answerText={questionData.a4} thisAnswerChoice={AnswersCorrectAnswerChoiceOptions.a4} />
+          <RadioGroupOptionWithMotion checkedAnswer={checkedAnswer} answerText={'A) ' + (questionData?.a1 ?? '')} thisAnswerChoice={AnswersCorrectAnswerChoiceOptions.a1} />
+          <RadioGroupOptionWithMotion checkedAnswer={checkedAnswer} answerText={'B) ' + (questionData?.a2 ?? '')} thisAnswerChoice={AnswersCorrectAnswerChoiceOptions.a2} />
+          <RadioGroupOptionWithMotion checkedAnswer={checkedAnswer} answerText={'C) ' + (questionData?.a3 ?? '')} thisAnswerChoice={AnswersCorrectAnswerChoiceOptions.a3} />
+          <RadioGroupOptionWithMotion checkedAnswer={checkedAnswer} answerText={'D) ' + (questionData?.a4 ?? '')} thisAnswerChoice={AnswersCorrectAnswerChoiceOptions.a4} />
         </RadioGroup>
         <div className="p-10">
           <NavButton text="Prev" routeToPath="/questions/prev" />
-          <motion.button onClick={() => { onSubmit(questionData.id) }} whileHover={{ scale: 1.05, transition: { duration: 0.3 } }} className="bg-transparent hover:bg-blue-500 text-blue-700  font-semibold hover:text-white dark:hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
+          <motion.button onClick={() => { questionData ? onSubmit(questionData.id) : {} }} whileHover={{ scale: 1.05, transition: { duration: 0.3 } }} className="bg-transparent hover:bg-blue-500 text-blue-700  font-semibold hover:text-white dark:hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
             Submit
           </motion.button>
           <NavButtons />
