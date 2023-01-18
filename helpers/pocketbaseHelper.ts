@@ -13,6 +13,10 @@ export async function getQuestions() {
     return await pb.collection(Collections.Questions).getFullList<QuestionsResponse>();
 }
 
+export async function getAnswers() {
+    return await pb.collection(Collections.Answers).getFullList<AnswersResponse>();
+}
+
 export async function createQuestion(bodyParms: QuestionsRecord) {
     return await pb.collection(Collections.Questions).create(bodyParms);
 }

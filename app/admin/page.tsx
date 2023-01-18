@@ -1,23 +1,29 @@
 import Link from "next/link";
 import { NEW_QUESTION_ID } from "../../constants";
-import { getQuestions } from "../../helpers/pocketbaseHelper"
+import { getAnswers, getQuestions } from "../../helpers/pocketbaseHelper"
 import "./style.css";
 
 export default async function AdminPage() {
     const questions = await getQuestions();
+    const answers = await getAnswers()
 
-    const questionRows = questions.map((question) => (
-        <tr className="border" key={question.id}>
-            <td >{question.title}</td>
-            <td>{question.body}</td>
-            <td>{question.a1}</td>
-            <td>{question.a2}</td>
-            <td>{question.a3}</td>
-            <td>{question.a4}</td>
-            <td><Link href={`admin/edit/${question.id}`}>Edit</Link></td>
-            <td className="text-red-600">Delete (TODO)</td>
-        </tr>
-    ))
+    const questionRows = questions.map((question) => {
+        const correctAnswerChoice = answers.find((answer) => answer.question_id === question.id)?.correctAnswerChoice
+
+        return (
+            <tr className="border" key={question.id}>
+                <td >{question.title}</td>
+                <td>{question.body}</td>
+                <td>{question.a1}</td>
+                <td>{question.a2}</td>
+                <td>{question.a3}</td>
+                <td>{question.a4}</td>
+                <td>{correctAnswerChoice}</td>
+                <td><Link href={`admin/edit/${question.id}`}>Edit</Link></td>
+                <td className="text-red-600">Delete (TODO)</td>
+            </tr>
+        )
+    })
 
     return (
         <div className="text-center">
@@ -30,6 +36,7 @@ export default async function AdminPage() {
                         <th>Option 2</th>
                         <th>Option 3</th>
                         <th>Option 4</th>
+                        <th>Correct Answer Choice</th>
                         <th>Edit</th>
                         <th>Delete</th>
                     </tr>
