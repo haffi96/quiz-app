@@ -1,11 +1,12 @@
 "use client"
 
-import { updateQuestionById, getQuestionById, createQuestion, deleteQuestionById, getQuestions, getAnswerByQuestionId, updateAnswerByAnswerId, createAnswer } from "../../../../helpers/pocketbaseHelper"
+import { updateQuestionById, getQuestionById, createQuestion, deleteQuestionById, getQuestions, getAnswerByQuestionId, updateAnswerByAnswerId, createAnswer, deleteAnswerByQuestionId } from "../../../../helpers/pocketbaseHelper"
 import type { FormEvent } from "react";
 import { useEffect, useState } from "react"
 import { NEW_QUESTION_ID } from "../../../../constants";
 import Link from "next/link";
 import type { QuestionsResponse } from "../../../../pocketbase-types";
+import { AnswersCorrectAnswerChoiceOptions } from "../../../../pocketbase-types";
 import { QuestionSidebarListItem } from "../../../../components/questionSidebar/QuestionSidebarListItem";
 
 // TODO: add validation to every field
@@ -21,7 +22,7 @@ export default function Page({ params }: EditIdParams) {
     const [a2, setA2] = useState<string>('')
     const [a3, setA3] = useState<string>('')
     const [a4, setA4] = useState<string>('')
-    const [correctAnswer, setCorrectAnswer] = useState<string>('')
+    const [correctAnswer, setCorrectAnswer] = useState<AnswersCorrectAnswerChoiceOptions>(AnswersCorrectAnswerChoiceOptions.a1)
     const [answerId, setAnswerId] = useState<string>('')
 
     const { id } = params
@@ -49,9 +50,9 @@ export default function Page({ params }: EditIdParams) {
             try {
                 const answer = await getAnswerByQuestionId(id);
                 setAnswerId(answer.id);
-                setCorrectAnswer(answer.choice);
+                setCorrectAnswer(answer.correctAnswerChoice);
             } catch { // the question didn't alreay have an answer
-                const answer = await createAnswer({ question_id: id, choice: "a1" })
+                const answer = await createAnswer({ question_id: id, correctAnswerChoice: AnswersCorrectAnswerChoiceOptions.a1 })
                 setAnswerId(answer.id);
                 setCorrectAnswer(answer.choice);
             }
@@ -69,30 +70,29 @@ export default function Page({ params }: EditIdParams) {
         setA1('');
         setA2('');
         setA3('');
+        setA4('');
     }
 
     const handleSubmit = async (event: FormEvent) => {
         const finalQuestion = { title, body, a1, a2, a3, a4 }
         event.preventDefault();
 
-        if (!answerId) {
-            await createAnswer({ question_id: id, choice: correctAnswer })
-        }
-
         try {
             if (isNewQuestion) {
                 const question = await createQuestion(finalQuestion)
-                await createAnswer({ question_id: question.id, choice: correctAnswer })
+                await createAnswer({ question_id: question.id, correctAnswerChoice: correctAnswer })
                 clearAllFields();
                 alert('Created new question and answer')
             } else {
                 updateQuestionById(id, finalQuestion);
+
                 if (answerId) {
-                    updateAnswerByAnswerId(answerId, { choice: correctAnswer, question_id: id });
+                    updateAnswerByAnswerId(answerId, { correctAnswerChoice: correctAnswer, question_id: id });
                 }
                 else {
-                    await createAnswer({ question_id: id, choice: correctAnswer })
+                    await createAnswer({ question_id: id, correctAnswerChoice: correctAnswer })
                 }
+
                 alert('Saved question and answer')
             }
         }
@@ -103,7 +103,9 @@ export default function Page({ params }: EditIdParams) {
 
     const handleDelete = () => {
         deleteQuestionById(id);
+        deleteAnswerByQuestionId(id); // untested
         alert('Deleted Question')
+
         clearAllFields();
     }
 
@@ -150,7 +152,7 @@ export default function Page({ params }: EditIdParams) {
                     <input type="text" id="a4" name="a4" value={a4} className="p-2 mb-4 rounded" onChange={(e) => setA4(e.target.value)} />
 
                     <label htmlFor="answer" className="">Correct Answer</label>
-                    <select id="answer" name="answer" value={correctAnswer} onChange={(e) => setCorrectAnswer(e.target.value)} className="p-2 mb-4 rounded">
+                    <select id="answer" name="answer" value={correctAnswer} onChange={(e) => setCorrectAnswer(e.target.value as AnswersCorrectAnswerChoiceOptions)} className="p-2 mb-4 rounded">
                         <option value="a1">Answer 1</option>
                         <option value="a2">Answer 2</option>
                         <option value="a3">Answer 3</option>

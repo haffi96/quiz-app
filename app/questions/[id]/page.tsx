@@ -5,7 +5,7 @@ import type { SetStateAction } from "react";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { getAnswerByQuestionId, getQuestionById } from "../../../helpers/pocketbaseHelper";
-import type { QuestionsResponse } from "../../../pocketbase-types";
+import type { AnswersCorrectAnswerChoiceOptions, QuestionsResponse } from "../../../pocketbase-types";
 import { RadioGroupOptionWithMotion } from "../../../components/RadioGroupOptionWithMotion";
 
 interface QuestionPageParams {
@@ -14,11 +14,10 @@ interface QuestionPageParams {
   }
 }
 
-export type CheckedAnswer = 'a1' | 'a2' | 'a3' | 'a4' | '';
 
 export default function QuestionPage({ params }: QuestionPageParams) {
   const [questionData, setQuestion] = useState<QuestionsResponse>();
-  const [checkedAnswer, setCheckedAnswer] = useState<CheckedAnswer>("");
+  const [checkedAnswer, setCheckedAnswer] = useState<AnswersCorrectAnswerChoiceOptions | undefined>();
   const [correct, setCorrect] = useState<boolean | undefined>(undefined);
 
   useEffect(() => {
@@ -29,20 +28,20 @@ export default function QuestionPage({ params }: QuestionPageParams) {
     getAndSetQuestion();
   }, [params.id]);
 
-  const handleCheck = (value: SetStateAction<CheckedAnswer>) => {
+  const handleCheck = (value: SetStateAction<AnswersCorrectAnswerChoiceOptions | undefined>) => {
     correct != undefined ? null : setCheckedAnswer(value)
   }
 
 
   const onSubmit = async (questionID: string) => {
-    if (checkedAnswer === "") {
+    if (!checkedAnswer) {
       alert("select something")
     } else {
       if (correct != undefined) {
         null
       } else {
         const answer = await getAnswerByQuestionId(questionID)
-        setCorrect(checkedAnswer === answer.choice)
+        setCorrect(checkedAnswer === answer.correctAnswerChoice)
       }
     }
   }
@@ -107,7 +106,7 @@ export default function QuestionPage({ params }: QuestionPageParams) {
         <p className="font-bold">{questionData?.title}</p>
         <p className="py-5">{questionData?.body}</p>
         <MsgComponent />
-        <RadioGroup value={checkedAnswer} onChange={(value: SetStateAction<CheckedAnswer>) => handleCheck(value)} className="pt-3 flex flex-col w-2/3 space-y-3">
+        <RadioGroup value={checkedAnswer} onChange={(value: SetStateAction<AnswersCorrectAnswerChoiceOptions | undefined>) => handleCheck(value)} className="pt-3 flex flex-col w-2/3 space-y-3">
           <RadioGroup.Label>Pick an answer:</RadioGroup.Label>
           <RadioGroupOptionWithMotion checkedAnswer={checkedAnswer} answerText={questionData.a1} thisAnswerChoice="a1" />
           <RadioGroupOptionWithMotion checkedAnswer={checkedAnswer} answerText={questionData.a2} thisAnswerChoice="a2" />

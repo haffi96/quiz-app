@@ -34,6 +34,15 @@ export async function getAnswerByQuestionId(questionId: string) {
     }
 }
 
+export async function deleteAnswerById(answerId: string) {
+    await pb.collection(Collections.Answers).delete(answerId);
+}
+
+export async function deleteAnswerByQuestionId(questionId: string) {
+    const answer = await getAnswerByQuestionId(questionId);
+    await deleteAnswerById(answer.id)
+}
+
 export async function updateAnswerByAnswerId(answerId: string, bodyParms: AnswersRecord) {
     return await pb.collection(Collections.Answers).update(answerId, bodyParms);
 }

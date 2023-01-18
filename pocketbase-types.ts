@@ -31,9 +31,15 @@ export type AuthSystemFields = {
 
 // Record types for each collection
 
+export enum AnswersCorrectAnswerChoiceOptions {
+	"a1" = "a1",
+	"a2" = "a2",
+	"a3" = "a3",
+	"a4" = "a4",
+}
 export type AnswersRecord = {
-	choice: string
 	question_id: RecordIdString
+	correctAnswerChoice: AnswersCorrectAnswerChoiceOptions
 }
 
 export type QuestionsRecord = {
