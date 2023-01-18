@@ -14,7 +14,7 @@ export async function getQuestions() {
 }
 
 export async function getAnswers() {
-    return await pb.collection(Collections.Answers).getFullList<AnswersResponse>();
+    return await pb_client.collection(Collections.Answers).getFullList<AnswersResponse>();
 }
 
 export async function createQuestion(bodyParms: QuestionsRecord) {
