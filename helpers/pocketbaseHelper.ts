@@ -5,13 +5,7 @@ import { Collections } from "../pocketbase-types";
 export const pb_client = new PocketBase(process.env.PB_URL);
 pb_client.autoCancellation(false);
 
-pb_client.collection('users').authWithPassword('admin', 'password')
-console.log(pb_client.authStore.isValid);
-
-
 export async function getQuestionById(id: string) {
-    console.log(pb_client.authStore.isValid);
-
     return await pb_client.collection(Collections.Questions).getOne<QuestionsResponse>(id);
 }
 
