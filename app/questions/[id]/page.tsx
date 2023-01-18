@@ -5,7 +5,8 @@ import type { SetStateAction } from "react";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { getAnswerByQuestionId, getQuestionById } from "../../../helpers/pocketbaseHelper";
-import type { AnswersCorrectAnswerChoiceOptions, QuestionsResponse } from "../../../pocketbase-types";
+import type { QuestionsResponse } from "../../../pocketbase-types";
+import { AnswersCorrectAnswerChoiceOptions } from "../../../pocketbase-types";
 import { RadioGroupOptionWithMotion } from "../../../components/RadioGroupOptionWithMotion";
 
 interface QuestionPageParams {
@@ -108,10 +109,10 @@ export default function QuestionPage({ params }: QuestionPageParams) {
         <MsgComponent />
         <RadioGroup value={checkedAnswer} onChange={(value: SetStateAction<AnswersCorrectAnswerChoiceOptions | undefined>) => handleCheck(value)} className="pt-3 flex flex-col w-2/3 space-y-3">
           <RadioGroup.Label>Pick an answer:</RadioGroup.Label>
-          <RadioGroupOptionWithMotion checkedAnswer={checkedAnswer} answerText={questionData.a1} thisAnswerChoice="a1" />
-          <RadioGroupOptionWithMotion checkedAnswer={checkedAnswer} answerText={questionData.a2} thisAnswerChoice="a2" />
-          <RadioGroupOptionWithMotion checkedAnswer={checkedAnswer} answerText={questionData.a3} thisAnswerChoice="a3" />
-          <RadioGroupOptionWithMotion checkedAnswer={checkedAnswer} answerText={questionData.a4} thisAnswerChoice="a4" />
+          <RadioGroupOptionWithMotion checkedAnswer={checkedAnswer} answerText={questionData.a1} thisAnswerChoice={AnswersCorrectAnswerChoiceOptions.a1} />
+          <RadioGroupOptionWithMotion checkedAnswer={checkedAnswer} answerText={questionData.a2} thisAnswerChoice={AnswersCorrectAnswerChoiceOptions.a2} />
+          <RadioGroupOptionWithMotion checkedAnswer={checkedAnswer} answerText={questionData.a3} thisAnswerChoice={AnswersCorrectAnswerChoiceOptions.a3} />
+          <RadioGroupOptionWithMotion checkedAnswer={checkedAnswer} answerText={questionData.a4} thisAnswerChoice={AnswersCorrectAnswerChoiceOptions.a4} />
         </RadioGroup>
         <div className="p-10">
           <NavButton text="Prev" routeToPath="/questions/prev" />
