@@ -101,8 +101,8 @@ export default function Page({ params }: EditIdParams) {
 
     return (
         <>
-            <div className="w-3/5 m-auto text-center">
-                <form className="flex flex-col mt-4">
+            <div className="w-3/5 mx-20 my-10 text-center">
+                <form className="flex flex-col space-y-2">
                     <Link href="/admin">
                         <button className="border p-2 rounded bg-violet-500 hover:bg-violet-600 mt-2 w-full">
                             Back To All Questions

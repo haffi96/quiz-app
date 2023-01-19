@@ -1,6 +1,6 @@
-import QuestionSidebar from "../../../../components/questionSidebar/QuestionSidebar";
-import { Routes } from "../../../../constants";
-import { getQuestions } from "../../../../helpers/pocketbaseHelper"
+import QuestionSidebar from "../../components/questionSidebar/QuestionSidebar";
+import { Routes } from "../../constants";
+import { getQuestions } from "../../helpers/pocketbaseHelper"
 
 export default async function AdminSidebarLayout({
     children
@@ -9,7 +9,7 @@ export default async function AdminSidebarLayout({
 }) {
     const allQuestions = await getQuestions();
     return (
-        <section>
+        <section className="flex">
             <QuestionSidebar allQuestions={allQuestions} route={Routes.ADMIN_EDIT} />
             {children}
         </section>

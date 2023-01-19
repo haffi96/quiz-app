@@ -109,7 +109,7 @@ export default function QuestionPage({ params }: QuestionPageParams) {
   }
 
   return (
-    <div>
+    <div className="w-2/3 my-10">
       <div className="flex flex-col items-center">
         <p className="font-bold">{questionData?.title ?? QUESTION_TITLE_PLACEHOLDER}</p>
         <p className="py-5">{questionData?.body ?? QUESTION_BODY_PLACEHOLDER}</p>
@@ -129,7 +129,7 @@ export default function QuestionPage({ params }: QuestionPageParams) {
           <NavButtons />
         </div>
       </div >
-    </div >
+    </div>
   );
 }
 

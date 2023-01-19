@@ -9,7 +9,7 @@ export default async function SidebarLayout({
 }) {
     const allQuestions = await getQuestions();
     return (
-        <section>
+        <section className="flex">
             <QuestionSidebar allQuestions={allQuestions} route={Routes.QUESTIONS} />
             {children}
         </section>

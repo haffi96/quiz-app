@@ -13,7 +13,7 @@ export default function Question({ question }: QuestionProps) {
 
   return (
     <>
-      <div className="py-2 flex w-1/2 justify-center">
+      <div className="py-2 justify-center flex w-1/2">
         <Link href={`/questions/${id}`} className="flex w-full justify-center">
           <motion.button whileHover={{ scale: 1.05, transition: { duration: 0.3 } }} className="dark:text-black flex w-full p-5 bg-blue-200 hover:bg-blue-500 rounded-full">
             <p>{title}</p>
