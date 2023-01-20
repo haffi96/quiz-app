@@ -19,7 +19,7 @@ const handleLogin = async (email: string, password: string, router: AppRouterIns
 
 const handleSignup = async (email: string, password: string, router: AppRouterInstance) => {
     console.log('sign up');
-    const { data, error } = await supabaseBrowser.auth.signUp({ email, password, options: { emailRedirectTo: 'haffimazhar96@gmail.com' } })
+    const { data, error } = await supabaseBrowser.auth.signUp({ email, password })
 
     console.log(data);
 
