@@ -3,7 +3,6 @@
 import { updateQuestionById, getQuestionById, createQuestion, deleteQuestionById, getAnswerByQuestionId, updateAnswerByAnswerId, createAnswer, deleteAnswerByQuestionId } from "../../../../../helpers/supabase-helpers"
 import type { FormEvent } from "react";
 import { useEffect, useState } from "react"
-import { NEW_QUESTION_ID } from "../../../../../constants";
 import Link from "next/link";
 import { AnswersCorrectAnswerChoiceOptions } from "../../../../../supabase-types";
 
@@ -21,9 +20,9 @@ export default function Page({ params }: EditIdParams) {
     const [a4, setA4] = useState<string>('')
     const [correctAnswer, setCorrectAnswer] = useState<any>()
     const [answerId, setAnswerId] = useState<number>()
+    const [newQuestion, setNewQuestion] = useState<boolean>(false)
 
     const { id } = params
-    const isNewQuestion = id === NEW_QUESTION_ID
 
     useEffect(() => {
         const getQuestionAndSetFields = async () => {
@@ -35,6 +34,8 @@ export default function Page({ params }: EditIdParams) {
                 setA2(question.a2);
                 setA3(question.a3);
                 setA4(question.a4);
+            } else {
+                setNewQuestion(true)
             }
         };
 
@@ -52,11 +53,12 @@ export default function Page({ params }: EditIdParams) {
             }
         }
 
-        if (!isNewQuestion) {
-            getQuestionAndSetFields();
+        getQuestionAndSetFields();
+
+        if (!newQuestion) {
             getAndSetAnswers();
         }
-    }, [id, isNewQuestion]);
+    }, [id, newQuestion]);
 
     const clearAllFields = () => {
         setTitle('');
@@ -72,7 +74,7 @@ export default function Page({ params }: EditIdParams) {
         event.preventDefault();
 
         try {
-            if (isNewQuestion) {
+            if (newQuestion) {
                 const question = await createQuestion(finalQuestion)
                 question && await createAnswer({ question_id: question.id, correct_answer_choice: correctAnswer })
                 clearAllFields();
@@ -131,7 +133,7 @@ export default function Page({ params }: EditIdParams) {
                     <textarea id="a4" name="a4" value={a4} className="p-2 mb-4 rounded" onChange={(e) => setA4(e.target.value)} />
 
                     <label htmlFor="answer" className="">Correct Answer</label>
-                    <select id="answer" name="answer" value={correctAnswer} onChange={(e) => setCorrectAnswer(e.target.value as unknown as AnswersCorrectAnswerChoiceOptions)} className="p-2 mb-4 rounded">
+                    <select id="answer" name="answer" value={correctAnswer} onChange={(e) => setCorrectAnswer(e.target.value)} className="p-2 mb-4 rounded">
                         <option value="a1">Answer 1</option>
                         <option value="a2">Answer 2</option>
                         <option value="a3">Answer 3</option>
