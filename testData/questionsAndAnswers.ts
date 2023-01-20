@@ -1,6 +1,6 @@
-import type { QuestionsRecord } from "../pocketbase-types";
+import type { CreateQuestionRecord } from "../supabase-types";
 
-export const questionsAndAnswers: QuestionsRecord[] = [
+export const questionsAndAnswers: CreateQuestionRecord[] = [
     {
         title: 'In which Italian city can you find the Colosseum?',
         body: 'In which Italian city can you find the Colosseum?',

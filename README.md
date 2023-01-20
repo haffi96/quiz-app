@@ -3,7 +3,7 @@ Live Site: https://quiz-app-mocha-eight.vercel.app/
 
 ## Run dev server
 
-First create .env.local file and add PB_API='pocketbase-connection-url'
+First create .env.local file and add supabase env vars (see below)
 
 ```bash
 npm run dev
@@ -13,48 +13,48 @@ yarn dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 ## Env Vars
-Create a .env.local file at root of project and add (replace values)
+Create a .env.local file at root of project and add value
 
 ```
-PB_API=pocketbase-connection-url/api
-PB_URL=pocketbase-connection-url
-PB_EMAIL=admin@email.com
-PB_PASSWORD=password
+NEXT_PUBLIC_SUPABASE_URL=
+NEXT_PUBLIC_SUPABASE_ANON_KEY=
+SUPABASE_ACCESS_TOKEN=
 ```
 
 ## Scripts
-### Get auto generated pocketbase types
-Add env vars as above 
+### Get auto generated supabase types
+Setup supabase CLI: https://supabase.com/docs/reference/cli/usage
+
+Make sure SUPABASE_ACCESS_TOKEN is in .env.local, might need to create a new personal one on supabase dashboard
+
+While on dashboard, click on your account (bottom left) -> account prefs -> access_token -> generate new
+
+TLDR:
+```
+brew install supabase/tap/supabase
+supabase login
+
+Cheeck if supabase project linked to cli:
+
+supabase projects list
+
+If not,
+
+supabase link --project-ref {get_supabase_password_from_dashboard}
+```
 
 From project root folder run
-`chmod +x scripts/updatePocketBaseTypes.sh`
+`chmod +x scripts/updateSupabaseTypes.sh`
 
 Run
-`npm run get-pocket-base-types`
+supabase gen types typescript --linked  > lib/database.types.ts
 
-## Pocketbase
-### Deployed on fly.io:
-Pocketbase admin: https://pocketbase-url/_/
+## Users
 
-Login with admin creds
+Now using auth, so create a new test user. But use an email which you can verify with
 
-Check status via flyctl, from ./deploy (where fly.toml is):
+current test user:
 
-https://github.com/pocketbase/pocketbase/discussions/537
+email: haffimazhar96@gmail.com
+for password, ask me
 
-```sh
-flyctl status
-```
-
-## Users 
-### bilal
-```
-username: bilalm354 
-password: password
-```
-
-### Admin
-```
-username: admin
-password: password
-```
