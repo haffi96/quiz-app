@@ -12,9 +12,9 @@
       - [ ] Link to 'View plan' or 'Subscription'
       - [ ] Link to view payment methods (need stripe integration)
     - [ ] Payments (Stripe or something else)
-    - [ ] Emails on signup and other notis (Pocketbase has something for this)
+    - [ ] Emails on signup and other notis (Supabase has something for this)
   - Testing:
     - [ ] add a set of multiple choices questions test data
-    - [ ] write a script tp populate test data to pocketBase on load potensh
+    - [ ] write a script tp populate test data to supabase on load potensh (probs in supabase/seed.sql)
     - [ ] add unit testing with jest
     - [ ] add integration and e2e testing with cypress

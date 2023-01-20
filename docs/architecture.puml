@@ -3,6 +3,8 @@
 ' install plantUML vscode extension 
 ' run Preview diagram in PlantUML command in vscode
 
+' FIXME: Update for supabase tables
+
 @startuml Quiz Container Diagram
 title Quiz Container Diagram
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml

@@ -1,6 +1,6 @@
 import { RadioGroup } from "@headlessui/react";
 import { motion } from "framer-motion";
-import type { AnswersCorrectAnswerChoiceOptions } from "../pocketbase-types";
+import type { AnswersCorrectAnswerChoiceOptions } from "../supabase-types";
 
 const CHECKED_STYLE = "dark:text-black flex rounded-full pl-3 p-5 bg-blue-400";
 const UNCHECKED_STYLE = "dark:text-black flex rounded-full pl-3 p-5 bg-blue-200";

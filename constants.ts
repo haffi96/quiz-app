@@ -1,7 +1,7 @@
-export const NEW_QUESTION_ID = 'newQuestion'
+export const NEW_QUESTION_ID = Infinity
 
 export enum Routes {
     ADMIN = "/admin",
-    ADMIN_EDIT = "/admin/edit",
-    QUESTIONS = "/questions"
+    ADMIN_EDIT = "/admin/questions/edit",
+    QUESTIONS = "/questions/all"
 }

@@ -1,10 +1,10 @@
 import Link from "next/link";
 import { NEW_QUESTION_ID, Routes } from "../../constants";
-import type { QuestionsResponse } from "../../pocketbase-types";
+import type { QuestionsRecord } from "../../supabase-types";
 import { QuestionSidebarListItem } from "./QuestionSidebarListItem";
 
 interface QuestionSidebarProps {
-    allQuestions: QuestionsResponse[],
+    allQuestions: QuestionsRecord[],
     route: string
 }
 
