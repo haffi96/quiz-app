@@ -1,0 +1,24 @@
+name: Publish updated db diagram
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - "lib/database.types.ts"
+
+jobs:
+  publish-erd:
+    name: publish-erd
+    runs-on: ubuntu-latest
+    env:
+      DBDOCS_TOKEN: ${{ secrets.DBDOCS_TOKEN }}
+    steps:
+      - uses: actions/checkout@v2
+      - run: sudo apt-get update && sudo apt-get install --yes --no-install-recommends postgresql-client
+      - run: PGPASSWORD=${{ secrets.PGPASSWORD }} pg_dump -h ${{ secrets.PGHOST }} -U ${{ secrets.PGUSER }} -p ${{ secrets.PGPORT }} -d ${{ secrets.PGDATABASE }} -s -t answers -t questions -t question_sets > schema.sql
+      - run: npm install -g @dbml/cli
+      - run: sql2dbml --postgres schema.sql -o schema.dbml
+      - run: sudo npm install -g dbdocs
+      - run: dbdocs
+      - run: dbdocs build ./schema.dbml --project quizapp-dbdocs
