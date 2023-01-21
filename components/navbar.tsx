@@ -1,6 +1,6 @@
 import Link from "next/link";
 import LogOut from "./LogOutButton";
-import Switcher from "./switcher";
+import Switcher from "./Switcher";
 
 
 export default function NavBar({ accessToken }: { accessToken?: string }) {

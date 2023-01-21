@@ -3,7 +3,7 @@
 import type { FormEvent } from "react";
 import { useState } from "react"
 import { createAnswer, createQuestion } from "../../../../../helpers/supabase-helpers";
-import { QuestionForm } from "../../../../../components/QuestionForm";
+import { QuestionForm } from "../../../../../components/forms/QuestionForm";
 import type { Database } from "../../../../../lib/database.types";
 
 export default function Page() {

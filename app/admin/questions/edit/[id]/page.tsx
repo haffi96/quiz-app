@@ -3,7 +3,7 @@
 import { updateQuestionById, getQuestionById, deleteQuestionById, getAnswerByQuestionId, updateAnswerByAnswerId, createAnswer, deleteAnswerByQuestionId } from "../../../../../helpers/supabase-helpers"
 import type { FormEvent } from "react";
 import { useEffect, useState } from "react"
-import { QuestionForm } from "../../../../../components/QuestionForm";
+import { QuestionForm } from "../../../../../components/forms/QuestionForm";
 import type { Database } from "../../../../../lib/database.types";
 import { useRouter } from "next/navigation";
 import { Routes } from "../../../../../Routes";

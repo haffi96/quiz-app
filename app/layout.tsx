@@ -1,10 +1,10 @@
 import 'server-only'
 
 import "./globals.css";
-import NavBar from "../components/navbar";
 import { Providers } from "./providers";
 import createClient from '../helpers/supabase-server';
-import SupabaseListener from "../components/supabase-listener";
+import SupabaseListener from '../components/Supabase-listener';
+import NavBar from '../components/Navbar';
 
 
 // disable caching this layout, so the session isn't cached

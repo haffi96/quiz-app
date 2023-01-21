@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import type { Dispatch, FormEvent, SetStateAction } from "react";
-import type { Database } from "../lib/database.types";
+import type { Database } from "../../lib/database.types";
 
 export interface NewQuestionFormProps {
     title: string,
