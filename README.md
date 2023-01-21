@@ -7,7 +7,7 @@ First create .env.local file and add supabase env vars (see below)
 
 ```bash
 npm run dev
-# or
+# orclear
 yarn dev
 ```
 
