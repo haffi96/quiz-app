@@ -1,6 +1,15 @@
 import type { Database } from "../lib/database.types";
 import supabaseBrowser from './supabase-browser';
 
+export async function getFirstQuestion() {
+    const { data: questions, error } = await supabaseBrowser.from('questions').select('*').limit(1);
+
+    if (error) {
+        console.log("Failed");
+    } else {
+        return questions[0]
+    }
+}
 export async function getQuestionById(id: number) {
     const { data: questions, error } = await supabaseBrowser.from('questions').select('*').eq('id', id).limit(1)
 
@@ -8,6 +17,16 @@ export async function getQuestionById(id: number) {
         console.log("Failed");
     } else {
         return questions[0]
+    }
+}
+
+export async function getQuestionSets() {
+    const { data: question_sets, error } = await supabaseBrowser.from('question_sets').select('*')
+
+    if (error) {
+        console.log("Failed");
+    } else {
+        return question_sets
     }
 }
 
