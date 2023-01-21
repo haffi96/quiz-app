@@ -1,5 +1,6 @@
 # Quiz App
 Live Site: https://quiz-app-mocha-eight.vercel.app/
+Dbdocs: https://dbdocs.io/haffimazhar96/quizapp-dbdocs?view=relationships
 
 ## Run dev server
 

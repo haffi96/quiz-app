@@ -3,9 +3,8 @@ import 'server-only'
 import "./globals.css";
 import { Providers } from "./providers";
 import createClient from '../helpers/supabase-server';
-import SupabaseListener from '../components/SupaBaseListener';
+import SupaBaseListener from '../components/SupaBaseListener';
 import NavBar from '../components/NavBar';
-
 
 // disable caching this layout, so the session isn't cached
 export const revalidate = 0
@@ -25,7 +24,7 @@ export default async function RootLayout({
     <html suppressHydrationWarning>
       <body>
         <Providers>
-          <SupabaseListener accessToken={session?.access_token} />
+          <SupaBaseListener accessToken={session?.access_token} />
           <NavBar accessToken={session?.access_token} />
           {children}
         </Providers>
