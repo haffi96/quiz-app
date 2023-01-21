@@ -53,16 +53,22 @@ export interface Database {
       }
       participants: {
         Row: {
-          created_at: string | null
+          created_at: string
           id: number
+          update_at: string
+          user: string
         }
         Insert: {
-          created_at?: string | null
+          created_at?: string
           id?: number
+          update_at: string
+          user: string
         }
         Update: {
-          created_at?: string | null
+          created_at?: string
           id?: number
+          update_at?: string
+          user?: string
         }
       }
       question_sets: {
