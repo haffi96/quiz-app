@@ -15,7 +15,6 @@ export default function NavBar({ accessToken }: { accessToken?: string }) {
     }
   }
 
-
   const LoggedInNavBar = () => {
     return (
       <>
@@ -29,7 +28,6 @@ export default function NavBar({ accessToken }: { accessToken?: string }) {
           </div>
         </nav>
       </>
-
     );
   }
 
@@ -44,7 +42,6 @@ export default function NavBar({ accessToken }: { accessToken?: string }) {
           </div>
         </nav>
       </>
-
     );
   }
 
@@ -52,6 +49,5 @@ export default function NavBar({ accessToken }: { accessToken?: string }) {
     <>
       <Nav />
     </>
-
   );
 }
