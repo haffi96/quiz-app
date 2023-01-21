@@ -34,6 +34,9 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-pb_data
-pb_migrations
 creds.txt
+
+# dbdocs
+dbml-error.log
+schema.sql
+schema.sqlschema.sql

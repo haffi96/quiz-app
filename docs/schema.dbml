@@ -1,0 +1,31 @@
+Table "answers" {
+  "id" bigint [not null]
+  "created_at" timestamp [not null, default: `now()`]
+  "correct_answer_choice" answer_choices [not null]
+  "question_id" bigint [not null]
+}
+
+Table "question_sets" {
+  "id" bigint [not null]
+  "created_at" timestamp [default: `now()`]
+  "updated_at" timestamp [default: `now()`]
+  "name" text [not null]
+}
+
+Table "questions" {
+  "id" bigint [not null]
+  "title" text [not null]
+  "body" text [not null]
+  "a1" text [not null]
+  "a2" text [not null]
+  "created_at" timestamp [not null, default: `now()`]
+  "updated_at" timestamp [not null, default: `now()`]
+  "a3" text [not null]
+  "a4" text [not null]
+  "question_set" bigint
+  Note: 'The main questions content'
+}
+
+Ref "answers_question_id_fkey":"questions"."id" < "answers"."question_id"
+
+Ref "questions_question_set_fkey":"question_sets"."id" < "questions"."question_set"
