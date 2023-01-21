@@ -1,4 +1,5 @@
-import type { AnswersCorrectAnswerChoiceOptions, CreateQuestionRecord, UpdateAnswersRecord } from "../supabase-types";
+import type { Database } from "../lib/database.types";
+import type { CreateQuestionRecord } from "../supabase-types";
 import supabaseBrowser from './supabase-browser';
 
 
@@ -82,7 +83,7 @@ export async function deleteAnswerByQuestionId(questionId: number) {
     }
 }
 
-export async function updateAnswerByAnswerId(answerId: number, bodyParms: UpdateAnswersRecord) {
+export async function updateAnswerByAnswerId(answerId: number, bodyParms: any) {
     const { error } = await supabaseBrowser.from('answers').update(bodyParms).eq('id', answerId)
 
     if (error) {
@@ -90,7 +91,7 @@ export async function updateAnswerByAnswerId(answerId: number, bodyParms: Update
     }
 }
 
-export async function createAnswer(bodyParms: { question_id: number; correct_answer_choice: AnswersCorrectAnswerChoiceOptions; }) {
+export async function createAnswer(bodyParms: { question_id: number; correct_answer_choice: Database["public"]["Enums"]["answer_choices"]; }) {
     const { data: answer, error } = await supabaseBrowser.from('answers').insert(bodyParms).select()
 
     if (error) {
