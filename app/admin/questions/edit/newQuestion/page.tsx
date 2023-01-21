@@ -1,10 +1,9 @@
 "use client"
 
-import { updateQuestionById, getQuestionById, deleteQuestionById, getAnswerByQuestionId, updateAnswerByAnswerId, createAnswer, deleteAnswerByQuestionId } from "../../../../../helpers/supabase-helpers"
 import type { FormEvent } from "react";
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import Link from "next/link";
-import { AnswersCorrectAnswerChoiceOptions } from "../../../../../supabase-types";
+import { createAnswer, createQuestion } from "../../../../../helpers/supabase-helpers";
 
 // TODO: add validation to every field
 
@@ -19,44 +18,6 @@ export default function Page({ params }: EditIdParams) {
     const [a3, setA3] = useState<string>('')
     const [a4, setA4] = useState<string>('')
     const [correctAnswer, setCorrectAnswer] = useState<any>()
-    const [answerId, setAnswerId] = useState<number>()
-
-    const { id } = params
-
-    useEffect(() => {
-        const getQuestionAndSetFields = async () => {
-            const question = await getQuestionById(id)
-            if (question) {
-                setTitle(question.title);
-                setBody(question.body);
-                setA1(question.a1);
-                setA2(question.a2);
-                setA3(question.a3);
-                setA4(question.a4);
-            } else {
-                alert('question not found')
-            }
-
-            // if new question then set new question
-        };
-
-        const getAndSetAnswers = async () => {
-            try {
-                const answer = await getAnswerByQuestionId(id);
-                setAnswerId(answer?.id);
-                setCorrectAnswer(answer?.correct_answer_choice);
-            } catch { // the question probably didn't already have an answer
-                const answer = await createAnswer({ question_id: id, correct_answer_choice: AnswersCorrectAnswerChoiceOptions.a1 })
-                if (answer) {
-                    setAnswerId(answer.id);
-                    setCorrectAnswer(answer.correct_answer_choice);
-                }
-            }
-        }
-
-        getQuestionAndSetFields();
-        getAndSetAnswers();
-    }, [id]);
 
     const clearAllFields = () => {
         setTitle('');
@@ -72,29 +33,14 @@ export default function Page({ params }: EditIdParams) {
         event.preventDefault();
 
         try {
-            updateQuestionById(id, finalQuestion);
-
-            if (answerId) {
-                updateAnswerByAnswerId(answerId, { correct_answer_choice: correctAnswer, question_id: id });
-            }
-            else {
-                await createAnswer({ question_id: id, correct_answer_choice: correctAnswer })
-            }
-
-            alert('Saved question and answer')
+            const question = await createQuestion(finalQuestion)
+            question && await createAnswer({ question_id: question.id, correct_answer_choice: correctAnswer })
+            clearAllFields();
+            alert('Created new question and answer')
         }
-
         catch {
             console.error('Failed to save question/ answer')
         }
-    }
-
-    const handleDelete = () => {
-        deleteQuestionById(id);
-        deleteAnswerByQuestionId(id); // untested
-        alert('Deleted Question')
-
-        clearAllFields();
     }
 
     return (
@@ -133,7 +79,6 @@ export default function Page({ params }: EditIdParams) {
                     </select>
 
                     <button onClick={handleSubmit} className="border p-2 rounded bg-blue-500 hover:bg-blue-600 mt-2">Save Changes</button>
-                    <button onClick={handleDelete} className="border p-2 rounded bg-red-500 hover:bg-red-600 mt-2">Delete Question</button>
                 </form>
             </div >
         </>
