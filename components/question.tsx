@@ -2,10 +2,10 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import type { QuestionsRecord } from "../supabase-types";
+import type { Database } from "../lib/database.types";
 
 interface QuestionProps {
-  question: QuestionsRecord
+  question: Database["public"]["Tables"]["questions"]["Row"]
 }
 
 export default function Question({ question }: QuestionProps) {

@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "prepare": "husky install",
-    "get-supabase-base-types": "./scripts/updateSupabaseTypes.sh"
+    "get-supabase-types": "./scripts/updateSupabaseTypes.sh"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.7",

@@ -1,10 +1,10 @@
 import Link from "next/link";
+import type { Database } from "../../lib/database.types";
 import { Routes } from "../../Routes";
-import type { QuestionsRecord } from "../../supabase-types";
 import { QuestionSidebarListItem } from "./QuestionSidebarListItem";
 
 interface QuestionSidebarProps {
-    allQuestions: QuestionsRecord[],
+    allQuestions: Database["public"]["Tables"]["questions"]["Row"][],
     route: string
 }
 

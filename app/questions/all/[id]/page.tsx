@@ -5,9 +5,8 @@ import type { SetStateAction } from "react";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { getAnswerByQuestionId, getQuestionById } from "../../../../helpers/supabase-helpers";
-import type { QuestionsRecord } from "../../../../supabase-types";
-import { AnswersCorrectAnswerChoiceOptions } from "../../../../supabase-types";
 import { RadioGroupOptionWithMotion } from "../../../../components/RadioGroupOptionWithMotion";
+import type { Database } from "../../../../lib/database.types";
 
 interface QuestionPageParams {
   params: {
@@ -22,9 +21,9 @@ const QUESTION_BODY_PLACEHOLDER = 'Question Description'
 
 
 export default function AllQuestionPage({ params }: QuestionPageParams) {
-  const [questionData, setQuestion] = useState<QuestionsRecord>();
+  const [questionData, setQuestion] = useState<Database["public"]["Tables"]["questions"]["Row"]>();
   const [isLoaded, setIsLoaded] = useState<boolean>();
-  const [checkedAnswer, setCheckedAnswer] = useState<AnswersCorrectAnswerChoiceOptions>(AnswersCorrectAnswerChoiceOptions.a1);
+  const [checkedAnswer, setCheckedAnswer] = useState<Database["public"]["Enums"]["answer_choices"]>('a1');
   const [correct, setCorrect] = useState<boolean | undefined>(undefined);
 
   useEffect(() => {
@@ -36,7 +35,7 @@ export default function AllQuestionPage({ params }: QuestionPageParams) {
     getAndSetQuestion();
   }, [params.id]);
 
-  const handleCheck = (value: SetStateAction<AnswersCorrectAnswerChoiceOptions>) => {
+  const handleCheck = (value: SetStateAction<Database["public"]["Enums"]["answer_choices"]>) => {
     correct != undefined ? null : setCheckedAnswer(value)
   }
 
@@ -114,12 +113,12 @@ export default function AllQuestionPage({ params }: QuestionPageParams) {
         <p className="font-bold">{questionData?.title ?? QUESTION_TITLE_PLACEHOLDER}</p>
         <p className="py-5">{questionData?.body ?? QUESTION_BODY_PLACEHOLDER}</p>
         <MsgComponent />
-        <RadioGroup value={checkedAnswer} onChange={(value: SetStateAction<AnswersCorrectAnswerChoiceOptions>) => handleCheck(value)} className="pt-3 flex flex-col w-2/3 space-y-3">
+        <RadioGroup value={checkedAnswer} onChange={(value: SetStateAction<Database["public"]["Enums"]["answer_choices"]>) => handleCheck(value)} className="pt-3 flex flex-col w-2/3 space-y-3">
           <RadioGroup.Label>Pick an answer:</RadioGroup.Label>
-          <RadioGroupOptionWithMotion checkedAnswer={checkedAnswer} answerText={'A) ' + (questionData?.a1 ?? '')} thisAnswerChoice={AnswersCorrectAnswerChoiceOptions.a1} />
-          <RadioGroupOptionWithMotion checkedAnswer={checkedAnswer} answerText={'B) ' + (questionData?.a2 ?? '')} thisAnswerChoice={AnswersCorrectAnswerChoiceOptions.a2} />
-          <RadioGroupOptionWithMotion checkedAnswer={checkedAnswer} answerText={'C) ' + (questionData?.a3 ?? '')} thisAnswerChoice={AnswersCorrectAnswerChoiceOptions.a3} />
-          <RadioGroupOptionWithMotion checkedAnswer={checkedAnswer} answerText={'D) ' + (questionData?.a4 ?? '')} thisAnswerChoice={AnswersCorrectAnswerChoiceOptions.a4} />
+          <RadioGroupOptionWithMotion checkedAnswer={checkedAnswer} answerText={'A) ' + (questionData?.a1 ?? '')} thisAnswerChoice={"a1"} />
+          <RadioGroupOptionWithMotion checkedAnswer={checkedAnswer} answerText={'B) ' + (questionData?.a2 ?? '')} thisAnswerChoice={"a2"} />
+          <RadioGroupOptionWithMotion checkedAnswer={checkedAnswer} answerText={'C) ' + (questionData?.a3 ?? '')} thisAnswerChoice={"a3"} />
+          <RadioGroupOptionWithMotion checkedAnswer={checkedAnswer} answerText={'D) ' + (questionData?.a4 ?? '')} thisAnswerChoice={"a4"} />
         </RadioGroup>
         <div className="p-10">
           <NavButton text="Prev" routeToPath="/questions/prev" />

@@ -1,7 +1,5 @@
 import type { Database } from "../lib/database.types";
-import type { CreateQuestionRecord } from "../supabase-types";
 import supabaseBrowser from './supabase-browser';
-
 
 export async function getQuestionById(id: number) {
     const { data: questions, error } = await supabaseBrowser.from('questions').select('*').eq('id', id).limit(1)
@@ -32,7 +30,7 @@ export async function getAnswers() {
     }
 }
 
-export async function createQuestion(bodyParms: CreateQuestionRecord): Promise<{id: number} | undefined> {
+export async function createQuestion(bodyParms: Database["public"]["Tables"]["questions"]["Insert"]): Promise<{id: number} | undefined> {
     const { data: id, error } = await supabaseBrowser.from('questions').insert(bodyParms).select()
 
     if (error) {
@@ -42,7 +40,7 @@ export async function createQuestion(bodyParms: CreateQuestionRecord): Promise<{
     }
 }
 
-export async function updateQuestionById(id: number, bodyParms: CreateQuestionRecord) {
+export async function updateQuestionById(id: number, bodyParms: Database["public"]["Tables"]["questions"]["Insert"]) {
     const { error } = await supabaseBrowser.from('questions').update(bodyParms).eq('id', id)
 
     if (error) {
