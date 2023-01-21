@@ -3,8 +3,8 @@ import 'server-only'
 import "./globals.css";
 import { Providers } from "./providers";
 import createClient from '../helpers/supabase-server';
-import SupabaseListener from '../components/Supabase-listener';
-import NavBar from '../components/Navbar';
+import SupabaseListener from '../components/SupaBaseListener';
+import NavBar from '../components/NavBar';
 
 
 // disable caching this layout, so the session isn't cached

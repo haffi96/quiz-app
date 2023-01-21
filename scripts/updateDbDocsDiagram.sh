@@ -1,8 +1,14 @@
 #!/bin/sh
 export $(grep -v '^#' .env.local | xargs)
 
-
-pg_dump -s -t answers -t questions -t question_sets > schema.sql
+#For this scripts, need the following env vars in .env.local
+# PGPASSWORD=
+# PGHOST=
+# PGPORT=
+# PGDATABASE=
+# PGUSER=
+# Add new tables with '-t <new table name>'
+pg_dump -s -t answers -t questions -t question_sets -t participants > schema.sql
 
 awk '!/POLICY/' schema.sql > new_schema.sql && mv new_schema.sql schema.sql
 awk '!/GRANT/' schema.sql > new_schema.sql && mv new_schema.sql schema.sql
