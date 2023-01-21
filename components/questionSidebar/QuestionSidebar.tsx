@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Routes } from "../../Routes";
 import type { QuestionsRecord } from "../../supabase-types";
 import { QuestionSidebarListItem } from "./QuestionSidebarListItem";
 
@@ -15,10 +16,10 @@ export default function QuestionSidebar({ allQuestions, route }: QuestionSidebar
                     <Link href={route} className="flex items-center pl-2.5 mb-5">
                         <span className="self-center text-xl font-semibold whitespace-nowrap dark:text-white">Questions</span>
                     </Link>
-                    {/* TODO show this: {route === Routes.ADMIN_EDIT && <QuestionSidebarListItem newItem text="# Create New Question #" id={NEW_QUESTION_ID} key={NEW_QUESTION_ID} index={-1} route={route} />} */}
+                    {route === Routes.ADMIN_EDIT && <QuestionSidebarListItem newItem text="# Create New Question #" key={Routes.NEW_QUESTION} index={-1} href={Routes.NEW_QUESTION} />}
                     {
                         allQuestions.map((question, index) => (
-                            <QuestionSidebarListItem text={question.title ?? 'Missing title'} id={question.id} key={question.id} index={index} route={route} />
+                            <QuestionSidebarListItem text={question.title ?? 'Missing title'} key={question.id} index={index} href={`${route}/${question.id}`} />
                         ))
                     }
                 </ul>
