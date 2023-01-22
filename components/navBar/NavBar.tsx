@@ -32,12 +32,12 @@ export default function NavBar({ accessToken }: { accessToken?: string }) {
   }
 
   return (
-    <nav className="bg-blue-900 text-white text-left w-full">
+    <nav className="bg-black text-white text-left w-full">
       <button type="button" onClick={onClick} className="inline-flex items-center p-2 ml-3 lg:hidden" aria-controls="navbar-default" aria-expanded="false">
         <svg className="w-32 h-32" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd"></path></svg>
       </button>
 
-      <div className={' justify-center lg:flex lg:justify-center' + maybeAppendHiddenStyle()}>
+      <div className={'justify-center lg:flex lg:justify-center' + maybeAppendHiddenStyle()}>
         <ul className="text-center pb-4 flex-col lg:flex lg:flex-row lg:p-5">
           <NavBarListItem><Link href='/'>Home</Link></NavBarListItem>
           {accessToken ? LoggedInContents : LoggedOutContents}
