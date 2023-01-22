@@ -7,5 +7,8 @@ interface Params {
 export default function Page({ params }: Params) {
     const { question_set_id } = params;
 
-    return <>{question_set_id}</>
+    return <>
+        <p>TODO: Show relevant questions </p>
+        <p>question_set_id: {question_set_id}</p>
+    </>
 }

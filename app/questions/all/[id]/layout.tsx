@@ -11,7 +11,7 @@ export default async function QuestionPageLayout({
 
     if (allQuestions) {
         return (
-            <section className="flex">
+            <section className="flex flex-col-reverse lg:h-screen lg:flex-row">
                 <QuestionSidebar allQuestions={allQuestions} route={Routes.QUESTIONS_ALL} />
                 {children}
             </section>

@@ -10,7 +10,7 @@ export default async function AdminPageLayout({
     const allQuestions = await getQuestions();
     if (allQuestions) {
         return (
-            <section className="flex">
+            <section className="flex flex-col-reverse lg:h-screen lg:flex-row">
                 <QuestionSidebar allQuestions={allQuestions} route={Routes.ADMIN_EDIT} />
                 {children}
             </section>
