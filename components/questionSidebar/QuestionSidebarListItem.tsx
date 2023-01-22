@@ -9,9 +9,9 @@ interface ListItemProps {
 
 export function QuestionSidebarListItem({ text, href, index, newItem }: ListItemProps) {
     return (
-        <li className={newItem ? "border-2 rounded-lg border-blue-600" : "border-2 rounded-lg border-gray-600 break-all"}>
+        <li className={newItem ? "rounded-lg border-2 border-blue-600" : "break-all rounded-lg border-2 border-gray-600"}>
             <div className="p-1">
-                <Link href={href} className="flex items-center p-2 font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+                <Link href={href} className="flex items-center rounded-lg p-2 font-normal text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
                     <span>{index + 1}</span><span className="ml-3">{text}</span>
                 </Link>
             </div>
