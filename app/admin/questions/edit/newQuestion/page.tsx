@@ -23,7 +23,7 @@ export default function Page() {
             const question = await createQuestion(finalQuestion)
             question && await createAnswer({ question_id: question.id, correct_answer_choice: correctAnswer })
             alert('Created new question and answer')
-            location.reload();
+            location.reload(); // TODO: replace with router.refresh() or something else made by Next if it works
         }
         catch {
             console.error('Failed to save question/ answer')
