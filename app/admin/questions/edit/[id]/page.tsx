@@ -47,17 +47,15 @@ export default function Page({ params }: EditIdParams) {
                     setAnswerId(answer.id);
                     setCorrectAnswer(answer.correct_answer_choice);
                 } else {
-                    alert('missing answer')
-                }
-            } catch { // maybe the question didn't already have an answer
-                console.warn('in catch')
+                    const createdAnswer = await createAnswer({ question_id: id, correct_answer_choice: 'a1' })
 
-                const answer = await createAnswer({ question_id: id, correct_answer_choice: 'a1' })
-
-                if (answer) {
-                    setAnswerId(answer.id);
-                    setCorrectAnswer(answer.correct_answer_choice);
+                    if (createdAnswer) {
+                        setAnswerId(createdAnswer.id);
+                        setCorrectAnswer(createdAnswer.correct_answer_choice);
+                    }
                 }
+            } catch {
+                throw new Error('failed to update or create answer')
             }
         }
 
