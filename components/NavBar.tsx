@@ -1,27 +1,10 @@
 "use client"
 
 import Link from "next/link";
-import type { ReactNode } from "react";
 import { useState } from "react";
 import LogOut from "./LogOutButton";
+import { NavBarListItem } from "./NavBarListItem";
 import Switcher from "./Switcher";
-
-interface NavBarListItemProps {
-  children: ReactNode
-}
-
-function NavBarListItem({ children }: NavBarListItemProps) {
-  return <li className="py-8 lg:p-0 lg:px-3">{children}</li>
-}
-
-interface NavBarListItemLinkProps {
-  href: string,
-  children: ReactNode
-}
-
-function NavBarListItemLink({ href, children }: NavBarListItemLinkProps) {
-  return <NavBarListItem><Link href={href}>{children}</Link></NavBarListItem>
-}
 
 export default function NavBar({ accessToken }: { accessToken?: string }) {
   const [isHidden, setIsHidden] = useState(true);
@@ -30,13 +13,14 @@ export default function NavBar({ accessToken }: { accessToken?: string }) {
 
   const LoggedInContents = (
     <>
-      <NavBarListItemLink href='/admin/questions'>Admin</NavBarListItemLink>
-      <NavBarListItemLink href='/questions/all'>Questions</NavBarListItemLink>
+
+      <NavBarListItem><Link href='/admin/questions'>Admin</Link></NavBarListItem>
+      <NavBarListItem><Link href='/questions/all'>Questions</Link></NavBarListItem>
       <NavBarListItem><LogOut /></NavBarListItem>
     </>
   )
 
-  const LoggedOutContents = <li><Link href="/login">Login</Link></li>
+  const LoggedOutContents = <NavBarListItem><li><Link href="/login">Login</Link></li></NavBarListItem>
 
   const onClick = () => {
     setIsHidden(!isHidden)
@@ -50,7 +34,7 @@ export default function NavBar({ accessToken }: { accessToken?: string }) {
 
       <div className={'justify-center lg:flex lg:justify-center' + maybeAppendHiddenStyle()}>
         <ul className="text-center pb-4 flex-col lg:flex lg:flex-row lg:p-5">
-          <NavBarListItemLink href='/'>Home</NavBarListItemLink>
+          <NavBarListItem><Link href='/'>Home</Link></NavBarListItem>
           {accessToken ? LoggedInContents : LoggedOutContents}
         </ul>
         <div className="absolute top-5 right-5">
