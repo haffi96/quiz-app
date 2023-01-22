@@ -19,7 +19,6 @@ interface QuestionPageParams {
 const QUESTION_TITLE_PLACEHOLDER = 'Question'
 const QUESTION_BODY_PLACEHOLDER = 'Question Description'
 
-
 export default function AllQuestionPage({ params }: QuestionPageParams) {
   const [questionData, setQuestion] = useState<Database["public"]["Tables"]["questions"]["Row"]>();
   const [isLoaded, setIsLoaded] = useState<boolean>();
@@ -108,7 +107,7 @@ export default function AllQuestionPage({ params }: QuestionPageParams) {
   }
 
   return (
-    <div className="w-2/3 my-10">
+    <div className="w-2/3 my-10 container mx-auto">
       <div className="flex flex-col items-center">
         <p className="font-bold">{questionData?.title ?? QUESTION_TITLE_PLACEHOLDER}</p>
         <p className="py-5">{questionData?.body ?? QUESTION_BODY_PLACEHOLDER}</p>

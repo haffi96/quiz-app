@@ -1,4 +1,4 @@
-import { LinkMotionButton } from "../../../components/LinkMotionButton";
+import { LinkMotionButton } from "../../../components/buttons/LinkMotionButton";
 import { getFirstQuestion, getQuestionSets } from "../../../helpers/supabase-helpers";
 import { Routes } from "../../../Routes";
 

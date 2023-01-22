@@ -10,7 +10,7 @@ interface QuestionSidebarProps {
 
 export default function QuestionSidebar({ allQuestions, route }: QuestionSidebarProps) {
     return (
-        <aside className="w-96" aria-label="Sidebar">
+        <aside className="w-96 hidden lg:block" aria-label="Sidebar">
             <div className="px-3 py-4 h-2/3 m-8 overflow-y-auto rounded-lg bg-gray-50 dark:bg-gray-800">
                 <ul className="space-y-2">
                     <Link href={route} className="flex items-center pl-2.5 mb-5">

@@ -5,9 +5,7 @@ import "./style.css";
 
 export default async function AdminQuestionsPage() {
     const questions = await getQuestions();
-
     const questionRows = questions?.map((question) => {
-
         return (
             <tr className="border" key={question.id}>
                 <td >{question.title}</td>
@@ -19,12 +17,12 @@ export default async function AdminQuestionsPage() {
     })
 
     return (
-        <div className="mx-20 my-10 items-center">
-            <button className="mb-5 bg-transparent hover:bg-blue-500 text-blue-700  font-semibold hover:text-white dark:hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
+        <div className="container mx-auto flex flex-col max-h-screen text-center items-center">
+            <button className="bg-slate-300 w-96 my-12 hover:bg-blue-500 text-blue-700 font-semibold hover:text-white dark:hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
                 <Link href={Routes.NEW_QUESTION}>Create New Question</Link>
             </button>
-            <table className="table-auto m-auto border border-collapse">
-                <thead className="border-4">
+            <table className="table-auto border border-collapse">
+                <thead className="border-2">
                     <tr>
                         <th>Title</th>
                         <th>Body</th>
