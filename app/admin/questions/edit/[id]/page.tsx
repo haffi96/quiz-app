@@ -43,8 +43,12 @@ export default function Page({ params }: EditIdParams) {
         const getAndSetAnswers = async () => {
             try {
                 const answer = await getAnswerByQuestionId(id);
-                setAnswerId(answer?.id);
-                setCorrectAnswer(answer?.correct_answer_choice);
+                if (answer) {
+                    setAnswerId(answer.id);
+                    setCorrectAnswer(answer.correct_answer_choice);
+                } else {
+                    alert('missing answer')
+                }
             } catch { // maybe the question didn't already have an answer
                 console.warn('in catch')
 

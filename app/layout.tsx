@@ -22,7 +22,7 @@ export default async function RootLayout({
 
   return (
     <html suppressHydrationWarning>
-      <body className='text-5xl lg:text-base dark:bg-slate-900'>
+      <body className='text-5xl dark:bg-slate-900 lg:text-base'>
         <Providers>
           <SupaBaseListener accessToken={session?.access_token} />
           <NavBar accessToken={session?.access_token} />

@@ -17,11 +17,11 @@ export default async function AdminQuestionsPage() {
     })
 
     return (
-        <div className="container mx-auto flex flex-col max-h-screen text-center items-center">
-            <button className="bg-slate-300 w-96 my-12 hover:bg-blue-500 text-blue-700 font-semibold hover:text-white dark:hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
+        <div className="container mx-auto flex max-h-screen flex-col items-center text-center">
+            <button className="my-12 w-96 rounded border border-blue-500 bg-slate-300 py-2 px-4 font-semibold text-blue-700 hover:border-transparent hover:bg-blue-500 hover:text-white dark:hover:text-white">
                 <Link href={Routes.NEW_QUESTION}>Create New Question</Link>
             </button>
-            <table className="table-auto border border-collapse">
+            <table className="table-auto border-collapse border">
                 <thead className="border-2">
                     <tr>
                         <th>Title</th>

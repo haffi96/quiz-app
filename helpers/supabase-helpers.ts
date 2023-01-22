@@ -76,7 +76,7 @@ export async function deleteQuestionById(id: number) {
     }
 }
 
-export async function getAnswerByQuestionId(questionId: number): Promise<any> {
+export async function getAnswerByQuestionId(questionId: number){
     const { data: answer, error } = await supabaseBrowser.from('answers').select().eq('question_id', questionId)
     if (error) {
         console.log(`No answer for question id ${questionId}`)
@@ -100,7 +100,7 @@ export async function deleteAnswerByQuestionId(questionId: number) {
     }
 }
 
-export async function updateAnswerByAnswerId(answerId: number, bodyParms: any) {
+export async function updateAnswerByAnswerId(answerId: number, bodyParms: Database["public"]["Tables"]["answers"]["Update"]) {
     const { error } = await supabaseBrowser.from('answers').update(bodyParms).eq('id', answerId)
 
     if (error) {
