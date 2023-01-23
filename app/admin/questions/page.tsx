@@ -6,12 +6,13 @@ import "./style.css";
 export default async function AdminQuestionsPage() {
     const questions = await getQuestions();
     const questionRows = questions?.map((question) => {
+        const { id, title, body } = question
+
         return (
-            <tr className="border" key={question.id}>
-                <td >{question.title}</td>
-                <td>{question.body}</td>
-                <td><Link href={`admin/questions/edit/${question.id}`}>Edit</Link></td>
-                <td className="text-red-600">Delete (TODO)</td>
+            <tr className="border" key={id}>
+                <td >{title}</td>
+                <td>{body}</td>
+                <td><Link href={`admin/questions/edit/${id}`}>Edit</Link></td>
             </tr>
         )
     })
@@ -27,7 +28,6 @@ export default async function AdminQuestionsPage() {
                         <th>Title</th>
                         <th>Body</th>
                         <th>Edit</th>
-                        <th>Delete</th>
                     </tr>
                 </thead>
                 <tbody>
