@@ -118,9 +118,8 @@ export default function AllQuestionPage({ params }: QuestionPageParams) {
       return null
     }
 
-    if (correct) {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      return <NavButton text="Next" routeToPath={nextQuestionId?.toString()} />
+    if (correct && nextQuestionId) {
+      return <NavButton text="Next" routeToPath={nextQuestionId.toString()} />
     } else {
       return null
     }
