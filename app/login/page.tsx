@@ -4,8 +4,6 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import supabaseBrowser from "../../helpers/supabase-browser";
 
-
-
 export default function Login() {
     const router = useRouter();
     const [email, setEmail] = useState('');
@@ -63,38 +61,40 @@ export default function Login() {
 
     return (
         <>
-            <AuthMessage />
-            <div className="flex flex-col items-center space-y-2 pt-3">
-                <button onClick={() => handleLoginWithGoogle()} className="w-1/2 bg-blue-300 py-2 text-black hover:bg-blue-500">Sign in with google</button>
-                <div className="flex flex-row text-gray-400">
-                    <p>______</p>
-                    <p className="px-2 text-black dark:text-white">or</p>
-                    <p>______</p>
+            <div className="block">
+                <AuthMessage />
+                <div className="flex flex-col items-center space-y-2 pt-3">
+                    <button onClick={() => handleLoginWithGoogle()} className="w-1/2 bg-blue-300 py-2 text-black hover:bg-blue-500">Sign in with google</button>
+                    <div className="flex flex-row text-gray-400">
+                        <p>______</p>
+                        <p className="px-2 text-black dark:text-white">or</p>
+                        <p>______</p>
+                    </div>
+                    <p>Email Address</p>
+                    <input
+                        type="text"
+                        placeholder="email"
+                        className="w-1/4 rounded-lg p-1"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        required
+                    />
+                    <p>Password</p>
+                    <input
+                        type="password"
+                        placeholder="password"
+                        className="w-1/4 rounded-lg p-1"
+                        onChange={(e) => setPassword(e.target.value)}
+                        value={password}
+                        required
+                    />
+                    <div className='flex w-2/3 flex-row justify-center space-x-10 py-5'>
+                        <button className="text-blue-300">Forgot your password?</button>
+                        {/* <button onClick={() => handleSignup(email, password)} className="text-blue-300">Need an account?</button> */}
+                    </div>
+                    <button onClick={() => handleLogin(email, password)} className="w-1/2 bg-blue-300 py-2 text-black hover:bg-blue-500">Sign in</button>
+                    <button onClick={() => handleSignup(email, password)} className="w-1/2 bg-blue-300 py-2 text-black hover:bg-blue-500">Sign up</button>
                 </div>
-                <p>Email Address</p>
-                <input
-                    type="text"
-                    placeholder="email"
-                    className="w-1/4 rounded-lg p-1"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                />
-                <p>Password</p>
-                <input
-                    type="password"
-                    placeholder="password"
-                    className="w-1/4 rounded-lg p-1"
-                    onChange={(e) => setPassword(e.target.value)}
-                    value={password}
-                    required
-                />
-                <div className='flex w-2/3 flex-row justify-center space-x-10 py-5'>
-                    <button className="text-blue-300">Forgot your password?</button>
-                    {/* <button onClick={() => handleSignup(email, password)} className="text-blue-300">Need an account?</button> */}
-                </div>
-                <button onClick={() => handleLogin(email, password)} className="w-1/2 bg-blue-300 py-2 text-black hover:bg-blue-500">Sign in</button>
-                <button onClick={() => handleSignup(email, password)} className="w-1/2 bg-blue-300 py-2 text-black hover:bg-blue-500">Sign up</button>
             </div>
         </>
     );

@@ -22,8 +22,7 @@ export default async function RootLayout({
 
   return (
     <html suppressHydrationWarning>
-      {/* add flex and flex col? */}
-      <body className='h-screen text-5xl dark:bg-slate-900 lg:text-base'>
+      <body className='flex h-screen flex-col text-4xl dark:bg-slate-900 lg:text-base'>
         <Providers>
           <SupaBaseListener accessToken={session?.access_token} />
           <NavBar accessToken={session?.access_token} />

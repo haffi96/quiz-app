@@ -4,9 +4,11 @@ import { RadioGroup } from "@headlessui/react";
 import type { SetStateAction } from "react";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { getAnswerByQuestionId, getQuestionById } from "../../../../helpers/supabase-helpers";
+import { getAnswerByQuestionId, getNextQuestionId, getPreviousQuestionId, getQuestionById } from "../../../../helpers/supabase-helpers";
 import { RadioGroupOptionWithMotion } from "../../../../components/RadioGroupOptionWithMotion";
 import type { Database } from "../../../../lib/database.types";
+import { useRouter } from "next/navigation";
+import { Routes } from "../../../../Routes";
 
 interface QuestionPageParams {
   params: {
@@ -20,10 +22,30 @@ const QUESTION_TITLE_PLACEHOLDER = 'Question'
 const QUESTION_BODY_PLACEHOLDER = 'Question Description'
 
 export default function AllQuestionPage({ params }: QuestionPageParams) {
+  const router = useRouter();
   const [questionData, setQuestion] = useState<Database["public"]["Tables"]["questions"]["Row"]>();
+  const [nextQuestionId, setNextQuestionId] = useState<number>();
+  const [previousQuestionId, setPreviousQuestionId] = useState<number>();
   const [isLoaded, setIsLoaded] = useState<boolean>();
   const [checkedAnswer, setCheckedAnswer] = useState<Database["public"]["Enums"]["answer_choices"]>('a1');
   const [correct, setCorrect] = useState<boolean | undefined>(undefined);
+
+  useEffect(() => {
+    const getAndSetNextQuestionId = async () => {
+      if (questionData) {
+        setNextQuestionId(await getNextQuestionId(questionData.id));
+      }
+    }
+
+    const getAndSetPreviousQuestionId = async () => {
+      if (questionData) {
+        setPreviousQuestionId(await getPreviousQuestionId(questionData.id));
+      }
+    }
+
+    getAndSetNextQuestionId();
+    getAndSetPreviousQuestionId();
+  }, [questionData])
 
   useEffect(() => {
     const getAndSetQuestion = async () => {
@@ -37,7 +59,6 @@ export default function AllQuestionPage({ params }: QuestionPageParams) {
   const handleCheck = (value: SetStateAction<Database["public"]["Enums"]["answer_choices"]>) => {
     correct != undefined ? null : setCheckedAnswer(value)
   }
-
 
   const onSubmit = async (questionID: number) => {
     if (!checkedAnswer) {
@@ -82,9 +103,11 @@ export default function AllQuestionPage({ params }: QuestionPageParams) {
     }
   }
 
-  const NavButton = (props: { text: string, routeToPath: string }) => {
+  const NavButton = (props: { text: string, routeToPath?: string }) => {
     return <motion.button onClick={() => {
-      console.log(props.routeToPath);
+      if (props.routeToPath) {
+        router.push(`${Routes.QUESTIONS_ALL}/${props.routeToPath}`)
+      }
     }} whileHover={{ scale: 1.05, transition: { duration: 0.3 } }} className="rounded border border-blue-500 bg-transparent py-2 px-4 font-semibold text-blue-700 hover:border-transparent hover:bg-blue-500 hover:text-white dark:hover:text-white">
       {props.text}
     </motion.button>
@@ -96,7 +119,8 @@ export default function AllQuestionPage({ params }: QuestionPageParams) {
     }
 
     if (correct) {
-      return <NavButton text="Next" routeToPath="/questions/next" />
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      return <NavButton text="Next" routeToPath={nextQuestionId?.toString()} />
     } else {
       return null
     }
@@ -107,7 +131,7 @@ export default function AllQuestionPage({ params }: QuestionPageParams) {
   }
 
   return (
-    <div className="container my-10 mx-auto w-2/3">
+    <div className="container m-auto">
       <div className="flex flex-col items-center">
         <p className="font-bold">{questionData?.title ?? QUESTION_TITLE_PLACEHOLDER}</p>
         <p className="py-5">{questionData?.body ?? QUESTION_BODY_PLACEHOLDER}</p>
@@ -120,7 +144,7 @@ export default function AllQuestionPage({ params }: QuestionPageParams) {
           <RadioGroupOptionWithMotion checkedAnswer={checkedAnswer} answerText={'D) ' + (questionData?.a4 ?? '')} thisAnswerChoice={"a4"} />
         </RadioGroup>
         <div className="p-10">
-          <NavButton text="Prev" routeToPath="/questions/prev" />
+          <NavButton text="Prev" routeToPath={previousQuestionId?.toString()} />
           <motion.button onClick={() => { questionData ? onSubmit(questionData.id) : {} }} whileHover={{ scale: 1.05, transition: { duration: 0.3 } }} className="rounded border border-blue-500  bg-transparent py-2 px-4 font-semibold text-blue-700 hover:border-transparent hover:bg-blue-500 hover:text-white dark:hover:text-white">
             Submit
           </motion.button>

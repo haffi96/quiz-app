@@ -24,23 +24,44 @@ export async function getQuestionSets() {
     const { data: question_sets, error } = await supabaseBrowser.from('question_sets').select('*')
 
     if (error) {
-        console.log("Failed");
+        console.log(error);
     } else {
         return question_sets
     }
 }
 
-export async function getQuestions() {
+export async function getAllQuestions() {
     const { data: questions, error } = await supabaseBrowser.from('questions').select('*')
 
     if (error) {
-        console.log("Failed");
+        console.log(error);
     } else {
         return questions
     }
 }
 
-export async function getAnswers() {
+export async function getNextQuestionId(question_id: number) {
+    const { data, error } = await supabaseBrowser.from('questions').select('id').gt('id', question_id).limit(1);
+    
+
+    if (error) {
+        console.log({ error });
+    } else {
+        return data?.[0].id
+    }
+}
+
+export async function getPreviousQuestionId(question_id: number) {
+    const { data, error } = await supabaseBrowser.from('questions').select('id').lt('id', question_id).limit(1);
+    
+    if (error) {
+        console.log({ error });
+    } else {
+        return data?.[0].id
+    }
+}
+
+export async function getAllAnswers() {
     const { data: answers, error } = await supabaseBrowser.from('answers').select('*')
     if (error) {
         console.log("Failed");
