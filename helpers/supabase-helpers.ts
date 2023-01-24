@@ -47,17 +47,19 @@ export async function getNextQuestionId(question_id: number) {
     if (error) {
         console.log({ error });
     } else {
-        return data?.[0].id
+        return data?.[0]?.id
     }
 }
 
+// could be optimised for sure
 export async function getPreviousQuestionId(question_id: number) {
-    const { data, error } = await supabaseBrowser.from('questions').select('id').lt('id', question_id).limit(1);
+    const { data, error } = await supabaseBrowser.from('questions').select('id').lt('id', question_id);
     
     if (error) {
         console.log({ error });
-    } else {
-        return data?.[0].id
+    } else if (data) {
+        const ids = data.map((datum) => datum?.id)
+        return Math.max(...ids);
     }
 }
 
