@@ -32,7 +32,7 @@ export default function NavBar({ accessToken }: { accessToken?: string }) {
   }
 
   return (
-    <nav className="sticky top-0 w-full bg-black text-left text-white">
+    <nav className="sticky top-0 z-50 w-full bg-black text-left text-white">
       <button type="button" onClick={onClick} className="ml-3 inline-flex items-center p-2 lg:hidden" aria-controls="navbar-default" aria-expanded="false">
         <svg className="h-32 w-32" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd"></path></svg>
       </button>
