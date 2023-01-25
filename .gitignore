@@ -40,3 +40,7 @@ creds.txt
 dbml-error.log
 schema.sql
 schema.sqlschema.sql
+
+.venv
+tmp_tsvs
+__pycache__
