@@ -24,23 +24,46 @@ export async function getQuestionSets() {
     const { data: question_sets, error } = await supabaseBrowser.from('question_sets').select('*')
 
     if (error) {
-        console.log("Failed");
+        console.log(error);
     } else {
         return question_sets
     }
 }
 
-export async function getQuestions() {
+export async function getAllQuestions() {
     const { data: questions, error } = await supabaseBrowser.from('questions').select('*')
 
     if (error) {
-        console.log("Failed");
+        console.log(error);
     } else {
         return questions
     }
 }
 
-export async function getAnswers() {
+export async function getNextQuestionId(question_id: number) {
+    const { data, error } = await supabaseBrowser.from('questions').select('id').gt('id', question_id).limit(1);
+    
+
+    if (error) {
+        console.log({ error });
+    } else {
+        return data?.[0]?.id
+    }
+}
+
+// could be optimised for sure
+export async function getPreviousQuestionId(question_id: number) {
+    const { data, error } = await supabaseBrowser.from('questions').select('id').lt('id', question_id);
+    
+    if (error) {
+        console.log({ error });
+    } else if (data) {
+        const ids = data.map((datum) => datum?.id)
+        return Math.max(...ids);
+    }
+}
+
+export async function getAllAnswers() {
     const { data: answers, error } = await supabaseBrowser.from('answers').select('*')
     if (error) {
         console.log("Failed");
@@ -76,7 +99,7 @@ export async function deleteQuestionById(id: number) {
     }
 }
 
-export async function getAnswerByQuestionId(questionId: number): Promise<any> {
+export async function getAnswerByQuestionId(questionId: number){
     const { data: answer, error } = await supabaseBrowser.from('answers').select().eq('question_id', questionId)
     if (error) {
         console.log(`No answer for question id ${questionId}`)
@@ -100,7 +123,7 @@ export async function deleteAnswerByQuestionId(questionId: number) {
     }
 }
 
-export async function updateAnswerByAnswerId(answerId: number, bodyParms: any) {
+export async function updateAnswerByAnswerId(answerId: number, bodyParms: Database["public"]["Tables"]["answers"]["Update"]) {
     const { error } = await supabaseBrowser.from('answers').update(bodyParms).eq('id', answerId)
 
     if (error) {
