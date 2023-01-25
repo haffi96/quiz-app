@@ -5,19 +5,50 @@ export async function getFirstQuestion() {
     const { data: questions, error } = await supabaseBrowser.from('questions').select('*').limit(1);
 
     if (error) {
-        console.log("Failed");
+        console.error(error);
     } else {
         return questions[0]
     }
 }
+
+export async function getFirstQuestionInQuestionSet(questionSetId: number) {
+    const { data: questions, error } = await supabaseBrowser.from('questions').select('*').eq('question_set', questionSetId).limit(1);
+
+    if (error) {
+        console.log(error);
+    } else {
+        return questions[0]
+    }
+}
+
 export async function getQuestionById(id: number) {
     const { data: questions, error } = await supabaseBrowser.from('questions').select('*').eq('id', id).limit(1)
 
     if (error) {
-        console.log("Failed");
+        console.log(error);
     } else {
         return questions[0]
     }
+}
+
+export async function getQuestionSetNameById(question_set_id: number) {
+    const { data, error } = await supabaseBrowser.from('question_sets').select('name').eq('id', question_set_id).limit(1);
+    if (error) {
+        console.error(error)
+    } else {
+        return data[0].name
+    }
+}
+
+export async function getFirstQuestionInQuestionSetWithQuestionSetId(question_set_id: number) {
+    const { data, error } = await supabaseBrowser.from('questions').select('id').eq('question_set', question_set_id).limit(1); // potensh need to sort 
+
+    if (error) {
+        console.error(error)
+        return
+    }
+
+    return data[0].id;
 }
 
 export async function getQuestionSets() {
@@ -66,7 +97,7 @@ export async function getPreviousQuestionId(question_id: number) {
 export async function getAllAnswers() {
     const { data: answers, error } = await supabaseBrowser.from('answers').select('*')
     if (error) {
-        console.log("Failed");
+        console.log(error);
     } else {
         return answers
     }
