@@ -71,8 +71,10 @@ export async function getAllQuestions() {
     }
 }
 
-export async function getNextQuestionId(question_id: number) {
-    const { data, error } = await supabaseBrowser.from('questions').select('id').gt('id', question_id).limit(1);
+export async function getNextQuestionId(question_id: number, questionSetId?: number) {
+    const { data, error } = questionSetId ? 
+        await supabaseBrowser.from('questions').select('id').gt('id', question_id).eq('question_set', questionSetId):
+        await supabaseBrowser.from('questions').select('id').gt('id', question_id);
     
 
     if (error) {
@@ -82,9 +84,10 @@ export async function getNextQuestionId(question_id: number) {
     }
 }
 
-// could be optimised for sure
-export async function getPreviousQuestionId(question_id: number) {
-    const { data, error } = await supabaseBrowser.from('questions').select('id').lt('id', question_id);
+export async function getPreviousQuestionId(question_id: number, questionSetId?: number) {
+    const { data, error } = questionSetId ? 
+        await supabaseBrowser.from('questions').select('id').lt('id', question_id).eq('question_set', questionSetId):
+        await supabaseBrowser.from('questions').select('id').lt('id', question_id);
     
     if (error) {
         console.log({ error });
