@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Routes } from "../../../Routes";
+import { Routes } from "../../../enums/Routes";
 import { getAllQuestions } from "../../../helpers/supabase-helpers"
 import "./style.css";
 

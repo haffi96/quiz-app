@@ -1,5 +1,5 @@
 import QuestionSidebar from "../../../components/questionSidebar/QuestionSidebar";
-import { Routes } from "../../../Routes";
+import { Routes } from "../../../enums/Routes";
 import { getAllQuestions } from "../../../helpers/supabase-helpers"
 
 export default async function AdminPageLayout({

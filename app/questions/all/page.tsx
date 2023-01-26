@@ -1,6 +1,6 @@
 import { LinkMotionButton } from "../../../components/buttons/LinkMotionButton";
 import { getFirstQuestion, getQuestionSets } from "../../../helpers/supabase-helpers";
-import { Routes } from "../../../Routes";
+import { Routes } from "../../../enums/Routes";
 
 export default async function Questions() {
   const questionSets = await getQuestionSets();

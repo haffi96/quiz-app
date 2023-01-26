@@ -21,6 +21,12 @@ export async function getFirstQuestionInQuestionSet(questionSetId: number) {
     }
 }
 
+export async function getAllQuestionsInQuestionSet(questionSetId: number) {
+    const { data, error } = await supabaseBrowser.from('questions').select('*').eq('question_set', questionSetId)
+    
+    return { data, error }
+}
+
 export async function getQuestionById(id: number) {
     const { data: questions, error } = await supabaseBrowser.from('questions').select('*').eq('id', id).limit(1)
 

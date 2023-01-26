@@ -4,7 +4,7 @@ import type { SetStateAction } from "react";
 import { useState, useEffect } from "react";
 import { getNextQuestionId, getPreviousQuestionId, getQuestionById, getAnswerByQuestionId, getQuestionSetNameById } from "../../helpers/supabase-helpers";
 import type { Database } from "../../lib/database.types";
-import { Routes } from "../../Routes";
+import { Routes } from "../../enums/Routes";
 import { CorrectOrIncorrectPopUp } from "../popUps/CorrectOrIncorrectPopUp";
 import { RadioGroupOptionWithMotion } from "../RadioGroupOptionWithMotion";
 import { NavButton } from "./NavButton";

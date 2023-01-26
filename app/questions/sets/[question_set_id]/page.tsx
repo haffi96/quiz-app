@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { getFirstQuestionInQuestionSetWithQuestionSetId, getQuestionSetNameById } from "../../../../helpers/supabase-helpers";
-import { Routes } from "../../../../Routes";
+import { Routes } from "../../../../enums/Routes";
 
 interface Params {
     params: {

@@ -22,6 +22,10 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=
 SUPABASE_ACCESS_TOKEN=
 ```
 
+## Testing
+Test files go next to the file they are testing.
+
+
 ## Scripts
 ### Get auto generated supabase types
 Setup supabase CLI: https://supabase.com/docs/reference/cli/usage

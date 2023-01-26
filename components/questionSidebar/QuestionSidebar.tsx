@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { Database } from "../../lib/database.types";
-import { Routes } from "../../Routes";
+import { Routes } from "../../enums/Routes";
 import { QuestionSidebarListItem } from "./QuestionSidebarListItem";
 
 interface QuestionSidebarProps {

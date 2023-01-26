@@ -1,13 +1,15 @@
 import QuestionSidebar from "../../../../components/questionSidebar/QuestionSidebar";
 import { Routes } from "../../../../enums/Routes";
-import { getAllQuestions } from "../../../../helpers/supabase-helpers";
+import { getAllQuestionsInQuestionSet } from "../../../../helpers/supabase-helpers";
 
 export default async function QuestionPageLayout({
-    children
+    children,
+    params
 }: {
     children: React.ReactNode
+    params: { question_set_id: number }
 }) {
-    const allQuestions = await getAllQuestions();
+    const { data: allQuestions } = await getAllQuestionsInQuestionSet(params.question_set_id);
 
     if (allQuestions) {
         return (

@@ -6,7 +6,7 @@ import { useEffect, useState } from "react"
 import { QuestionForm } from "../../../../../components/forms/QuestionForm";
 import type { Database } from "../../../../../lib/database.types";
 import { useRouter } from "next/navigation";
-import { Routes } from "../../../../../Routes";
+import { Routes } from "../../../../../enums/Routes";
 
 interface EditIdParams {
     params: { id: number }
