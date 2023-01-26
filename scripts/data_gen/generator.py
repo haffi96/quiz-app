@@ -3,9 +3,9 @@ from datetime import datetime
 import logging
 import os
 import time
-from typing import TypedDict
 from typing import Generator
-from question_data import mock_data, QUESTION_SETS
+from question_data import question_sets_data
+from common import QuestionData, AnswerData, CoercedData
 
 import psycopg2
 
@@ -13,6 +13,8 @@ from datetime import timezone
 
 TSV_BASE_DIR = "./tmp_tsvs"
 DB_CONNECTION_URI = os.environ["DB_CONNECTION_URI"]
+
+# Force question_sets_data dict to always be ordered FIXME
 
 
 def id_generator(starting_num: int = 0) -> Generator[int, None, None]:
@@ -25,47 +27,43 @@ def id_generator(starting_num: int = 0) -> Generator[int, None, None]:
 execution_order = id_generator(1)
 
 
-class QuestionData(TypedDict):
-    title: str
-    body: str
-    a1: str
-    a2: str
-    a3: str
-    a4: str
-    answer: str
+def coerce_data(
+    question_set_name: str, question_set_data: list[QuestionData]
+) -> CoercedData:
+    all_answers_data: list[AnswerData] = []
+    all_questions_data: list[QuestionData] = []
+    for index, data in enumerate(question_set_data):
+        parsed_question_data = QuestionData(
+            title=data["question"],
+            body=data["question"],
+            a1=data["options"][0],
+            a2=data["options"][1],
+            a3=data["options"][2],
+            a4=data["options"][3],
+            answer=data["answer"],
+        )
 
+        for option in (
+            parsed_question_data["a1"],
+            parsed_question_data["a2"],
+            parsed_question_data["a3"],
+            parsed_question_data["a4"],
+        ):
+            if data["answer"] == option:
+                answer_key = [
+                    k for k, v in parsed_question_data.items() if v == option
+                ][0]
+                parsed_answer_data = AnswerData(
+                    correct_answer_choice=answer_key, question_id=index + 1
+                )
+        all_answers_data.append(parsed_answer_data)
+        all_questions_data.append(parsed_question_data)
 
-class AnswerData(TypedDict):
-    correct_answer_choice: str
-    question_id: int
-
-
-all_answer_data: list[AnswerData] = []
-all_questions_data: list[QuestionData] = []
-for index, data in enumerate(mock_data):
-    parsed_question_data = QuestionData(
-        title=data["question"],
-        body=data["question"],
-        a1=data["options"][0],
-        a2=data["options"][1],
-        a3=data["options"][2],
-        a4=data["options"][3],
-        answer=data["answer"],
+    return CoercedData(
+        question_set_name=question_set_name,
+        all_questions_data=all_questions_data,
+        all_answers_data=all_answers_data,
     )
-
-    for option in (
-        parsed_question_data["a1"],
-        parsed_question_data["a2"],
-        parsed_question_data["a3"],
-        parsed_question_data["a4"],
-    ):
-        if data["answer"] == option:
-            answer_key = [k for k, v in parsed_question_data.items() if v == option][0]
-            parsed_answer_data = AnswerData(
-                correct_answer_choice=answer_key, question_id=index + 1
-            )
-    all_answer_data.append(parsed_answer_data)
-    all_questions_data.append(parsed_question_data)
 
 
 class DataGenerator:
@@ -76,6 +74,8 @@ class DataGenerator:
 
     def question_set_generator(self) -> list:
         """Generates questions sets"""
+        question_sets_list = list(question_sets_data.keys())
+
         return [
             [
                 index + 1,  # id
@@ -83,14 +83,17 @@ class DataGenerator:
                 self.now,  # updated_at
                 set_name,  # name
             ]
-            for index, set_name in enumerate(QUESTION_SETS)
+            for index, set_name in enumerate(question_sets_list)
         ]
 
     def questions_generator(self) -> list:
         """Generates questions"""
         question_id = id_generator()
         questions = []
-        for index, _ in enumerate(QUESTION_SETS):
+        for index, (question_set_name, question_set_data) in enumerate(
+            question_sets_data.items()
+        ):
+            coerced_data = coerce_data(question_set_name, question_set_data)
             questions.extend(
                 [
                     next(question_id) + 1,  # id
@@ -104,21 +107,29 @@ class DataGenerator:
                     data["a4"],  # a4
                     index + 1,  # question_set
                 ]
-                for data in all_questions_data
+                for data in coerced_data["all_questions_data"]
             )
         return questions
 
     def answers_generator(self) -> list:
         """Generates answers with the right question_id"""
-        return [
-            [
-                index + 1,  # id
-                self.now,  # created_at
-                answer["correct_answer_choice"],  # correct_answer_choice
-                answer["question_id"],  # question_id
-            ]
-            for index, answer in enumerate(all_answer_data)
-        ]
+        answer_id = id_generator(1)
+        question_id = id_generator(1)
+        answers = []
+        for question_set_name, question_set_data in question_sets_data.items():
+            coerced_data = coerce_data(question_set_name, question_set_data)
+            answers.extend(
+                [
+                    [
+                        next(answer_id),  # id
+                        self.now,  # created_at
+                        answer["correct_answer_choice"],  # correct_answer_choice
+                        next(question_id),  # question_id
+                    ]
+                    for answer in coerced_data["all_answers_data"]
+                ]
+            )
+        return answers
 
 
 class DBTasks:
