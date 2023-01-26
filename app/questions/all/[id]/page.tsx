@@ -16,13 +16,16 @@ interface QuestionPageParams {
   }
 }
 
-// plaveholders so that while the data is being fetched it looks a little better
-// but debatable
 const QUESTION_TITLE_PLACEHOLDER = 'Question'
 const QUESTION_BODY_PLACEHOLDER = 'Question Description'
 
 export default function AllQuestionPage({ params }: QuestionPageParams) {
-  const router = useRouter();
+  return (
+    <MultipleChoiceQuestionAndAnswer question_id={params.id} />
+  );
+}
+
+function MultipleChoiceQuestionAndAnswer({ question_id }: { question_id: number }) {
   const [questionData, setQuestion] = useState<Database["public"]["Tables"]["questions"]["Row"]>();
   const [nextQuestionId, setNextQuestionId] = useState<number>();
   const [previousQuestionId, setPreviousQuestionId] = useState<number>();
@@ -49,12 +52,12 @@ export default function AllQuestionPage({ params }: QuestionPageParams) {
 
   useEffect(() => {
     const getAndSetQuestion = async () => {
-      const question = await getQuestionById(params.id)
+      const question = await getQuestionById(question_id)
       setQuestion(question);
       setIsLoaded(true);
     };
     getAndSetQuestion();
-  }, [params.id]);
+  }, [question_id]);
 
   const handleCheck = (value: SetStateAction<Database["public"]["Enums"]["answer_choices"]>) => {
     correct != undefined ? null : setCheckedAnswer(value)
@@ -73,58 +76,6 @@ export default function AllQuestionPage({ params }: QuestionPageParams) {
     }
   }
 
-  const MsgComponent = () => {
-    if (correct === undefined) {
-      return null
-    }
-
-    if (correct) {
-      return <motion.div
-        initial={{ opacity: 0, scale: 0.7 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{
-          default: { duration: 0.5, delay: 0.1, ease: [0, 0.71, 0.2, 1.01] },
-          scale: { type: "spring", damping: 10, stiffness: 100, restDelta: 0.001 }
-        }}
-        className="w-2/3 rounded-xl bg-green-300 p-2 dark:text-black">
-        Correct answer!
-      </motion.div>
-    } else {
-      return <motion.div
-        initial={{ opacity: 0, scale: 0.7 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{
-          default: { duration: 0.5, delay: 0.1, ease: [0, 0.71, 0.2, 1.01] },
-          scale: { type: "spring", damping: 10, stiffness: 100, restDelta: 0.001 }
-        }}
-        className="w-2/3 rounded-xl bg-red-400 p-2 dark:text-black">
-        Incorrect!
-      </motion.div>
-    }
-  }
-
-  const NavButton = (props: { text: string, routeToPath?: string }) => {
-    return <motion.button onClick={() => {
-      if (props.routeToPath) {
-        router.push(`${Routes.QUESTIONS_ALL}/${props.routeToPath}`)
-      }
-    }} whileHover={{ scale: 1.05, transition: { duration: 0.3 } }} className="rounded border border-blue-500 bg-transparent py-2 px-4 font-semibold text-blue-700 hover:border-transparent hover:bg-blue-500 hover:text-white dark:hover:text-white">
-      {props.text}
-    </motion.button>
-  }
-
-  const NavButtons = () => {
-    if (correct === undefined) {
-      return null
-    }
-
-    if (correct && nextQuestionId) {
-      return <NavButton text="Next" routeToPath={nextQuestionId.toString()} />
-    } else {
-      return null
-    }
-  }
-
   if (isLoaded && !questionData) {
     return <>Error: Missing question data</>
   }
@@ -134,7 +85,7 @@ export default function AllQuestionPage({ params }: QuestionPageParams) {
       <div className="flex flex-col items-center">
         <p className="font-bold">{questionData?.title ?? QUESTION_TITLE_PLACEHOLDER}</p>
         <p className="py-5">{questionData?.body ?? QUESTION_BODY_PLACEHOLDER}</p>
-        <MsgComponent />
+        <MsgComponent correct={correct} />
         <RadioGroup value={checkedAnswer} onChange={(value: SetStateAction<Database["public"]["Enums"]["answer_choices"]>) => handleCheck(value)} className="flex w-2/3 flex-col space-y-3 pt-3">
           <RadioGroup.Label>Pick an answer:</RadioGroup.Label>
           <RadioGroupOptionWithMotion checkedAnswer={checkedAnswer} answerText={'A) ' + (questionData?.a1 ?? '')} thisAnswerChoice={"a1"} />
@@ -147,9 +98,63 @@ export default function AllQuestionPage({ params }: QuestionPageParams) {
           <motion.button onClick={() => { questionData ? onSubmit(questionData.id) : {} }} whileHover={{ scale: 1.05, transition: { duration: 0.3 } }} className="rounded border border-blue-500  bg-transparent py-2 px-4 font-semibold text-blue-700 hover:border-transparent hover:bg-blue-500 hover:text-white dark:hover:text-white">
             Submit
           </motion.button>
-          <NavButtons />
+          <NavButtons correct={correct} nextQuestionId={nextQuestionId} />
         </div>
       </div >
     </div>
   );
+}
+
+const MsgComponent = ({ correct }: { correct?: boolean }) => {
+  if (correct === undefined) {
+    return null
+  }
+
+  if (correct) {
+    return <motion.div
+      initial={{ opacity: 0, scale: 0.7 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{
+        default: { duration: 0.5, delay: 0.1, ease: [0, 0.71, 0.2, 1.01] },
+        scale: { type: "spring", damping: 10, stiffness: 100, restDelta: 0.001 }
+      }}
+      className="w-2/3 rounded-xl bg-green-300 p-2 dark:text-black">
+      Correct answer!
+    </motion.div>
+  } else {
+    return <motion.div
+      initial={{ opacity: 0, scale: 0.7 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{
+        default: { duration: 0.5, delay: 0.1, ease: [0, 0.71, 0.2, 1.01] },
+        scale: { type: "spring", damping: 10, stiffness: 100, restDelta: 0.001 }
+      }}
+      className="w-2/3 rounded-xl bg-red-400 p-2 dark:text-black">
+      Incorrect!
+    </motion.div>
+  }
+}
+
+const NavButton = (props: { text: string, routeToPath?: string }) => {
+  const router = useRouter();
+
+  return <motion.button onClick={() => {
+    if (props.routeToPath) {
+      router.push(`${Routes.QUESTIONS_ALL}/${props.routeToPath}`)
+    }
+  }} whileHover={{ scale: 1.05, transition: { duration: 0.3 } }} className="rounded border border-blue-500 bg-transparent py-2 px-4 font-semibold text-blue-700 hover:border-transparent hover:bg-blue-500 hover:text-white dark:hover:text-white">
+    {props.text}
+  </motion.button>
+}
+
+const NavButtons = ({ correct, nextQuestionId }: { correct?: boolean, nextQuestionId?: number }) => {
+  if (correct === undefined) {
+    return null
+  }
+
+  if (correct && nextQuestionId) {
+    return <NavButton text="Next" routeToPath={nextQuestionId.toString()} />
+  } else {
+    return null
+  }
 }
