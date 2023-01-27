@@ -16,6 +16,7 @@ export default function Page() {
     const [a3, setA3] = useState<string>('')
     const [a4, setA4] = useState<string>('')
     const [correctAnswer, setCorrectAnswer] = useState<Database["public"]["Enums"]["answer_choices"]>('a1')
+    const [question_set, set_question_set] = useState<Database["public"]["Tables"]["questions"]["Row"]["question_set"]>()
 
     const clearAllFields = () => {
         setTitle('');
@@ -46,7 +47,7 @@ export default function Page() {
 
     return (
         <QuestionForm title={title} setTitle={setTitle} body={body} setBody={setBody} a1={a1} setA1={setA1} a2={a2} setA2={setA2} a3={a3}
-            setA3={setA3} a4={a4} setA4={setA4} correctAnswer={correctAnswer} setCorrectAnswer={setCorrectAnswer}
+            setA3={setA3} a4={a4} setA4={setA4} correctAnswer={correctAnswer} setCorrectAnswer={setCorrectAnswer} question_set={question_set} set_question_set={set_question_set}
             handleSubmit={handleSubmit} />
     )
 }

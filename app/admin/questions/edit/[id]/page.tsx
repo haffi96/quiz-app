@@ -20,6 +20,7 @@ export default function Page({ params }: EditIdParams) {
     const [a2, setA2] = useState<string>('')
     const [a3, setA3] = useState<string>('')
     const [a4, setA4] = useState<string>('')
+    const [question_set, set_question_set] = useState<Database["public"]["Tables"]["questions"]["Row"]["question_set"]>()
     const [correctAnswer, setCorrectAnswer] = useState<Database["public"]["Enums"]["answer_choices"]>('a1')
     const [answerId, setAnswerId] = useState<number>()
 
@@ -35,6 +36,7 @@ export default function Page({ params }: EditIdParams) {
                 setA2(question.a2);
                 setA3(question.a3);
                 setA4(question.a4);
+                set_question_set(question.question_set)
             } else {
                 router.push(Routes.NEW_QUESTION)
             }
@@ -64,7 +66,11 @@ export default function Page({ params }: EditIdParams) {
     }, [id, router]);
 
     const handleSubmit = async (event: FormEvent) => {
-        const finalQuestion = { title, body, a1, a2, a3, a4 }
+        if (!title || !body || !a1 || !a2 || !a3 || !a4 || !question_set) {
+            alert('Missing data')
+        }
+
+        const finalQuestion = { title, body, a1, a2, a3, a4, question_set }
         event.preventDefault();
 
         try {
@@ -94,7 +100,7 @@ export default function Page({ params }: EditIdParams) {
 
     return (
         <QuestionForm title={title} setTitle={setTitle} body={body} setBody={setBody} a1={a1} setA1={setA1} a2={a2} setA2={setA2} a3={a3}
-            setA3={setA3} a4={a4} setA4={setA4} correctAnswer={correctAnswer} setCorrectAnswer={setCorrectAnswer}
+            setA3={setA3} a4={a4} setA4={setA4} correctAnswer={correctAnswer} setCorrectAnswer={setCorrectAnswer} question_set={question_set} set_question_set={set_question_set}
             handleSubmit={handleSubmit} handleDelete={handleDelete} />
     )
 }

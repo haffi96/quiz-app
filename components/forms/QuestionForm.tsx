@@ -18,12 +18,32 @@ export interface NewQuestionFormProps {
     setA4: Dispatch<SetStateAction<string>>,
     correctAnswer: string,
     setCorrectAnswer: Dispatch<SetStateAction<Database["public"]["Enums"]["answer_choices"]>>,
+    question_set?: Database["public"]["Tables"]["questions"]["Row"]["question_set"]
+    set_question_set: Dispatch<SetStateAction<Database["public"]["Tables"]["questions"]["Row"]["question_set"] | undefined>>
     handleSubmit: (event: FormEvent) => Promise<void>,
     handleDelete?: () => void
 }
 
 export function QuestionForm({
-    title, setTitle, body, setBody, a1, setA1, a2, setA2, a3, setA3, a4, setA4, correctAnswer, setCorrectAnswer, handleSubmit, handleDelete }: NewQuestionFormProps) {
+    title,
+    setTitle,
+    body,
+    setBody,
+    a1,
+    setA1,
+    a2,
+    setA2,
+    a3,
+    setA3,
+    a4,
+    setA4,
+    correctAnswer,
+    setCorrectAnswer,
+    handleSubmit,
+    handleDelete,
+    question_set,
+    set_question_set
+}: NewQuestionFormProps) {
     return (
         <>
             <div className="mx-20 my-10 w-3/5 text-center">
@@ -50,6 +70,9 @@ export function QuestionForm({
 
                     <label htmlFor="a4" className="">Answer 4</label>
                     <textarea id="a4" name="a4" value={a4} className="mb-4 rounded p-2" onChange={(e) => setA4(e.target.value)} />
+
+                    <label htmlFor="question_set">Question Set</label>
+                    <textarea id="question_set" name="question_set" value={Number(question_set)} className="mb-4 rounded p-2" onChange={(e) => set_question_set(Number(e.target.value))} />
 
                     <label htmlFor="answer" className="">Correct Answer</label>
                     <select id="answer" name="answer" value={correctAnswer} onChange={(e) => setCorrectAnswer(e.target.value as Database["public"]["Enums"]["answer_choices"])} className="mb-4 rounded p-2">
