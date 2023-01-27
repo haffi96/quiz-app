@@ -7,17 +7,18 @@ export default async function AdminPageLayout({
 }: {
     children: React.ReactNode
 }) {
-    const allQuestions = await getAllQuestions();
-    if (allQuestions) {
-        return (
-            <section className="flex flex-col-reverse lg:h-screen lg:flex-row">
-                <QuestionSidebar allQuestions={allQuestions} route={Routes.ADMIN_EDIT} />
-                {children}
-            </section>
-        )
-    } else {
-        <>
-            Failed to fetch all questions...
-        </>
+    const { data, error } = await getAllQuestions();
+
+    if (error || !data) {
+        console.error({ error })
+        return <>missing data</>
     }
+
+    return (
+        <section className="flex flex-col-reverse lg:h-screen lg:flex-row">
+            <QuestionSidebar allQuestions={data} route={Routes.ADMIN_EDIT} />
+            {children}
+        </section>
+    )
 }
+

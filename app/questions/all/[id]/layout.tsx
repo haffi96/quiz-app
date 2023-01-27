@@ -7,20 +7,18 @@ export default async function QuestionPageLayout({
 }: {
     children: React.ReactNode
 }) {
-    const allQuestions = await getAllQuestions();
+    const { data, error } = await getAllQuestions();
 
-    if (allQuestions) {
-        return (
-            <section className="flex flex-col-reverse lg:h-screen lg:flex-row">
-                <QuestionSidebar allQuestions={allQuestions} route={Routes.QUESTIONS_ALL} />
-                {children}
-            </section>
-        )
-    } else {
-        return (
-            <>
-                Failed to fetch questions...
-            </>
-        )
+    if (error || !data) {
+        console.error({ error })
+        return <>error while getting questions</>
     }
+
+    return (
+        <section className="flex flex-col-reverse lg:h-screen lg:flex-row">
+            <QuestionSidebar allQuestions={data} route={Routes.QUESTIONS_ALL} />
+            {children}
+        </section>
+    )
+
 }

@@ -68,13 +68,9 @@ export async function getQuestionSets() {
 }
 
 export async function getAllQuestions() {
-    const { data: questions, error } = await supabaseBrowser.from('questions').select('*')
-
-    if (error) {
-        console.log(error);
-    } else {
-        return questions
-    }
+    const { data, error } = await supabaseBrowser.from('questions').select('*');
+ 
+    return { data, error };
 }
 
 export async function getNextQuestionId(question_id: number, questionSetId?: number) {

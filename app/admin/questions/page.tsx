@@ -4,7 +4,7 @@ import { getAllQuestions } from "../../../helpers/supabase-helpers"
 import "./style.css";
 
 export default async function AdminQuestionsPage() {
-    const questions = await getAllQuestions();
+    const { data: questions } = await getAllQuestions();
     const questionRows = questions?.map((question) => {
         const { id, title, body } = question
 
