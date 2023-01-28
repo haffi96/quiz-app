@@ -1,8 +1,10 @@
+'use client'
+
 import { RadioGroup } from "@headlessui/react";
 import { motion } from "framer-motion";
 import type { SetStateAction } from "react";
-import { useState, useEffect } from "react";
-import { getNextQuestionId, getPreviousQuestionId, getQuestionById, getAnswerByQuestionId, getQuestionSetNameById } from "../../helpers/supabase-helpers";
+import { useState } from "react";
+import { getAnswerByQuestionId } from "../../helpers/supabase-helpers";
 import type { Database } from "../../lib/database.types";
 import { Routes } from "../../enums/Routes";
 import { CorrectOrIncorrectPopUp } from "../popUps/CorrectOrIncorrectPopUp";
@@ -10,17 +12,27 @@ import { RadioGroupOptionWithMotion } from "../RadioGroupOptionWithMotion";
 import { NavButton } from "./NavButton";
 import { NextButton } from "./NextButton";
 
-interface MultipleChoiceQuestionAndAnswerParams {
-    question_id: number,
-    questionSetId?: number
+export interface MultipleChoiceQuestionAndAnswerParams {
+    questionId: number
+    questionSetId?: number,
+    questionData?: Database["public"]["Tables"]["questions"]["Row"],
+    questionSetName?: Database["public"]["Tables"]["question_sets"]["Row"]["name"],
+    nextQuestionId?: number,
+    previousQuestionId?: number,
 }
 
-export function MultipleChoiceQuestionAndAnswer({ question_id, questionSetId }: MultipleChoiceQuestionAndAnswerParams) {
-    const [questionData, setQuestion] = useState<Database["public"]["Tables"]["questions"]["Row"]>();
-    const [questionSetName, setQuestionSetName] = useState<Database["public"]["Tables"]["question_sets"]["Row"]["name"]>();
-    const [nextQuestionId, setNextQuestionId] = useState<number>();
-    const [previousQuestionId, setPreviousQuestionId] = useState<number>();
-    const [isLoaded, setIsLoaded] = useState<boolean>();
+export function MultipleChoiceQuestionAndAnswer({
+    questionId,
+    questionSetId,
+    questionData,
+    questionSetName,
+    nextQuestionId,
+    previousQuestionId,
+}: MultipleChoiceQuestionAndAnswerParams) {
+    if (!questionData) {
+        throw new Error(`No Question Data for question with id ${questionId}`)
+    }
+
     const [checkedAnswer, setCheckedAnswer] = useState<Database["public"]["Enums"]["answer_choices"]>('a1');
     const [correct, setCorrect] = useState<boolean | undefined>(undefined);
 
@@ -41,53 +53,8 @@ export function MultipleChoiceQuestionAndAnswer({ question_id, questionSetId }: 
         }
     }
 
-    const getAndSetNextQuestionId = async (questionId: number, questionSetId?: number) => {
-        setNextQuestionId(await getNextQuestionId(questionId));
-
-        if (questionSetId) {
-            setNextQuestionId(await getNextQuestionId(questionId, questionSetId));
-        }
-    }
-
-    const getAndSetPreviousQuestionId = async (questionId: number, questionSetId?: number) => {
-        setPreviousQuestionId(await getPreviousQuestionId(questionId));
-        if (questionSetId) {
-            setPreviousQuestionId(await getPreviousQuestionId(questionId, questionSetId));
-        }
-    }
-
-    const getAndSetQuestion = async (id: number) => {
-        const question = await getQuestionById(id)
-        setQuestion(question);
-        setIsLoaded(true);
-    };
-
-    useEffect(() => {
-        if (questionData) {
-            getAndSetNextQuestionId(questionData.id, questionSetId);
-            getAndSetPreviousQuestionId(questionData.id, questionSetId);
-        }
-    }, [questionData, questionSetId])
-
-    useEffect(() => {
-        getAndSetQuestion(question_id);
-    }, [question_id]);
-
-    useEffect(() => {
-        if (questionSetId) {
-            const getAndSetQuestionSetName = async () => { setQuestionSetName(await getQuestionSetNameById(questionSetId)) };
-            getAndSetQuestionSetName()
-        }
-    })
-
-    if (isLoaded && !questionData) {
-        return <>Error: Missing question data</>
-    }
-
     const previousQuestionRouteToPath = questionSetId ? `${Routes.QUESTION_SETS}/${questionSetId}/${previousQuestionId}` : `${Routes.QUESTIONS_ALL}/${previousQuestionId}`
     const nextQuestionRouteToPath = questionSetId ? `${Routes.QUESTION_SETS}/${questionSetId}/${nextQuestionId}` : `${Routes.QUESTIONS_ALL}/${nextQuestionId}`
-
-
     const showBodyIfNotTheSameAsTitle = () => questionData?.title !== questionData?.body && (<p className="py-5">{questionData?.body}</p>)
 
     return (

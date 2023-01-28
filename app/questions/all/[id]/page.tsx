@@ -1,6 +1,5 @@
-"use client";
-
 import { MultipleChoiceQuestionAndAnswer } from "../../../../components/questionAndAnswer/MultipleChoiceQuestionAndAnswer";
+import { getQuestionPageData } from "../../../../utils/getQuestionPageData";
 
 interface QuestionPageParams {
   params: {
@@ -8,8 +7,13 @@ interface QuestionPageParams {
   }
 }
 
-export default function AllQuestionPage({ params }: QuestionPageParams) {
-  return <MultipleChoiceQuestionAndAnswer question_id={params.id} />
+export default async function AllQuestionPage({ params }: QuestionPageParams) {
+  const { id } = params
+  const { questionData, nextQuestionId, previousQuestionId } = await getQuestionPageData(id);
+
+  return <MultipleChoiceQuestionAndAnswer
+    questionId={id}
+    questionData={questionData}
+    nextQuestionId={nextQuestionId}
+    previousQuestionId={previousQuestionId} />
 }
-
-
