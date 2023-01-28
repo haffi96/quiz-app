@@ -12,7 +12,7 @@ export function QuestionSidebarListItem({ text, href, index, newItem }: ListItem
         <li className={newItem ? "rounded-lg border-2 border-blue-600" : "break-all rounded-lg border-2 border-gray-600"}>
             <div className="p-1">
                 <Link href={href} className="flex items-center rounded-lg p-2 font-normal text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
-                    <span>{index + 1}</span><span className="ml-3">{text}</span>
+                    <span className="whitespace-nowrap">{index + 1}</span><span className="ml-3">{text}</span>
                 </Link>
             </div>
         </li>
