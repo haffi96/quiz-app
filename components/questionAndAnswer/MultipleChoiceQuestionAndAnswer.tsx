@@ -19,7 +19,6 @@ export interface MultipleChoiceQuestionAndAnswerParams {
     questionSetName?: Database["public"]["Tables"]["question_sets"]["Row"]["name"],
     nextQuestionId?: number,
     previousQuestionId?: number,
-    isLoading?: boolean,
 }
 
 export function MultipleChoiceQuestionAndAnswer({
@@ -29,9 +28,8 @@ export function MultipleChoiceQuestionAndAnswer({
     questionSetName,
     nextQuestionId,
     previousQuestionId,
-    isLoading
 }: MultipleChoiceQuestionAndAnswerParams) {
-    if (!isLoading && !questionData) {
+    if (!questionData) {
         throw new Error(`No Question Data for question with id ${questionId}`)
     }
 
