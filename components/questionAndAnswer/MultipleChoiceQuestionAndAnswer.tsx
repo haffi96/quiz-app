@@ -13,12 +13,13 @@ import { NavButton } from "./NavButton";
 import { NextButton } from "./NextButton";
 
 export interface MultipleChoiceQuestionAndAnswerParams {
-    questionId: number
+    questionId?: number
     questionSetId?: number,
     questionData?: Database["public"]["Tables"]["questions"]["Row"],
     questionSetName?: Database["public"]["Tables"]["question_sets"]["Row"]["name"],
     nextQuestionId?: number,
     previousQuestionId?: number,
+    isLoading?: boolean,
 }
 
 export function MultipleChoiceQuestionAndAnswer({
@@ -28,8 +29,9 @@ export function MultipleChoiceQuestionAndAnswer({
     questionSetName,
     nextQuestionId,
     previousQuestionId,
+    isLoading
 }: MultipleChoiceQuestionAndAnswerParams) {
-    if (!questionData) {
+    if (!isLoading && !questionData) {
         throw new Error(`No Question Data for question with id ${questionId}`)
     }
 
