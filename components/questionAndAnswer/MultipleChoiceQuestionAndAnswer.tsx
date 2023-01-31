@@ -4,7 +4,7 @@ import { RadioGroup } from "@headlessui/react";
 import { motion } from "framer-motion";
 import type { SetStateAction } from "react";
 import { useState } from "react";
-import { getAnswerByQuestionId } from "../../helpers/supabase-helpers";
+import { getAnswerByQuestionId, incrementAnswerCountForQuestion } from "../../helpers/supabase-helpers";
 import type { Database } from "../../lib/database.types";
 import { Routes } from "../../enums/Routes";
 import { CorrectOrIncorrectPopUp } from "../popUps/CorrectOrIncorrectPopUp";
@@ -19,6 +19,7 @@ export interface MultipleChoiceQuestionAndAnswerParams {
     questionSetName?: Database["public"]["Tables"]["question_sets"]["Row"]["name"],
     nextQuestionId?: number,
     previousQuestionId?: number,
+    questionAnswerCounts?: Database["public"]["Tables"]["submission"]["Row"],
 }
 
 export function MultipleChoiceQuestionAndAnswer({
@@ -28,6 +29,7 @@ export function MultipleChoiceQuestionAndAnswer({
     questionSetName,
     nextQuestionId,
     previousQuestionId,
+    questionAnswerCounts,
 }: MultipleChoiceQuestionAndAnswerParams) {
     if (!questionData) {
         throw new Error(`No Question Data for question with id ${questionId}`)
@@ -48,6 +50,7 @@ export function MultipleChoiceQuestionAndAnswer({
                 null
             } else {
                 const answer = await getAnswerByQuestionId(questionID)
+                await incrementAnswerCountForQuestion(questionID, checkedAnswer)
                 setCorrect(checkedAnswer === answer?.correct_answer_choice)
             }
         }
@@ -63,7 +66,7 @@ export function MultipleChoiceQuestionAndAnswer({
                 <p className="py-5 text-5xl font-bold">{questionSetName ?? ''}</p>
                 <p className="py-5">{questionData?.title ?? ''}</p>
                 {showBodyIfNotTheSameAsTitle()}
-                <CorrectOrIncorrectPopUp correct={correct} />
+                <CorrectOrIncorrectPopUp correct={correct} questionAnswerCounts={questionAnswerCounts} />
                 <RadioGroup value={checkedAnswer} onChange={(value: SetStateAction<Database["public"]["Enums"]["answer_choices"]>) => handleCheck(value)} className="flex w-2/3 flex-col space-y-3 pt-3">
                     <RadioGroup.Label>Pick an answer:</RadioGroup.Label>
                     <RadioGroupOptionWithMotion checkedAnswer={checkedAnswer} answerText={'A) ' + (questionData?.a1 ?? '')} thisAnswerChoice={"a1"} />

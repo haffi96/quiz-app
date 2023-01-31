@@ -51,43 +51,26 @@ export interface Database {
           question_id?: number
         }
       }
-      participants: {
-        Row: {
-          created_at: string
-          id: number
-          update_at: string
-          user: string
-        }
-        Insert: {
-          created_at?: string
-          id?: number
-          update_at: string
-          user: string
-        }
-        Update: {
-          created_at?: string
-          id?: number
-          update_at?: string
-          user?: string
-        }
-      }
       question_sets: {
         Row: {
           created_at: string | null
           id: number
           name: string
+          subscribed_to_by: string | null
           updated_at: string | null
         }
         Insert: {
           created_at?: string | null
           id?: number
           name: string
+          subscribed_to_by?: string | null
           updated_at?: string | null
         }
         Update: {
           created_at?: string | null
           id?: number
           name?: string
+          subscribed_to_by?: string | null
           updated_at?: string | null
         }
       }
@@ -129,12 +112,70 @@ export interface Database {
           updated_at?: string
         }
       }
+      submission: {
+        Row: {
+          a1_count: number | null
+          a2_count: number | null
+          a3_count: number | null
+          a4_count: number | null
+          created_at: string
+          id: number
+          question_id: number | null
+          updated_at: string
+        }
+        Insert: {
+          a1_count?: number | null
+          a2_count?: number | null
+          a3_count?: number | null
+          a4_count?: number | null
+          created_at?: string
+          id?: number
+          question_id?: number | null
+          updated_at?: string
+        }
+        Update: {
+          a1_count?: number | null
+          a2_count?: number | null
+          a3_count?: number | null
+          a4_count?: number | null
+          created_at?: string
+          id?: number
+          question_id?: number | null
+          updated_at?: string
+        }
+      }
+      user_question_history: {
+        Row: {
+          created_at: string | null
+          has_answered_correctly: boolean | null
+          id: number
+          question_id: number | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          has_answered_correctly?: boolean | null
+          id?: number
+          question_id?: number | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          has_answered_correctly?: boolean | null
+          id?: number
+          question_id?: number | null
+          user_id?: string | null
+        }
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      increment: {
+        Args: { question_id_to_inc: number; field_name: string }
+        Returns: undefined
+      }
     }
     Enums: {
       answer_choices: "a1" | "a2" | "a3" | "a4"

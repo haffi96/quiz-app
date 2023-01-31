@@ -9,11 +9,12 @@ interface QuestionPageParams {
 
 export default async function AllQuestionPage({ params }: QuestionPageParams) {
   const { id } = params
-  const { questionData, nextQuestionId, previousQuestionId } = await getQuestionPageData(id);
+  const { questionData, nextQuestionId, previousQuestionId, questionAnswerCounts } = await getQuestionPageData(id);
 
   return <MultipleChoiceQuestionAndAnswer
     questionId={id}
     questionData={questionData}
     nextQuestionId={nextQuestionId}
-    previousQuestionId={previousQuestionId} />
+    previousQuestionId={previousQuestionId}
+    questionAnswerCounts={questionAnswerCounts} />
 }

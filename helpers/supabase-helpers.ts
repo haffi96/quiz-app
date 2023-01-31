@@ -23,7 +23,7 @@ export async function getFirstQuestionInQuestionSet(questionSetId: number) {
 
 export async function getAllQuestionsInQuestionSet(questionSetId: number) {
     const { data, error } = await supabaseBrowser.from('questions').select('*').eq('question_set', questionSetId)
-    
+
     return { data, error }
 }
 
@@ -47,7 +47,7 @@ export async function getQuestionSetNameById(question_set_id: number) {
 }
 
 export async function getFirstQuestionInQuestionSetWithQuestionSetId(question_set_id: number) {
-    const { data, error } = await supabaseBrowser.from('questions').select('id').eq('question_set', question_set_id).limit(1); // potensh need to sort 
+    const { data, error } = await supabaseBrowser.from('questions').select('id').eq('question_set', question_set_id).limit(1); // potensh need to sort
 
     if (error) {
         console.error(error)
@@ -69,15 +69,15 @@ export async function getQuestionSets() {
 
 export async function getAllQuestions() {
     const { data, error } = await supabaseBrowser.from('questions').select('*');
- 
+
     return { data, error };
 }
 
 export async function getNextQuestionId(question_id: number, questionSetId?: number) {
-    const { data, error } = questionSetId ? 
+    const { data, error } = questionSetId ?
         await supabaseBrowser.from('questions').select('id').gt('id', question_id).eq('question_set', questionSetId):
         await supabaseBrowser.from('questions').select('id').gt('id', question_id);
-    
+
 
     if (error) {
         console.log({ error });
@@ -87,10 +87,10 @@ export async function getNextQuestionId(question_id: number, questionSetId?: num
 }
 
 export async function getPreviousQuestionId(question_id: number, questionSetId?: number) {
-    const { data, error } = questionSetId ? 
+    const { data, error } = questionSetId ?
         await supabaseBrowser.from('questions').select('id').lt('id', question_id).eq('question_set', questionSetId):
         await supabaseBrowser.from('questions').select('id').lt('id', question_id);
-    
+
     if (error) {
         console.log({ error });
     } else if (data) {
@@ -177,3 +177,20 @@ export async function createAnswer(bodyParms: { question_id: number; correct_ans
     }
 }
 
+export async function incrementAnswerCountForQuestion(questionID: number, selectedAnswer: Database["public"]["Enums"]["answer_choices"]) {
+    const field_to_increment = `${selectedAnswer}_count`
+    const { data, error } = await supabaseBrowser.rpc('increment', { question_id_to_inc: questionID, field_name: field_to_increment })
+    if (error) {
+        console.log(error);
+    }
+}
+
+export async function getAnswerCountsForQuestion(questionID: number) {
+    const { data, error } = await supabaseBrowser.from('submission').select('*').eq('question_id', questionID).limit(1)
+
+    if (error) {
+        console.log(error);
+    } else {
+        return data[0]
+    }
+}
