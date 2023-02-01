@@ -37,6 +37,7 @@ export function MultipleChoiceQuestionAndAnswer({
 
     const [checkedAnswer, setCheckedAnswer] = useState<Database["public"]["Enums"]["answer_choices"]>('a1');
     const [correct, setCorrect] = useState<boolean | undefined>(undefined);
+    const [correctChoice, setCorrectChoice] = useState<Database["public"]["Enums"]["answer_choices"] | undefined>(undefined);
 
     const handleCheck = (value: SetStateAction<Database["public"]["Enums"]["answer_choices"]>) => {
         correct != undefined ? null : setCheckedAnswer(value)
@@ -51,6 +52,7 @@ export function MultipleChoiceQuestionAndAnswer({
             } else {
                 const answer = await getAnswerByQuestionId(questionID)
                 await incrementAnswerCountForQuestion(questionID, checkedAnswer)
+                setCorrectChoice(answer?.correct_answer_choice)
                 setCorrect(checkedAnswer === answer?.correct_answer_choice)
             }
         }
@@ -60,19 +62,67 @@ export function MultipleChoiceQuestionAndAnswer({
     const nextQuestionRouteToPath = questionSetId ? `${Routes.QUESTION_SETS}/${questionSetId}/${nextQuestionId}` : `${Routes.QUESTIONS_ALL}/${nextQuestionId}`
     const showBodyIfNotTheSameAsTitle = () => questionData?.title !== questionData?.body && (<p className="py-5">{questionData?.body}</p>)
 
+    const totalAnswerCounts = questionAnswerCounts ?
+        questionAnswerCounts?.a1_count
+        + questionAnswerCounts?.a2_count
+        + questionAnswerCounts?.a3_count
+        + questionAnswerCounts?.a4_count
+        : 0
+
     return (
         <div className="container m-auto">
             <div className="flex flex-col items-center">
                 <p className="py-5 text-5xl font-bold">{questionSetName ?? ''}</p>
                 <p className="py-5">{questionData?.title ?? ''}</p>
                 {showBodyIfNotTheSameAsTitle()}
-                <CorrectOrIncorrectPopUp correct={correct} questionAnswerCounts={questionAnswerCounts} />
-                <RadioGroup value={checkedAnswer} onChange={(value: SetStateAction<Database["public"]["Enums"]["answer_choices"]>) => handleCheck(value)} className="flex w-2/3 flex-col space-y-3 pt-3">
+                <CorrectOrIncorrectPopUp correct={correct} />
+                <RadioGroup
+                    value={checkedAnswer}
+                    onChange={(value: SetStateAction<Database["public"]["Enums"]["answer_choices"]>) => (
+                        handleCheck(value))}
+                    className="flex w-2/3 flex-col space-y-3 pt-3"
+                >
                     <RadioGroup.Label>Pick an answer:</RadioGroup.Label>
-                    <RadioGroupOptionWithMotion checkedAnswer={checkedAnswer} answerText={'A) ' + (questionData?.a1 ?? '')} thisAnswerChoice={"a1"} />
-                    <RadioGroupOptionWithMotion checkedAnswer={checkedAnswer} answerText={'B) ' + (questionData?.a2 ?? '')} thisAnswerChoice={"a2"} />
-                    <RadioGroupOptionWithMotion checkedAnswer={checkedAnswer} answerText={'C) ' + (questionData?.a3 ?? '')} thisAnswerChoice={"a3"} />
-                    <RadioGroupOptionWithMotion checkedAnswer={checkedAnswer} answerText={'D) ' + (questionData?.a4 ?? '')} thisAnswerChoice={"a4"} />
+                    <RadioGroupOptionWithMotion
+                        checkedAnswer={checkedAnswer}
+                        answerText={'A) ' + (questionData?.a1 ?? '')}
+                        thisAnswerChoice={"a1"}
+                        answered={correct}
+                        choiceChosenPercent={
+                            questionAnswerCounts?.a1_count ? questionAnswerCounts?.a1_count / totalAnswerCounts : 0
+                        }
+                        correctChoice={correctChoice}
+                    />
+                    <RadioGroupOptionWithMotion
+                        checkedAnswer={checkedAnswer}
+                        answerText={'B) ' + (questionData?.a2 ?? '')}
+                        thisAnswerChoice={"a2"}
+                        answered={correct}
+                        choiceChosenPercent={
+                            questionAnswerCounts?.a2_count ? questionAnswerCounts?.a2_count / totalAnswerCounts : 0
+                        }
+                        correctChoice={correctChoice}
+                    />
+                    <RadioGroupOptionWithMotion
+                        checkedAnswer={checkedAnswer}
+                        answerText={'C) ' + (questionData?.a3 ?? '')}
+                        thisAnswerChoice={"a3"}
+                        answered={correct}
+                        choiceChosenPercent={
+                            questionAnswerCounts?.a3_count ? questionAnswerCounts?.a3_count / totalAnswerCounts : 0
+                        }
+                        correctChoice={correctChoice}
+                    />
+                    <RadioGroupOptionWithMotion
+                        checkedAnswer={checkedAnswer}
+                        answerText={'D) ' + (questionData?.a4 ?? '')}
+                        thisAnswerChoice={"a4"}
+                        answered={correct}
+                        choiceChosenPercent={
+                            questionAnswerCounts?.a4_count ? questionAnswerCounts?.a4_count / totalAnswerCounts : 0
+                        }
+                        correctChoice={correctChoice}
+                    />
                 </RadioGroup>
                 <div className="p-10">
                     <NavButton text="Prev" routeToPath={previousQuestionRouteToPath} />
@@ -82,6 +132,6 @@ export function MultipleChoiceQuestionAndAnswer({
                     <NextButton correct={correct} routeToPath={nextQuestionRouteToPath} />
                 </div>
             </div >
-        </div>
+        </div >
     );
 }

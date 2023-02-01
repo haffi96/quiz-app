@@ -1,13 +1,11 @@
 import { motion } from "framer-motion"
-import type { Database } from "../../lib/database.types"
 
 
 export interface MessagePopUpParams {
     correct?: boolean,
-    questionAnswerCounts?: Database["public"]["Tables"]["submission"]["Row"],
 }
 
-export const CorrectOrIncorrectPopUp = ({ correct, questionAnswerCounts }: MessagePopUpParams) => {
+export const CorrectOrIncorrectPopUp = ({ correct }: MessagePopUpParams) => {
     if (correct === undefined) {
         return null
     }
@@ -22,11 +20,6 @@ export const CorrectOrIncorrectPopUp = ({ correct, questionAnswerCounts }: Messa
             }}
             className="w-2/3 rounded-xl bg-green-300 p-2 dark:text-black">
             Correct answer!
-            Submissions:
-            Answer 1: {questionAnswerCounts?.a1_count},
-            Answer 2: {questionAnswerCounts?.a2_count},
-            Answer 3: {questionAnswerCounts?.a3_count},
-            Answer 4: {questionAnswerCounts?.a4_count}
         </motion.div>
     } else {
         return <motion.div
@@ -38,11 +31,6 @@ export const CorrectOrIncorrectPopUp = ({ correct, questionAnswerCounts }: Messa
             }}
             className="w-2/3 rounded-xl bg-red-400 p-2 dark:text-black">
             Incorrect!
-            Submissions:
-            Answer 1: {questionAnswerCounts?.a1_count},
-            Answer 2: {questionAnswerCounts?.a2_count},
-            Answer 3: {questionAnswerCounts?.a3_count},
-            Answer 4: {questionAnswerCounts?.a4_count}
         </motion.div>
     }
 }
