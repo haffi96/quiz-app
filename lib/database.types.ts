@@ -114,30 +114,30 @@ export interface Database {
       }
       submission: {
         Row: {
-          a1_count: number | null
-          a2_count: number | null
-          a3_count: number | null
-          a4_count: number | null
+          a1_count: number
+          a2_count: number
+          a3_count: number
+          a4_count: number
           created_at: string
           id: number
           question_id: number | null
           updated_at: string
         }
         Insert: {
-          a1_count?: number | null
-          a2_count?: number | null
-          a3_count?: number | null
-          a4_count?: number | null
+          a1_count?: number
+          a2_count?: number
+          a3_count?: number
+          a4_count?: number
           created_at?: string
           id?: number
           question_id?: number | null
           updated_at?: string
         }
         Update: {
-          a1_count?: number | null
-          a2_count?: number | null
-          a3_count?: number | null
-          a4_count?: number | null
+          a1_count?: number
+          a2_count?: number
+          a3_count?: number
+          a4_count?: number
           created_at?: string
           id?: number
           question_id?: number | null

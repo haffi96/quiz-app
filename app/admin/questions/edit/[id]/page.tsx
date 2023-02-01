@@ -99,9 +99,21 @@ export default function Page({ params }: EditIdParams) {
     }
 
     return (
-        <QuestionForm title={title} setTitle={setTitle} body={body} setBody={setBody} a1={a1} setA1={setA1} a2={a2} setA2={setA2} a3={a3}
-            setA3={setA3} a4={a4} setA4={setA4} correctAnswer={correctAnswer} setCorrectAnswer={setCorrectAnswer} question_set={question_set} set_question_set={set_question_set}
-            handleSubmit={handleSubmit} handleDelete={handleDelete} />
+        <QuestionForm
+            title={title}
+            setTitle={setTitle}
+            body={body}
+            setBody={setBody}
+            a1={a1} setA1={setA1}
+            a2={a2} setA2={setA2}
+            a3={a3} setA3={setA3}
+            a4={a4} setA4={setA4}
+            correctAnswer={correctAnswer}
+            setCorrectAnswer={setCorrectAnswer}
+            question_set={question_set}
+            set_question_set={set_question_set}
+            handleSubmit={handleSubmit}
+            handleDelete={handleDelete} />
     )
 }
 

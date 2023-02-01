@@ -10,6 +10,7 @@ Table "question_sets" {
   "created_at" timestamp [default: `now()`]
   "updated_at" timestamp [default: `now()`]
   "name" text [not null]
+  "subscribed_to_by" text
 }
 
 Table "questions" {
@@ -26,6 +27,22 @@ Table "questions" {
   Note: 'The main questions content'
 }
 
+Table "submission" {
+  "id" bigint [not null]
+  "created_at" timestamp [not null, default: `now()`]
+  "updated_at" timestamp [not null, default: `now()`]
+  "question_id" bigint
+  "a1_count" bigint [not null]
+  "a2_count" bigint [not null]
+  "a3_count" bigint [not null]
+  "a4_count" bigint [not null]
+  Note: 'Table to record user answer submissions for questions'
+}
+
 Ref "answers_question_id_fkey":"questions"."id" < "answers"."question_id"
 
+Ref "question_sets_subscribed_to_by_fkey":"question_sets"."name" < "question_sets"."subscribed_to_by"
+
 Ref "questions_question_set_fkey":"question_sets"."id" < "questions"."question_set"
+
+Ref "submission_question_id_fkey":"questions"."id" < "submission"."question_id"

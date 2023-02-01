@@ -1,18 +1,29 @@
 {
-  "parser": "@typescript-eslint/parser",
-  "parserOptions": {
-    "project": "./tsconfig.json"
-  },
-  "plugins": [
-    "@typescript-eslint",
-    "tailwindcss"
-  ],
-  "extends": [
-    "next/core-web-vitals",
-    "plugin:@typescript-eslint/recommended",
-    "plugin:tailwindcss/recommended"
-  ],
-  "rules": {
-    "@typescript-eslint/consistent-type-imports": "warn"
-  }
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "project": "./tsconfig.json"
+    },
+    "plugins": [
+        "@typescript-eslint",
+        "tailwindcss"
+    ],
+    "extends": [
+        "next/core-web-vitals",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:tailwindcss/recommended"
+    ],
+    "rules": {
+        "@typescript-eslint/consistent-type-imports": "warn",
+        "max-len": [
+            "error",
+            {
+                "code": 120,
+                "tabWidth": 2,
+                "ignoreComments": true, //"comments": 80
+                "ignoreUrls": true,
+                "ignoreStrings": true,
+                "ignoreTemplateLiterals": true
+            }
+        ]
+    }
 }
