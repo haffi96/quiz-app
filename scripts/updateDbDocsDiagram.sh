@@ -17,7 +17,7 @@ awk '!/auth./' schema.sql > new_schema.sql && mv new_schema.sql schema.sql
 awk '!/pg_catalog/' schema.sql > new_schema.sql && mv new_schema.sql schema.sql
 sed -i schema.sql 's/CREATE TABLE public./CREATE TABLE /g' schema.sql
 sed -i schema.sql 's/public.//g' schema.sql
-sed -i schema.sql "s/DEFAULT '0'::bigint//g" schema.sql
+sed -i schema.sql 's/DEFAULT '0'::bigint//g' schema.sql
 
 sql2dbml --postgres schema.sql -o docs/schema.dbml
 
