@@ -7,5 +7,5 @@ interface NavBarListItemProps {
 }
 
 export function NavBarListItem({ children }: NavBarListItemProps) {
-    return <li className="py-8 lg:p-0 lg:px-3">{children}</li>;
+    return <li className="m-auto lg:p-0 lg:px-3">{children}</li>;
 }

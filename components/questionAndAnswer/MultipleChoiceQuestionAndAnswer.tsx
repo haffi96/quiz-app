@@ -124,7 +124,15 @@ export function MultipleChoiceQuestionAndAnswer({
                         correctChoice={correctChoice}
                     />
                 </RadioGroup>
-                <div className="p-10">
+                <div className="space-x-5 p-10">
+                    <motion.button onClick={() => {
+                        // Reset to initial state
+                        setCheckedAnswer('a1'); setCorrect(undefined)
+                    }}
+                        whileHover={{ scale: 1.05, transition: { duration: 0.3 } }}
+                        className="rounded border border-blue-500  bg-transparent py-2 px-4 font-semibold text-blue-700 hover:border-transparent hover:bg-blue-500 hover:text-white dark:hover:text-white" >
+                        Redo
+                    </motion.button>
                     <NavButton text="Prev" routeToPath={previousQuestionRouteToPath} />
                     <motion.button onClick={() => { questionData ? onSubmit(questionData.id) : {} }} whileHover={{ scale: 1.05, transition: { duration: 0.3 } }} className="rounded border border-blue-500  bg-transparent py-2 px-4 font-semibold text-blue-700 hover:border-transparent hover:bg-blue-500 hover:text-white dark:hover:text-white">
                         Submit
