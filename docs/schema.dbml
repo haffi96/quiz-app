@@ -5,6 +5,15 @@ Table "answers" {
   "question_id" bigint [not null]
 }
 
+Table "customers" {
+  "id" bigint [not null]
+  "created_at" timestamp [default: `now()`]
+  "stripe_customer_id" text
+  "user_uuid" uuid
+  "admin_role" boolean [not null, default: false, note: 'true if admin else false']
+  "is_subscribed" boolean [not null, default: false, note: 'Has this user paid for premium?']
+}
+
 Table "question_sets" {
   "id" bigint [not null]
   "created_at" timestamp [default: `now()`]
@@ -40,8 +49,6 @@ Table "submission" {
 }
 
 Ref "answers_question_id_fkey":"questions"."id" < "answers"."question_id"
-
-Ref "question_sets_subscribed_to_by_fkey":"question_sets"."name" < "question_sets"."subscribed_to_by"
 
 Ref "questions_question_set_fkey":"question_sets"."id" < "questions"."question_set"
 

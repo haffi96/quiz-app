@@ -23,13 +23,15 @@ jobs:
       - run: sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt/ `lsb_release -cs`-pgdg main" >> /etc/apt/sources.list.d/pgdg.list'
       - run: sudo apt-get update
       - run: sudo apt-get install --yes postgresql-client-15
-      - run: PGPASSWORD=${{ secrets.PGPASSWORD }} pg_dump -h ${{ secrets.PGHOST }} -U ${{ secrets.PGUSER }} -p ${{ secrets.PGPORT }} -d ${{ secrets.PGDATABASE }} -s -t answers -t questions -t question_sets -t participants > schema.sql
+      - run: PGPASSWORD=${{ secrets.PGPASSWORD }} pg_dump -h ${{ secrets.PGHOST }} -U ${{ secrets.PGUSER }} -p ${{ secrets.PGPORT }} -d ${{ secrets.PGDATABASE }} -s -t answers -t questions -t question_sets -t submission -t customers > schema.sql
       - run: awk '!/POLICY/' schema.sql > new_schema.sql && mv new_schema.sql schema.sql
       - run: awk '!/GRANT/' schema.sql > new_schema.sql && mv new_schema.sql schema.sql
       - run: awk '!/SET/' schema.sql > new_schema.sql && mv new_schema.sql schema.sql
+      - run: awk '!/auth./' schema.sql > new_schema.sql && mv new_schema.sql schema.sql
       - run: awk '!/pg_catalog/' schema.sql > new_schema.sql && mv new_schema.sql schema.sql
       - run: sed -i 's/CREATE TABLE public./CREATE TABLE /g' schema.sql
       - run: sed -i 's/public.//g' schema.sql
+      - run: sed -i schema.sql "s/DEFAULT '0'::bigint//g" schema.sql
       - run: npm install -g @dbml/cli
       - run: sql2dbml --postgres schema.sql -o schema.dbml
       - run: sudo npm install -g dbdocs

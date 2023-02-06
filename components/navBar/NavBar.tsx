@@ -19,13 +19,19 @@ export default function NavBar({ accessToken }: { accessToken?: string }) {
 
   const LoggedInContents = (
     <>
+      <NavBarListItem><Link href="/pricing">Pricing</Link></NavBarListItem>
       <NavBarListItem><Link href='/admin/questions'>Admin</Link></NavBarListItem>
       <NavBarListItem><Link href='/questions/all'>Questions</Link></NavBarListItem>
       <NavBarListItem><LogOut /></NavBarListItem>
     </>
   )
 
-  const LoggedOutContents = <NavBarListItem><li><Link href="/login">Login</Link></li></NavBarListItem>
+  const LoggedOutContents = (
+    <>
+      <NavBarListItem><Link href="/pricing">Pricing</Link></NavBarListItem>
+      <NavBarListItem><Link href="/login">Login</Link></NavBarListItem>
+    </>
+  )
 
   const onClick = () => {
     setIsHidden(!isHidden)

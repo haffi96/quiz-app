@@ -8,7 +8,7 @@ export $(grep -v '^#' .env.local | xargs)
 # PGDATABASE=
 # PGUSER=
 # Add new tables with '-t <new table name>'
-pg_dump -s -t answers -t questions -t question_sets -t submission > schema.sql
+pg_dump -s -t answers -t questions -t question_sets -t submission -t customers > schema.sql
 
 awk '!/POLICY/' schema.sql > new_schema.sql && mv new_schema.sql schema.sql
 awk '!/GRANT/' schema.sql > new_schema.sql && mv new_schema.sql schema.sql

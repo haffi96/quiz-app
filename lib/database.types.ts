@@ -51,6 +51,32 @@ export interface Database {
           question_id?: number
         }
       }
+      customers: {
+        Row: {
+          admin_role: boolean
+          created_at: string | null
+          id: number
+          is_subscribed: boolean
+          stripe_customer_id: string | null
+          user_uuid: string | null
+        }
+        Insert: {
+          admin_role?: boolean
+          created_at?: string | null
+          id?: number
+          is_subscribed?: boolean
+          stripe_customer_id?: string | null
+          user_uuid?: string | null
+        }
+        Update: {
+          admin_role?: boolean
+          created_at?: string | null
+          id?: number
+          is_subscribed?: boolean
+          stripe_customer_id?: string | null
+          user_uuid?: string | null
+        }
+      }
       question_sets: {
         Row: {
           created_at: string | null
