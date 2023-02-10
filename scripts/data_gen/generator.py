@@ -82,7 +82,7 @@ class DataGenerator:
                 self.now,  # created_at
                 self.now,  # updated_at
                 set_name,  # name
-                "",
+                "",  # subscribed_to_by
             ]
             for index, set_name in enumerate(question_sets_list)
         ]
