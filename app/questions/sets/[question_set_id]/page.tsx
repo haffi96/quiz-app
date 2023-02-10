@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { getFirstQuestionInQuestionSetWithQuestionSetId, getQuestionSetNameById } from "../../../../helpers/supabase-helpers";
+import { getFirstQuestionInQuestionSetWithQuestionSetId, getQuestionSetNameById } from "../../../../utils/supabaseHelper";
 import { Routes } from "../../../../enums/Routes";
 
 interface Params {

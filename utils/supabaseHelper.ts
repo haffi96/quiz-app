@@ -1,5 +1,5 @@
 import type { Database } from "../lib/database.types";
-import supabaseBrowser from './supabase-browser';
+import supabaseBrowser from '../supabaseConfig/supabase-browser';
 
 export async function getFirstQuestion() {
     const { data: questions, error } = await supabaseBrowser.from('questions').select('*').limit(1);
@@ -179,7 +179,8 @@ export async function createAnswer(bodyParms: { question_id: number; correct_ans
 
 export async function incrementAnswerCountForQuestion(questionID: number, selectedAnswer: Database["public"]["Enums"]["answer_choices"]) {
     const field_to_increment = `${selectedAnswer}_count`
-    const { data, error } = await supabaseBrowser.rpc('increment', { question_id_to_inc: questionID, field_name: field_to_increment })
+    const { error } = await supabaseBrowser.rpc('increment', { question_id_to_inc: questionID, field_name: field_to_increment })
+    
     if (error) {
         console.log(error);
     }

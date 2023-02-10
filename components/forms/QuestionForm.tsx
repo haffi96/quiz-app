@@ -1,9 +1,10 @@
 "use client";
+
 import Link from "next/link";
 import type { Dispatch, FormEvent, SetStateAction } from "react";
 import type { Database } from "../../lib/database.types";
 
-export interface NewQuestionFormProps {
+export interface QuestionFormProps {
     title: string,
     setTitle: Dispatch<SetStateAction<string>>,
     body: string,
@@ -43,7 +44,7 @@ export function QuestionForm({
     handleDelete,
     question_set,
     set_question_set
-}: NewQuestionFormProps) {
+}: QuestionFormProps) {
     return (
         <>
             <div className="mx-20 my-10 w-3/5 text-center">

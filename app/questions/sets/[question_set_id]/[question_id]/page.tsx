@@ -10,7 +10,12 @@ interface PageParams {
 
 export default async function Page({ params }: PageParams) {
     const { question_set_id, question_id } = params;
-    const { questionData, nextQuestionId, previousQuestionId, questionAnswerCounts } = await getQuestionPageData(question_id, question_set_id);
+    const {
+        questionData,
+        nextQuestionId,
+        previousQuestionId,
+        questionAnswerCounts
+    } = await getQuestionPageData(question_id, question_set_id);
 
     return <MultipleChoiceQuestionAndAnswer
         questionId={question_id}

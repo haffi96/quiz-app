@@ -5,18 +5,36 @@ import type { Database } from "../../lib/database.types";
 import { Routes } from "../../enums/Routes";
 import { QuestionSidebarListItem } from "./QuestionSidebarListItem";
 import { useState } from "react";
+import { useContext } from 'react';
+import QuestionsHistoryContext from "../../contexts/QuestionsHistoryContext";
+import type { AnswerState } from "../../app/questions/all/layout";
 
-type Question = Database["public"]["Tables"]["questions"]["Row"];
+type DbQuestion = Database["public"]["Tables"]["questions"]["Row"];
+
+interface Question extends DbQuestion {
+    answerState?: AnswerState;
+}
 
 interface QuestionSidebarProps {
     allQuestions: Question[],
     route: string
 }
 
+export interface QuestionHistory {
+    id: number,
+    answerState: AnswerState
+}
+
+export function getQuestionAnswerStateFromId(id: number, questionsHistory: QuestionHistory[]) {
+    const singleHistory = questionsHistory.find((h) => h.id === id);
+
+    return singleHistory?.answerState
+}
+
 export default function QuestionSidebar({ allQuestions, route }: QuestionSidebarProps) {
     const [search, setSearch] = useState('')
-
-    const searchFilter = (question: Question) => search === '' ? question : question.title.toLowerCase().includes(search.toLowerCase());
+    const { questionsHistory } = useContext(QuestionsHistoryContext);
+    const searchFilter = (question: Question) => search === '' || question.title.toLowerCase().includes(search.toLowerCase());
 
     return (
         <aside className="mx-auto w-full lg:left-0 lg:m-0 lg:h-full lg:w-1/3">
@@ -37,10 +55,12 @@ export default function QuestionSidebar({ allQuestions, route }: QuestionSidebar
                     {route === Routes.ADMIN_EDIT && <QuestionSidebarListItem newItem text="# Create New Question #" key={Routes.NEW_QUESTION} index={-1} href={Routes.NEW_QUESTION} />}
                     <br />
                     {
-                        allQuestions.filter(searchFilter)
-                            .map((question, index) => (
-                                <QuestionSidebarListItem text={question.title ?? 'Missing title'} key={question.id} index={index} href={`${route}/${question.id}`} />
-                            ))
+                        allQuestions
+                            .filter(searchFilter)
+                            .map((question, index) => {
+                                const answerState = getQuestionAnswerStateFromId(question.id, questionsHistory)
+                                return <QuestionSidebarListItem text={question.title ?? 'Missing title'} key={question.id} index={index} href={`${route}/${question.id}`} answerState={answerState} />
+                            })
                     }
                 </ul>
             </div>

@@ -1,6 +1,5 @@
 import { motion } from "framer-motion"
 
-
 export interface MessagePopUpParams {
     correct?: boolean,
 }

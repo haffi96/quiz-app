@@ -2,7 +2,7 @@ import 'server-only'
 
 import "./globals.css";
 import { Providers } from "./providers";
-import createClient from '../helpers/supabase-server';
+import createClient from '../supabaseConfig/supabase-server';
 import SupaBaseListener from '../components/SupaBaseListener';
 import NavBar from '../components/navBar/NavBar';
 

@@ -1,6 +1,6 @@
 import QuestionSidebar from "../../../../components/questionSidebar/QuestionSidebar";
 import { Routes } from "../../../../enums/Routes";
-import { getAllQuestionsInQuestionSet } from "../../../../helpers/supabase-helpers";
+import { getAllQuestionsInQuestionSet } from "../../../../utils/supabaseHelper";
 
 export default async function QuestionPageLayout({
     children,

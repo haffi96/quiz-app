@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Routes } from "../../../enums/Routes";
-import { getAllQuestions } from "../../../helpers/supabase-helpers"
+import { getAllQuestions } from "../../../utils/supabaseHelper"
 import "./style.css";
 
 export default async function AdminQuestionsPage() {
