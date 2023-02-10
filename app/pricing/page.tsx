@@ -4,7 +4,7 @@ import cn from 'classnames';
 import { useState } from 'react';
 import Image from 'next/image';
 import { PRODUCTS, SUBSCRIPTION } from '../../lib/constants';
-import supabaseBrowser from '../../helpers/supabase-browser';
+import supabaseBrowser from '../../supabaseConfig/supabase-browser';
 import { useRouter } from 'next/navigation';
 
 
@@ -13,8 +13,7 @@ type BillingInterval = 'year' | 'month';
 
 export default function Pricing() {
     const router = useRouter();
-    const [billingInterval, setBillingInterval] =
-        useState<BillingInterval>('month');
+    const [billingInterval, setBillingInterval] = useState<BillingInterval>('month');
 
     const handleCheckout = async (productName: string) => {
         const { data: { session } } = await supabaseBrowser.auth.getSession()
@@ -22,11 +21,9 @@ export default function Pricing() {
         if (!session?.access_token) {
             router.push('/login')
             return
-        } else {
-            if (productName === 'Free') {
-                router.push('/')
-                return
-            }
+        } else if (productName === 'Free') {
+            router.push('/')
+            return
         }
 
         const resp = await fetch('/api/create-checkout-session', {

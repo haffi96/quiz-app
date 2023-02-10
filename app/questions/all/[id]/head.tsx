@@ -1,4 +1,4 @@
-import { getQuestionById } from "../../../../helpers/supabase-helpers";
+import { getQuestionById } from "../../../../utils/supabaseHelper";
 
 export default async function Head({ params }: { params: { id: number } }) {
   const question = await getQuestionById(params.id);

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import supabaseBrowser from "../../helpers/supabase-browser";
+import supabaseBrowser from "../../supabaseConfig/supabase-browser";
 
 export default function Login() {
     const router = useRouter();
@@ -90,7 +90,6 @@ export default function Login() {
                     />
                     <div className='flex w-2/3 flex-row justify-center space-x-10 py-5'>
                         <button className="text-blue-300">Forgot your password?</button>
-                        {/* <button onClick={() => handleSignup(email, password)} className="text-blue-300">Need an account?</button> */}
                     </div>
                     <button onClick={() => handleLogin(email, password)} className="w-1/2 bg-blue-300 py-2 text-black hover:bg-blue-500">Sign in</button>
                     <button onClick={() => handleSignup(email, password)} className="w-1/2 bg-blue-300 py-2 text-black hover:bg-blue-500">Sign up</button>

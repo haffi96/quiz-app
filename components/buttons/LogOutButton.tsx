@@ -1,5 +1,5 @@
 'use client';
-import supabaseBrowser from "../../helpers/supabase-browser";
+import supabaseBrowser from "../../supabaseConfig/supabase-browser";
 import Router from "next/router";
 
 export default function LogOut() {

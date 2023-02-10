@@ -1,12 +1,12 @@
 "use client"
 
-import { updateQuestionById, getQuestionById, deleteQuestionById, getAnswerByQuestionId, updateAnswerByAnswerId, createAnswer, deleteAnswerByQuestionId } from "../../../../../helpers/supabase-helpers"
+import { updateQuestionById, getQuestionById, deleteQuestionById, getAnswerByQuestionId, updateAnswerByAnswerId, createAnswer, deleteAnswerByQuestionId } from "../../../../../utils/supabaseHelper"
 import type { FormEvent } from "react";
 import { useEffect, useState } from "react"
 import { QuestionForm } from "../../../../../components/forms/QuestionForm";
-import type { Database } from "../../../../../lib/database.types";
 import { useRouter } from "next/navigation";
 import { Routes } from "../../../../../enums/Routes";
+import { useQuestionFormInputs } from "../../../../../hooks/useQuestionFormInputs";
 
 interface EditIdParams {
     params: { id: number }
@@ -14,15 +14,11 @@ interface EditIdParams {
 
 export default function Page({ params }: EditIdParams) {
     const router = useRouter();
-    const [title, setTitle] = useState<string>('')
-    const [body, setBody] = useState<string>('')
-    const [a1, setA1] = useState<string>('')
-    const [a2, setA2] = useState<string>('')
-    const [a3, setA3] = useState<string>('')
-    const [a4, setA4] = useState<string>('')
-    const [question_set, set_question_set] = useState<Database["public"]["Tables"]["questions"]["Row"]["question_set"]>()
-    const [correctAnswer, setCorrectAnswer] = useState<Database["public"]["Enums"]["answer_choices"]>('a1')
     const [answerId, setAnswerId] = useState<number>()
+    const {
+        title, setTitle, body, setBody, a1, setA1, a2, setA2,
+        a3, setA3, a4, setA4, correctAnswer, setCorrectAnswer, question_set, set_question_set
+    } = useQuestionFormInputs();
 
     const { id } = params
 
@@ -63,7 +59,7 @@ export default function Page({ params }: EditIdParams) {
 
         getQuestionAndSetFields();
         getAndSetAnswers();
-    }, [id, router]);
+    }, [id, router, setA1, setA2, setA3, setA4, setBody, setCorrectAnswer, setTitle, set_question_set]);
 
     const handleSubmit = async (event: FormEvent) => {
         if (!title || !body || !a1 || !a2 || !a3 || !a4 || !question_set) {

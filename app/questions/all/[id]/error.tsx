@@ -1,4 +1,4 @@
-'use client'; // Error components must be Client components
+'use client';
 
 import { useEffect } from 'react';
 
@@ -10,7 +10,7 @@ export default function Error({
     reset: () => void;
 }) {
     useEffect(() => {
-        // Log the error to an error reporting service
+        // TODO: Log the error to an error reporting service - probably pino
         console.error(error);
     }, [error]);
 

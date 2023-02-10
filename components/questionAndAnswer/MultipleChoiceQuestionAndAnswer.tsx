@@ -3,14 +3,17 @@
 import { RadioGroup } from "@headlessui/react";
 import { motion } from "framer-motion";
 import type { SetStateAction } from "react";
+import { useContext } from "react";
 import { useState } from "react";
-import { getAnswerByQuestionId, incrementAnswerCountForQuestion } from "../../helpers/supabase-helpers";
+import { getAnswerByQuestionId, incrementAnswerCountForQuestion } from "../../utils/supabaseHelper";
 import type { Database } from "../../lib/database.types";
 import { Routes } from "../../enums/Routes";
 import { CorrectOrIncorrectPopUp } from "../popUps/CorrectOrIncorrectPopUp";
 import { RadioGroupOptionWithMotion } from "../RadioGroupOptionWithMotion";
 import { NavButton } from "./NavButton";
 import { NextButton } from "./NextButton";
+import QuestionsHistoryContext from "../../contexts/QuestionsHistoryContext";
+import { AnswerState } from "../../app/questions/all/layout";
 
 export interface MultipleChoiceQuestionAndAnswerParams {
     questionId?: number
@@ -38,6 +41,7 @@ export function MultipleChoiceQuestionAndAnswer({
     const [checkedAnswer, setCheckedAnswer] = useState<Database["public"]["Enums"]["answer_choices"]>('a1');
     const [correct, setCorrect] = useState<boolean | undefined>(undefined);
     const [correctChoice, setCorrectChoice] = useState<Database["public"]["Enums"]["answer_choices"] | undefined>(undefined);
+    const { questionsHistory, setQuestionsHistory } = useContext(QuestionsHistoryContext);
 
     const handleCheck = (value: SetStateAction<Database["public"]["Enums"]["answer_choices"]>) => {
         correct != undefined ? null : setCheckedAnswer(value)
@@ -46,16 +50,23 @@ export function MultipleChoiceQuestionAndAnswer({
     const onSubmit = async (questionID: number) => {
         if (!checkedAnswer) {
             alert("select something")
-        } else {
-            if (correct != undefined) {
-                null
-            } else {
-                const answer = await getAnswerByQuestionId(questionID)
-                await incrementAnswerCountForQuestion(questionID, checkedAnswer)
-                setCorrectChoice(answer?.correct_answer_choice)
-                setCorrect(checkedAnswer === answer?.correct_answer_choice)
-            }
+            return;
         }
+
+        const answer = await getAnswerByQuestionId(questionID)
+        const isCorrect = checkedAnswer === answer?.correct_answer_choice;
+        await incrementAnswerCountForQuestion(questionID, checkedAnswer)
+        setCorrectChoice(answer?.correct_answer_choice)
+        setCorrect(isCorrect)
+
+        if (!setQuestionsHistory) {
+            return;
+        }
+        const index = questionsHistory.findIndex((q) => q.id === questionID);
+        const thing = { id: questionID, answerState: isCorrect ? AnswerState.Correct : AnswerState.Incorrect };
+        const newQuestionsHistory = [...questionsHistory]
+        newQuestionsHistory.splice(index, 1, thing)
+        setQuestionsHistory(newQuestionsHistory)
     }
 
     const previousQuestionRouteToPath = questionSetId ? `${Routes.QUESTION_SETS}/${questionSetId}/${previousQuestionId}` : `${Routes.QUESTIONS_ALL}/${previousQuestionId}`
