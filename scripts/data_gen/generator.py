@@ -82,6 +82,7 @@ class DataGenerator:
                 self.now,  # created_at
                 self.now,  # updated_at
                 set_name,  # name
+                "",
             ]
             for index, set_name in enumerate(question_sets_list)
         ]
@@ -168,6 +169,14 @@ class DBTasks:
             with open(os.path.join(TSV_BASE_DIR, file_name), encoding="utf-8") as file:
                 cursor.copy_from(file, table_name, sep="\t", null="NULL")
             logging.info(f"{db_name.upper()}: {table_name}: Uploaded data")
+
+            # UPDATE TABLE SEQUENCE AFTER UPLOAD
+            logging.info(f"{db_name.upper()}: {table_name}: Updating Sequences")
+            cursor = con.cursor()
+            cursor.execute(
+                f"SELECT setval('{table_name}_id_seq', COALESCE((SELECT MAX(id)+1 FROM {table_name}), 1), false);"
+            )
+            logging.info(f"{db_name.upper()}: {table_name}: Updated sequence")
 
         con.close()
         logging.info(f"{db_name.upper()}: Successfully re-populated")

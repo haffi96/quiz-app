@@ -11,4 +11,5 @@ pip install psycopg2-binary
 
 Then run:
 ```sh
-DB_CONNECTION_URI="postgresql://postgres:pass@localhost:5555/postgres" python 
+DB_CONNECTION_URI="postgresql://postgres:pass@localhost:5555/postgres" python generator.py
+```
