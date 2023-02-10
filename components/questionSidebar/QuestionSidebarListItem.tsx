@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { AnswerState } from "../../app/questions/all/layout"
+import { AnswerState } from "../../enums/AnswerState"
 
 interface ListItemProps {
     text: string,
