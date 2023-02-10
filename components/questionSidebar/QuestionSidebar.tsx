@@ -7,7 +7,7 @@ import { QuestionSidebarListItem } from "./QuestionSidebarListItem";
 import { useState } from "react";
 import { useContext } from 'react';
 import QuestionsHistoryContext from "../../contexts/QuestionsHistoryContext";
-import type { AnswerState } from "../../app/questions/all/layout";
+import type { AnswerState } from "../../enums/AnswerState";
 
 type DbQuestion = Database["public"]["Tables"]["questions"]["Row"];
 

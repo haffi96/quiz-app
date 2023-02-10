@@ -2,12 +2,7 @@ import QuestionSidebar from "../../../components/questionSidebar/QuestionSidebar
 import { Routes } from "../../../enums/Routes";
 import { getAllQuestions } from "../../../utils/supabaseHelper";
 import QuestionHistoryProvider from "../../../providers/QuestionHistoryProvider";
-
-export const enum AnswerState {
-    Correct = 'CORRECT',
-    Incorrect = 'INCORRECT',
-    Unanswered = 'UNANSWERED'
-}
+import { AnswerState } from "../../../enums/AnswerState";
 
 export default async function QuestionPageLayout({
     children

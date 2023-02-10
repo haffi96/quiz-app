@@ -13,7 +13,7 @@ import { RadioGroupOptionWithMotion } from "../RadioGroupOptionWithMotion";
 import { NavButton } from "./NavButton";
 import { NextButton } from "./NextButton";
 import QuestionsHistoryContext from "../../contexts/QuestionsHistoryContext";
-import { AnswerState } from "../../app/questions/all/layout";
+import { AnswerState } from "../../enums/AnswerState";
 
 export interface MultipleChoiceQuestionAndAnswerParams {
     questionId?: number
