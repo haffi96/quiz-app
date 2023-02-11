@@ -180,7 +180,7 @@ export async function createAnswer(bodyParms: { question_id: number; correct_ans
 export async function incrementAnswerCountForQuestion(questionID: number, selectedAnswer: Database["public"]["Enums"]["answer_choices"]) {
     const field_to_increment = `${selectedAnswer}_count`
     const { error } = await supabaseBrowser.rpc('increment', { question_id_to_inc: questionID, field_name: field_to_increment })
-    
+
     if (error) {
         console.log(error);
     }
