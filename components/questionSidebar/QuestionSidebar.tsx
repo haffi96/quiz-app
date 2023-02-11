@@ -6,7 +6,7 @@ import { Routes } from "../../enums/Routes";
 import { QuestionSidebarListItem } from "./QuestionSidebarListItem";
 import { useState } from "react";
 import { useContext } from 'react';
-import QuestionsHistoryContext from "../../contexts/QuestionsHistoryContext";
+import QuestionHistoriesContext from "../../contexts/QuestionHistoriesContext";
 import type { AnswerState } from "../../enums/AnswerState";
 
 type DbQuestion = Database["public"]["Tables"]["questions"]["Row"];
@@ -33,7 +33,7 @@ export function getQuestionAnswerStateFromId(id: number, questionsHistory: Quest
 
 export default function QuestionSidebar({ allQuestions, route }: QuestionSidebarProps) {
     const [search, setSearch] = useState('')
-    const { questionsHistory } = useContext(QuestionsHistoryContext);
+    const { questionHistories } = useContext(QuestionHistoriesContext);
     const searchFilter = (question: Question) => search === '' || question.title.toLowerCase().includes(search.toLowerCase());
 
     return (
@@ -58,7 +58,7 @@ export default function QuestionSidebar({ allQuestions, route }: QuestionSidebar
                         allQuestions
                             .filter(searchFilter)
                             .map((question, index) => {
-                                const answerState = getQuestionAnswerStateFromId(question.id, questionsHistory)
+                                const answerState = getQuestionAnswerStateFromId(question.id, questionHistories)
                                 return <QuestionSidebarListItem text={question.title ?? 'Missing title'} key={question.id} index={index} href={`${route}/${question.id}`} answerState={answerState} />
                             })
                     }

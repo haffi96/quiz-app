@@ -12,7 +12,7 @@ import { CorrectOrIncorrectPopUp } from "../popUps/CorrectOrIncorrectPopUp";
 import { RadioGroupOptionWithMotion } from "../RadioGroupOptionWithMotion";
 import { NavButton } from "./NavButton";
 import { NextButton } from "./NextButton";
-import QuestionsHistoryContext from "../../contexts/QuestionsHistoryContext";
+import QuestionHistoriesContext from "../../contexts/QuestionHistoriesContext";
 import { AnswerState } from "../../enums/AnswerState";
 
 export interface MultipleChoiceQuestionAndAnswerParams {
@@ -41,7 +41,7 @@ export function MultipleChoiceQuestionAndAnswer({
     const [checkedAnswer, setCheckedAnswer] = useState<Database["public"]["Enums"]["answer_choices"]>('a1');
     const [correct, setCorrect] = useState<boolean | undefined>(undefined);
     const [correctChoice, setCorrectChoice] = useState<Database["public"]["Enums"]["answer_choices"] | undefined>(undefined);
-    const { questionsHistory, setQuestionsHistory } = useContext(QuestionsHistoryContext);
+    const { questionHistories, setQuestionHistories } = useContext(QuestionHistoriesContext);
 
     const handleCheck = (value: SetStateAction<Database["public"]["Enums"]["answer_choices"]>) => {
         correct != undefined ? null : setCheckedAnswer(value)
@@ -59,14 +59,16 @@ export function MultipleChoiceQuestionAndAnswer({
         setCorrectChoice(answer?.correct_answer_choice)
         setCorrect(isCorrect)
 
-        if (!setQuestionsHistory) {
+        if (!setQuestionHistories) {
             return;
         }
-        const index = questionsHistory.findIndex((q) => q.id === questionID);
-        const thing = { id: questionID, answerState: isCorrect ? AnswerState.Correct : AnswerState.Incorrect };
-        const newQuestionsHistory = [...questionsHistory]
+
+        const index = questionHistories.findIndex((q) => q.id === questionID)
+        const thing = { id: questionID, answerState: isCorrect ? AnswerState.Correct : AnswerState.Incorrect }
+        const newQuestionsHistory = [...questionHistories]
         newQuestionsHistory.splice(index, 1, thing)
-        setQuestionsHistory(newQuestionsHistory)
+
+        setQuestionHistories(newQuestionsHistory)
     }
 
     const previousQuestionRouteToPath = questionSetId ? `${Routes.QUESTION_SETS}/${questionSetId}/${previousQuestionId}` : `${Routes.QUESTIONS_ALL}/${previousQuestionId}`
