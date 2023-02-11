@@ -25,6 +25,5 @@ export async function middleware(req: NextRequest) {
   }
 
   export const config = {
-    // This doesn't protect /admin & /questions
-    matcher: ['/admin/:path*', '/questions/:path*'],
+    matcher: ['/admin/:path*', '/questions/:path*', '/profile/:path*'],
   };

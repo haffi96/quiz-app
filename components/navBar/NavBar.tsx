@@ -2,10 +2,9 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import LogOut from "../buttons/LogOutButton";
 import { NavBarListItem } from "./NavBarListItem";
-import Switcher from "../Switcher";
 import { usePathname } from 'next/navigation'
+import AccountMenuDropDown from "../MenuDropDown";
 
 export default function NavBar({ accessToken }: { accessToken?: string }) {
   const pathname = usePathname();
@@ -22,7 +21,7 @@ export default function NavBar({ accessToken }: { accessToken?: string }) {
       <NavBarListItem><Link href="/pricing">Pricing</Link></NavBarListItem>
       <NavBarListItem><Link href='/admin/questions'>Admin</Link></NavBarListItem>
       <NavBarListItem><Link href='/questions/all'>Questions</Link></NavBarListItem>
-      <NavBarListItem><LogOut /></NavBarListItem>
+      <NavBarListItem><AccountMenuDropDown /></NavBarListItem>
     </>
   )
 
@@ -48,9 +47,6 @@ export default function NavBar({ accessToken }: { accessToken?: string }) {
           <NavBarListItem><Link href='/'>Home</Link></NavBarListItem>
           {accessToken ? LoggedInContents : LoggedOutContents}
         </ul>
-        <div className="absolute top-5 right-5">
-          <Switcher />
-        </div>
       </div>
     </nav>
   )
