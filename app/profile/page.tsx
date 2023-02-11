@@ -27,7 +27,7 @@ export default async function ProfilePage() {
                     <p>{session.user.email}</p>
                     <p>{
                         customerInfo.is_subscribed
-                            ? 'Subcribed'
+                            ? 'Subscribed'
                             : <>
                                 <Link href='/pricing'>Get Subscribed</Link>
                             </>
