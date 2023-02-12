@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { NavBarListItem } from "./NavBarListItem";
 import { usePathname } from 'next/navigation'
 import AccountMenuDropDown from "../MenuDropDown";
+import { handleLogout } from "../../utils/handleLogout";
 
 export default function NavBar({ accessToken }: { accessToken?: string }) {
   const pathname = usePathname();
@@ -22,6 +23,8 @@ export default function NavBar({ accessToken }: { accessToken?: string }) {
       <NavBarListItem><Link href="/pricing">Pricing</Link></NavBarListItem>
       <NavBarListItem><Link href='/admin/questions'>Admin</Link></NavBarListItem>
       <NavBarListItem><Link href='/questions/all'>Questions</Link></NavBarListItem>
+      <NavBarListItem isHiddenOnLargeScreens={true}><Link href='/profile'>Account</Link></NavBarListItem>
+      <NavBarListItem isHiddenOnLargeScreens={true}><button onClick={handleLogout}>Logout</button></NavBarListItem>
     </>
   )
 

@@ -2,21 +2,13 @@ import { Menu, Transition } from '@headlessui/react'
 import { Fragment } from 'react'
 import Switcher from './Switcher'
 import Link from 'next/link'
-import supabaseBrowser from '../supabaseConfig/supabase-browser'
 import { RiAccountCircleFill } from 'react-icons/ri'
+import { handleLogout } from '../utils/handleLogout'
 
-
-const handleLogout = async () => {
-    const { error } = await supabaseBrowser.auth.signOut()
-
-    if (error) {
-        console.log({ error })
-    }
-}
 
 export default function AccountMenuDropDown() {
     return (
-        <div className="absolute right-5 top-4">
+        <div className="absolute right-5 top-4 hidden lg:block">
             <Menu as="div" className="relative inline-block space-y-4 text-left">
                 <div>
                     <Menu.Button className="inline-flex w-full justify-center rounded-md px-4 py-2 text-sm font-medium text-white">
