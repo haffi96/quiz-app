@@ -196,6 +196,23 @@ export interface Database {
           user_id?: string | null
         }
       }
+      users: {
+        Row: {
+          created_at: string | null
+          id: string
+          subscribed_to_question_sets: number[] | null
+        }
+        Insert: {
+          created_at?: string | null
+          id: string
+          subscribed_to_question_sets?: number[] | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          subscribed_to_question_sets?: number[] | null
+        }
+      }
     }
     Views: {
       [_ in never]: never

@@ -1,3 +1,5 @@
 export const enum LocalStorageKeys {
-    QuestionHistories = 'questionHistories'
+    QuestionHistories = 'questionHistories',
+    User = 'user',
+    SubscribedQuestionSetIds = "subscribedQuestionSetIds"
 }

@@ -3,25 +3,15 @@
 import type { Dispatch, SetStateAction } from 'react';
 import { createContext } from 'react';
 import type { QuestionHistory } from '../components/questionSidebar/QuestionSidebar';
+import type { Database } from '../lib/database.types';
 
-type ContexProps = 
+type QuestionHistoriesContexProps = 
     {   
         questionHistories: QuestionHistory[]; 
         setQuestionHistories: Dispatch<SetStateAction<QuestionHistory[]>> | null; 
-        questions: {
-        a1: string;
-        a2: string;
-        a3: string;
-        a4: string;
-        body: string;
-        created_at: string;
-        id: number;
-        question_set: number | null;
-        title: string;
-        updated_at: string;
-    }[]};
+        questions: Database['public']['Tables']['questions']['Row'][]};
 
-const QuestionHistoriesContext = createContext<ContexProps>({
+const QuestionHistoriesContext = createContext<QuestionHistoriesContexProps>({
     questionHistories: [], 
     setQuestionHistories: null, 
     questions: []});
