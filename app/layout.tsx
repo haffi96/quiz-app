@@ -1,10 +1,10 @@
 import 'server-only'
 
 import "./globals.css";
-import { Providers } from "./providers";
 import createSupabaseServerClient from '../supabaseConfig/supabase-server';
 import NavBar from '../components/navBar/NavBar';
 import SupabaseProvider from '../providers/SupabaseProvider';
+import ThemeSettingProvider from '../providers/ThemeSettingProvider';
 import SupabaseListener from '../listeners/SupabaseListener';
 import UserProvider from '../providers/UserProvider';
 import { getSubscribedToQuestionSetIds, checkCustomerSubscriptionStatus } from '../utils/supabaseServerHelpers';
@@ -35,7 +35,7 @@ export default async function RootLayout({
   return (
     <html suppressHydrationWarning>
       <body className='flex h-screen flex-col text-4xl dark:bg-slate-900 lg:text-base'>
-        <Providers>
+        <ThemeSettingProvider>
           <SupabaseProvider>
             <UserProvider userId={userId} subscribedQuestionSetIds={subscribedQuestionSetIds}>
               <SupabaseListener serverAccessToken={session?.access_token} />
@@ -43,7 +43,7 @@ export default async function RootLayout({
               {children}
             </UserProvider>
           </SupabaseProvider>
-        </Providers>
+        </ThemeSettingProvider>
       </body>
     </html>
   );
