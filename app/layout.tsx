@@ -7,13 +7,13 @@ import NavBar from '../components/navBar/NavBar';
 import SupabaseProvider from '../providers/SupabaseProvider';
 import SupabaseListener from '../listeners/SupabaseListener';
 import UserProvider from '../providers/UserProvider';
-import supabaseBrowser from '../supabaseConfig/supabase-browser';
+import type { SupabaseClient } from '@supabase/supabase-js';
 
 // disable caching this layout, so the session isn't cached
 export const revalidate = 0
 
-async function getSubscribedToQuestionSetIds(userId: string) {
-  const { data, error } = await supabaseBrowser.from('users').select('subscribed_to_question_sets').eq('id', userId);
+async function getSubscribedToQuestionSetIds(supabaseServerClient: SupabaseClient, userId: string) {
+  const { data, error } = await supabaseServerClient.from('users').select('subscribed_to_question_sets').eq('id', userId);
 
   if (!data || error) {
     console.log('data or error in getQuestionSetsSubscribedTo', error)
@@ -41,7 +41,7 @@ export default async function RootLayout({
   let subscribedQuestionSetIds: number[] = []
 
   if (userId) {
-    subscribedQuestionSetIds = await getSubscribedToQuestionSetIds(userId);
+    subscribedQuestionSetIds = await getSubscribedToQuestionSetIds(supabase, userId);
   }
 
 
