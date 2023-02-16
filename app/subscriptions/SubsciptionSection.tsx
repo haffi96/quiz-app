@@ -63,7 +63,7 @@ export function SubsciptionSection({ questionSets }: SubsciptionSectionProps) {
 
             <br />
 
-            <h1>You Are Subscribed To These Question Sets:</h1>
+            <h1>You Are Not Subscribed To These Question Sets:</h1>
 
             {notSubscribedQuestionSets.map(
                 (set) => <li key={set.id}>{set.name}
