@@ -1,20 +1,10 @@
-import createServerComponentClient from '../../supabaseConfig/supabase-server';
+import createSupabaseServerClient from '../../supabaseConfig/supabase-server';
 import Link from 'next/link';
-import type { SupabaseClient } from '@supabase/supabase-js';
-
-async function getCustomerInfo(supabase: SupabaseClient, userId?: string) {
-    const { data, error } = await supabase.from("customers").select("*").eq("user_uuid", userId).limit(1)
-
-    if (error) {
-        console.log(error);
-    } else {
-        return data[0]
-    }
-}
+import { getCustomerInfo } from '../../utils/supabaseServerHelpers';
 
 
 export default async function ProfilePage() {
-    const supabase = createServerComponentClient()
+    const supabase = createSupabaseServerClient()
     const { data: { session } } = await supabase.auth.getSession()
 
     if (!session) {
