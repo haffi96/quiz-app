@@ -2,36 +2,22 @@ import 'server-only'
 
 import "./globals.css";
 import { Providers } from "./providers";
-import createClient from '../supabaseConfig/supabase-server';
+import createSupabaseServerClient from '../supabaseConfig/supabase-server';
 import NavBar from '../components/navBar/NavBar';
 import SupabaseProvider from '../providers/SupabaseProvider';
 import SupabaseListener from '../listeners/SupabaseListener';
 import UserProvider from '../providers/UserProvider';
-import type { SupabaseClient } from '@supabase/supabase-js';
+import { getSubscribedToQuestionSetIds, checkCustomerSubscriptionStatus } from '../utils/supabaseServerHelpers';
 
 // disable caching this layout, so the session isn't cached
 export const revalidate = 0
-
-async function getSubscribedToQuestionSetIds(supabaseServerClient: SupabaseClient, userId: string) {
-  const { data, error } = await supabaseServerClient.from('users').select('subscribed_to_question_sets').eq('id', userId);
-
-  if (!data || error) {
-    console.log('data or error in getQuestionSetsSubscribedTo', error)
-
-    return [];
-  }
-
-  const subscribedToQuestionSets = data[0].subscribed_to_question_sets;
-
-  return subscribedToQuestionSets ?? [];
-}
 
 export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const supabase = createClient()
+  const supabase = createSupabaseServerClient()
 
   const {
     data: { session },
@@ -40,10 +26,11 @@ export default async function RootLayout({
   const userId = session?.user.id
   let subscribedQuestionSetIds: number[] = []
 
+  let is_subscribed;
   if (userId) {
     subscribedQuestionSetIds = await getSubscribedToQuestionSetIds(supabase, userId);
+    is_subscribed = await checkCustomerSubscriptionStatus(supabase, userId)
   }
-
 
   return (
     <html suppressHydrationWarning>
@@ -52,7 +39,7 @@ export default async function RootLayout({
           <SupabaseProvider>
             <UserProvider userId={userId} subscribedQuestionSetIds={subscribedQuestionSetIds}>
               <SupabaseListener serverAccessToken={session?.access_token} />
-              <NavBar accessToken={session?.access_token} />
+              <NavBar accessToken={session?.access_token} is_subscribed={is_subscribed} />
               {children}
             </UserProvider>
           </SupabaseProvider>

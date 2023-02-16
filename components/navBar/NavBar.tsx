@@ -7,7 +7,10 @@ import { usePathname } from 'next/navigation'
 import AccountMenuDropDown from "../MenuDropDown";
 import { handleLogout } from "../../utils/handleLogout";
 
-export default function NavBar({ accessToken }: { accessToken?: string }) {
+
+export default function NavBar({ accessToken, is_subscribed }: {
+  accessToken?: string, is_subscribed?: boolean
+}) {
   const pathname = usePathname();
   const [isHidden, setIsHidden] = useState(true);
   const isLoggedIn = Boolean(accessToken);
@@ -20,7 +23,9 @@ export default function NavBar({ accessToken }: { accessToken?: string }) {
 
   const LoggedInContents = (
     <>
-      <NavBarListItem><Link href="/pricing">Pricing</Link></NavBarListItem>
+      {!is_subscribed &&
+        <NavBarListItem><Link href="/pricing">Pricing</Link></NavBarListItem>
+      }
       <NavBarListItem><Link href='/admin/questions'>Admin</Link></NavBarListItem>
       <NavBarListItem><Link href='/questions/all'>Questions</Link></NavBarListItem>
       <NavBarListItem><Link href='/subscriptions'>Subscriptions</Link></NavBarListItem>
