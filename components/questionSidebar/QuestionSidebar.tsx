@@ -38,7 +38,7 @@ export default function QuestionSidebar({ allQuestions, route }: QuestionSidebar
 
     return (
         <aside className="mx-auto w-full lg:left-0 lg:m-0 lg:h-full lg:w-1/3">
-            <div className="overflow-y-auto rounded-lg bg-gray-50 dark:bg-gray-800 lg:h-full">
+            <div className="overflow-y-auto rounded-lg bg-slate-200 dark:bg-gray-800 lg:h-full">
                 <div className="pt-10 text-center">
                     <input
                         className="h-10 w-4/5 rounded-lg bg-white px-2 text-black"
