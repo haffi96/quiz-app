@@ -23,9 +23,11 @@ function getQuestionStyling(answerState?: AnswerState) {
 
 export function QuestionSidebarListItem({ text, href, index, newItem, answerState: answerStateStyle }: ListItemProps) {
     return (
-        <li className={(newItem ? "rounded-lg border-2 border-blue-600" : "break-all rounded-lg border-2 border-gray-600") + ' ' + getQuestionStyling(answerStateStyle)}>
+        <li className={(newItem ? "rounded-lg border-2 border-blue-600/50" : "break-all rounded-lg border-2 border-gray-600/50") + ' ' + getQuestionStyling(answerStateStyle)}>
             <div className="p-1">
-                <Link href={href} className="flex items-center rounded-lg p-2 font-normal text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
+                <Link href={href} className="flex items-center rounded-lg p-2 font-normal text-gray-900
+                hover:bg-blue-500 hover:text-white
+                dark:text-white dark:hover:bg-gray-700">
                     <span className="whitespace-nowrap">{index + 1}</span><span className="ml-3">{text}</span>
                 </Link>
             </div>
