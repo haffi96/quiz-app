@@ -20,7 +20,7 @@ export async function getSubscribedToQuestionSetIds(supabaseServerClient: Supaba
       return [];
     }
 
-    const subscribedToQuestionSets = data[0].subscribed_to_question_sets;
+    const subscribedToQuestionSets = data[0]?.subscribed_to_question_sets;
 
     return subscribedToQuestionSets ?? [];
   }
@@ -31,7 +31,7 @@ export async function checkCustomerSubscriptionStatus(supabaseServerClient: Supa
     if (error) {
       console.log(error);
     } else {
-      return data[0].is_subscribed
+      return data[0]?.is_subscribed
     }
   }
 
