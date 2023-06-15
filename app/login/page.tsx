@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import supabaseBrowser from "../../supabaseConfig/supabase-browser";
 
@@ -9,6 +9,16 @@ export default function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [registering, SetRegistering] = useState(false);
+
+    useEffect(() => {
+        if (process.env.DEMO === 'true') {
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            setEmail(process.env.DEMO_USER!)
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            setPassword(process.env.DEMO_PASS!)
+        }
+    }, []);
+
 
     const handleLogin = async (email: string, password: string) => {
         const { error } = await supabaseBrowser.auth.signInWithPassword({ email, password })
@@ -59,9 +69,22 @@ export default function Login() {
         }
     }
 
+    const DemoMessage = () => {
+        if (process.env.DEMO === 'true') {
+            return (
+                <div className='m-auto mt-10 w-2/4 rounded-xl border-2 border-green-400'>
+                    <h1 className='p-3 text-center'>Demo mode. Credentials have been pre-filled. Press Sign in.</h1>
+                </div>
+            )
+        } else {
+            return <div></div>
+        }
+    }
+
     return (
         <>
             <div className="block">
+                <DemoMessage />
                 <AuthMessage />
                 <div className="flex flex-col items-center space-y-2 pt-3">
                     <button onClick={() => handleLoginWithGoogle()} className="w-1/2 bg-blue-300 py-2 text-black hover:bg-blue-500">Sign in with google</button>

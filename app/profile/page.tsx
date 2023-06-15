@@ -17,22 +17,23 @@ export default async function ProfilePage() {
 
     const customerInfo = await getCustomerInfo(supabase, userId)
 
-    if (!customerInfo) {
-        return (
-            <Link href="/login">Please Log in</Link>
-        )
-    }
-
     return (
         <div className="container m-auto flex flex-col space-y-5 text-center">
 
             <p>Email: {session.user.email}</p>
-            <p>
-                {
-                    customerInfo.is_subscribed ? 'Subscribed' : <Link href='/pricing'>Get Subscribed</Link>
-                }
-            </p>
-            <p>{customerInfo.admin_role && 'You are an Admin'}</p>
+            {
+                customerInfo ?
+                    <div>
+                        <p>
+                            {
+                                customerInfo.is_subscribed ? 'Subscribed' : <Link href='/pricing'>Get Subscribed</Link>
+                            }
+                        </p>
+                        <p>{customerInfo.admin_role && 'You are an Admin'}</p>
+                    </div>
+                    :
+                    <p>Free tier user</p>
+            }
         </div>
     )
 }
